@@ -1,0 +1,15 @@
+Package: GBADs
+Type: Package
+Title: Global Burden of Animal Diseases
+Version: 1.0
+Date: 2023-06-24
+Author: Jarrett D. Phillips
+Maintainer: Jarrett D. Phillips <jphill01@uoguelph.ca>
+Description: Runs the Animal Health Loss Envelope (AHLE)
+License: GPL (>= 2)
+Imports: Rcpp (>= 1.0.10),
+         mc2d (>= 0.1-23),
+         truncnorm (>= 1.0-9),
+         readxl (>= 1.4.2),
+         gtools (>= 3.9.4)
+LinkingTo: Rcpp
