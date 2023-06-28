@@ -16,4 +16,4 @@ where
 - $L$ is a loss function ($0 \leq L \leq 1$) describing the action of disease hazards $b_0$ on the production of $Y$
 - $C(x, \theta)$ is a control function ($0 \leq C \leq 1$), increasing in control inputs $x$ (vaccines, antibiotics, *etc.*) which mitigates the effects of $b_0$.
 
-When $b_0 = 0$, this is the disease free case and there is no loss of output, such that $L(0) = 0$, and ideal production, $Y = F(z, \theta)$ is achieved. This is termed the "ideal healtH" case and is denoted $Y^$*
+When $b_0 = 0$, this is the disease free case and there is no loss of output, such that $L(0) = 0$, and ideal production, $Y = F(z, \theta)$ is achieved. This is termed the "ideal healtH" case and is denoted $Y^*$
