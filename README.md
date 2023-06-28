@@ -1,4 +1,4 @@
-# GBADs
+# GBADs.R
 
 Welcome is the GBADs (Global Burden of Animal Diseases) R package repository!
 
