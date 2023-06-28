@@ -1,3 +1,7 @@
 useDynLib(GBADs, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
+import(mc2d)
+import(truncnorm)
+import(readxl)
+import(gtools)
 exportPattern("^[[:alpha:]]+")
