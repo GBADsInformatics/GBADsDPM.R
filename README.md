@@ -20,4 +20,4 @@ When $b_0 = 0$, this is the disease free case and there is no loss of output, su
 
 ## References
 
-Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J.Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the animal health-loss envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099
+Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J.Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the Animal Health-Loss Envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099
