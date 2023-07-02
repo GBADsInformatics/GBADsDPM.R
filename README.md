@@ -25,7 +25,7 @@ Under these conditions, the burden of disease is therefore found in the combined
 The AHLE is derived via a cost minimization as
 
 ```math
-AHLE = \sum_{i=1}^{I}\left(\right)
+AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}\right)
 ```
 ## References
 
