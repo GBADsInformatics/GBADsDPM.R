@@ -2,6 +2,8 @@
 
 Welcome is the GBADs (Global Burden of Animal Diseases) R package repository!
 
+## The Model
+
 GBADs runs a novel compartmentalized agent-based model called AHLE (Animal Health Loss Envelope) used to estimate production losses in livestock such as cattle, poultry, and small ruminants within developing countries like Ethiopia. Such losses can include milk/egg production, breeding stock, meat, manure, *etc*.
 
 The model is expressed mathematically according to a generic livestock production system functioning in both the presence and the absence of disease as follows:
