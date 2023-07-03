@@ -22,7 +22,7 @@ When $b_0 = 0$, this is the disease free case and there is no loss of output, su
 
 Under these conditions, the burden of disease is therefore found in the combined value in lost output when $Y$ is less than $F(z, \theta)$, plus any expenditure on control where $z > 0$.
 
-The AHLE is derived via a cost minimization as
+The AHLE is derived via a cost minimization as:
 
 ```math
 AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s_{i}({n_i}_t - n_{it}^*) - \sum_{j=1}^{J}r_j(y_{ij} - y_{ij}^*)\right)
