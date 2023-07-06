@@ -29,4 +29,4 @@ AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s
 ```
 ## References
 
-Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J.Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the Animal Health-Loss Envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099.
+Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J. Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the Animal Health-Loss Envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099.
