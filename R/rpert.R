@@ -1,3 +1,20 @@
+#' Generate random variates from PERT distribution
+#' 
+#' Returns random variates sampled from a modified PERT distribution given by 
+#' the following paramterization
+#' 
+#' @param n Number of variates to generate
+#' @param x.min Minimum x value to sample
+#' @param x.max Maximum x value to sample
+#' @param x.mode Most frequent x value to sample
+#' @param lambda Scaling factor
+#' 
+#' @returns A sample of random variates
+#' 
+#' @examples
+#' # rpert(10000, 1, 10, 5)
+#' 
+
 rpert <- function(n, x.min, x.max, x.mode, lambda = 4) {
   if (x.min > x.max || x.mode > x.max || x.mode < x.min) {
     stop("invalid parameters")
