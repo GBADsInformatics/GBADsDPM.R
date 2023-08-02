@@ -1,4 +1,7 @@
 useDynLib(GBADs, .registration=TRUE)
+importFrom(jsonlite, fromJSON)
+importFrom(readr, read_csv)
+importFrom(yaml, read_yaml)
 importFrom(Rcpp, evalCpp)
 import(mc2d)
 import(truncnorm)
