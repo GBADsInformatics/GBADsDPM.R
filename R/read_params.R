@@ -1,6 +1,6 @@
 #' Import parameter file 
 #' 
-#' Read in parameter file in CSV, JSON, or YAML format.
+#' Read in parameter file in YAML, JSON, or CSV format.
 #' 
 #' @param file_path Relative or absolute path to file
 #' @param file_type File type (One of: CSV, JSON, or YAML)
