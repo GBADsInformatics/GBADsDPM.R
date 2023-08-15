@@ -34,8 +34,12 @@ read_params <- function(file_path, file_type = "yaml") {
       for (key in names(data)) {
         data[[key]] <- evaluate_r_expressions(data[[key]])
       }
-    } else if (is.character(data) && grepl("^r\\w*\\(", data)) {
-      data <- eval(parse(text = data))
+    } else if (is.character(data)) {
+      if (grepl("^r\\w*\\(", data)) {
+        data <- eval(parse(text = data))
+      } else if (identical(gsub("\\s+", "", data), as.character(parse(text = data)))) {
+        data <- eval(parse(text = data))
+      }
     }
     return(data)
   }
