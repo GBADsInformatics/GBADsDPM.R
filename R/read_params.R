@@ -10,7 +10,7 @@
 #' # read_parameters_from_file(file_path = "path/to/params.json", file_type = "json")
 #' # read_parameters_from_file(file_path = "path/to/params.yaml", file_type = "yaml")
 
-read_params <- function(file_path, file_type = "yaml") {
+read_params <- function(file_path, file_type = "yaml", species) {
   if (!file.exists(file_path)) {
     stop("File not found: ", file_path)
   }
@@ -38,6 +38,8 @@ read_params <- function(file_path, file_type = "yaml") {
       if (grepl("^r\\w*\\(", data)) {
         data <- eval(parse(text = data))
       } else if (identical(gsub("\\s+", "", data), as.character(parse(text = data)))) {
+        data <- eval(parse(text = data))
+      } else if (grepl("^\\d+\\s*[-+*/]\\s*\\d+$", data)) {
         data <- eval(parse(text = data))
       }
     }
