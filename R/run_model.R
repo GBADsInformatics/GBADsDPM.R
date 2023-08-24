@@ -1,7 +1,10 @@
-run_model <- function(file_path, file_type, data) {
-  # Read and evaluate parameters
-  read_params(file_path, file_type, species)
-
+run_model <- function() {
+  model_env <- new.env()  # create a new environment
+  
+  add_variable <- function(env, variable_name) {
+    env[[variable_name]] <- 0
+  }
+  
   calculate_mu <- function(part, prolif) {
     return ((sample(part, size = 10000, replace = TRUE) * sample(prolif, size = 10000, replace = TRUE)) / 12)
   }
@@ -69,9 +72,25 @@ run_model <- function(file_path, file_type, data) {
     Expenditure_on_feed_O <- calculate_expenditure_on_feed(KG_Feed_purchased_O, Feed_cost_kg)
   }
   
+  # vectors of categories for animals and cost types
+  animal_categories <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
+  cost_categories <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", 
+                       "Hides", "Milk", "Meat_kg", "Wool", "draught_income",
+                       "Cumulutive_DM", "Monthly_Dry_Matter",
+                       "popultation_growth_rate", "Monthly_growth_rate", "monthly_pop_growth",
+                       "Value_offt", "Value_herd_inc",
+                       "Feed", "Labour", "Health", "Capital")
   
-  
-
-  
-    
+  # Create empty variables
+  for (animal in animal_categories) {
+    for (cost in cost_categories) {
+      variable_name <- paste(cost, "_", animal, sep = "")
+      model_env[[variable_name]] <- 0
+    }
   }
+  
+  return(model_env)
+  
+}
+
+
