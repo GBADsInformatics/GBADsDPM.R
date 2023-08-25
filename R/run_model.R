@@ -72,24 +72,66 @@ run_model <- function() {
     Expenditure_on_feed_O <- calculate_expenditure_on_feed(KG_Feed_purchased_O, Feed_cost_kg)
   }
   
-  # vectors of categories for animals and cost types
-  animal_categories <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
-  cost_categories <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", 
-                       "Hides", "Milk", "Meat_kg", "Wool", "draught_income",
-                       "Cumulutive_DM", "Monthly_Dry_Matter",
-                       "popultation_growth_rate", "Monthly_growth_rate", "monthly_pop_growth",
-                       "Value_offt", "Value_herd_inc",
-                       "Feed", "Labour", "Health", "Capital")
   
-  # Create empty variables
-  for (animal in animal_categories) {
-    for (cost in cost_categories) {
-      variable_name <- paste(cost, "_", animal, sep = "")
-      model_env[[variable_name]] <- 0
+  # -------------------------------------------------------------------
+  # TO-DO
+  # Create matrices to store the model output vectors at each time step
+  # -------------------------------------------------------------------
+  
+  
+  
+  
+  
+  
+  for (i in 1:nruns) {
+    # Calculate total population at t0
+    Nt0 <- sum(N_NF_t0, N_NM_t0, N_JF_t0, N_JM_t0, N_AF_t0, N_AM_t0, N_O_t0)
+    
+    # Define population variables and set initial values from function arguments
+    population <- c(NF = N_NF_t0, NM = N_NM_t0, JF = N_JF_t0, JM = N_JM_t0, AF = N_AF_t0, AM = N_AM_t0, O = N_O_t0)
+    N <- Nt0
+    culls <- 0
+    Num_dead <- 0
+    
+    # Calculate age-sex group proportions at t0
+    pNF_t0 <- population["NF"] / N
+    pJF_t0 <- population["JF"] / N
+    pAF_t0 <- population["AF"] / N
+    pNM_t0 <- population["NM"] / N
+    pJM_t0 <- population["JM"] / N
+    pAM_t0 <- population["AM"] / N
+    pO_t0 <- population["O"] / N
+    
+    # Initialize number of dead individuals per group
+    Num_dead_per_group <- rep(0, length(population))
+    
+    # Generate vectors of categories for animals and cost types
+    animal_categories <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
+    cost_categories <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", 
+                         "Hides", "Milk", "Meat_kg", "Wool", "Draught_income",
+                         "Cumulative_DM", "Monthly_Dry_Matter",
+                         "Population_growth_rate", "Monthly_growth_rate", "Monthly_pop_growth",
+                         "Value_offt", "Value_herd_inc",
+                         "Feed", "Labour", "Health", "Capital")
+    
+    # Create empty variables
+    for (animal in animal_categories) {
+      for (cost in cost_categories) {
+        variable_name <- paste(cost, "_", animal, sep = "")
+        model_env[[variable_name]] <- 0
+      }
     }
+    
+    
+    
+    
+    
   }
   
-  return(model_env)
+ 
+  
+
+  
   
 }
 
