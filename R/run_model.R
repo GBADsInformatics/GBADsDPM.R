@@ -122,17 +122,11 @@ run_model <- function() {
       }
     }
     
-    
-    
-    
+    return(model_env)
     
   }
   
- 
-  
 
-  
-  
 }
 
 
