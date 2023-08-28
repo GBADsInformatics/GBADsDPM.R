@@ -80,16 +80,25 @@ run_model <- function() {
     Expenditure_on_feed_O <- calculate_expenditure_on_feed(KG_Feed_purchased_O, Feed_cost_kg)
   }
   
+  # Generate vectors of categories for animals and cost types
+  animal_categories <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
+  cost_categories <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", 
+                       "Hides", "Milk", "Meat_kg", "Wool", "Draught_income",
+                       "Cumulative_DM", "Monthly_Dry_Matter",
+                       "Population_growth_rate", "Monthly_growth_rate", "Monthly_pop_growth",
+                       "Value_offt", "Value_herd_inc",
+                       "Feed", "Labour", "Health", "Capital")
   
-  # -------------------------------------------------------------------
-  # TO-DO
-  # Create matrices to store the model output vectors at each time step
-  # -------------------------------------------------------------------
+  # Create a list to store the matrices
+  output_matrices <- list()
   
-  
-  
-  
-  
+  # Generate matrix names and initialize them
+  for (animal in animal_categories) {
+    for (cost in cost_categories) {
+      matrix_name <- paste(cost, "_", animal, "_M", sep = "")
+      output_matrices[[matrix_name]] <- matrix(, nrow = nruns, ncol = Num_months)
+    }
+  }
   
   for (i in 1:nruns) {
     # Calculate total population at t0
@@ -112,15 +121,6 @@ run_model <- function() {
     
     # Initialize number of dead individuals per group
     Num_dead_per_group <- rep(0, length(population))
-    
-    # Generate vectors of categories for animals and cost types
-    animal_categories <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
-    cost_categories <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", 
-                         "Hides", "Milk", "Meat_kg", "Wool", "Draught_income",
-                         "Cumulative_DM", "Monthly_Dry_Matter",
-                         "Population_growth_rate", "Monthly_growth_rate", "Monthly_pop_growth",
-                         "Value_offt", "Value_herd_inc",
-                         "Feed", "Labour", "Health", "Capital")
     
     # Create empty variables
     for (animal in animal_categories) {
