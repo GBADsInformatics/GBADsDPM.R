@@ -1,3 +1,11 @@
+#' @description
+#' Run the Animal Health Loss Envelope (ALHE) compartmental agent-based simulation model using 
+#' parameters imported via \code{read_params()}
+#' 
+#' @example 
+#' \code{run_model()}
+#' 
+
 run_model <- function() {
   model_env <- new.env()  # create a new environment
   

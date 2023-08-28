@@ -1,7 +1,6 @@
-#' Generate random variates from PERT distribution
-#' 
-#' Returns random variates sampled from a modified PERT distribution given by 
-#' the following paramterization
+#' @description
+#' Generate random variates from PERT distribution. Returns random variates sampled 
+#' from a modified PERT distribution given by the following parameterization
 #' 
 #' @param n Number of variates to generate
 #' @param x.min Minimum x value to sample
@@ -11,7 +10,7 @@
 #' 
 #' @returns A sample of random variates
 #' 
-#' @examples
+#' @example
 #' # rpert(10000, 1, 10, 5)
 #' 
 
