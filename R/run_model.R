@@ -80,95 +80,256 @@ run_model <- function() {
     Expenditure_on_feed_O <- calculate_expenditure_on_feed(KG_Feed_purchased_O, Feed_cost_kg)
   }
   
-  # Generate vectors of categories for animals and cost types
-  animal_categories <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
-  cost_categories <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", 
-                       "Hides", "Milk", "Meat_kg", "Wool", "Draught_income",
-                       "Cumulative_DM", "Monthly_Dry_Matter",
-                       "Population_growth_rate", "Monthly_growth_rate", "Monthly_pop_growth",
-                       "Value_offt", "Value_herd_inc",
-                       "Feed", "Labour", "Health", "Capital")
+  # List of variable categories'
+  categories <- c(
+    "num", 
+    
+    "births", 
+    "oxen_J", 
+    "oxen_A", 
+    
+    "growth_NF", 
+    "growth_NM", 
+    "growth_JF", 
+    "growth_JM", 
+    
+    "deaths_NF", 
+    "deaths_NM", 
+    "deaths_JF", 
+    "deaths_JM", 
+    "deaths_AF", 
+    "deaths_AM", 
+    "deaths_O", 
+    
+    "culls_AF", 
+    "culls_AM", 
+    "culls_O", 
+    
+    "Cumulative_culls_AM", 
+    
+    "offtake_NF", 
+    "offtake_NM", 
+    "offtake_JF", 
+    "offtake_JM", 
+    "offtake_AF", 
+    "offtake_AM", 
+    "offtake_O", 
+    
+    "Cumulative_draught_income", 
+    
+    "Monthly_mortality", 
+    "Total_Mortality",
+    "Total_Mortality_NF", 
+    "Total_Mortality_NM", 
+    "Total_Mortality_JF", 
+    "Total_Mortality_JM", 
+    "Total_Mortality_AF", 
+    "Total_Mortality_AM", 
+    "Total_Mortality_O", 
+    
+    "Value_of_Total_Mortality", 
+    "Value_of_Total_Mortality_NF", 
+    "Value_of_Total_Mortality_NM", 
+    "Value_of_Total_Mortality_JF", 
+    "Value_of_Total_Mortality_JM", 
+    "Value_of_Total_Mortality_AF", 
+    "Value_of_Total_Mortality_AM", 
+    "Value_of_Total_Mortality_O", 
+    
+    "Quant_Liveweight_kg", 
+    "Quant_Liveweight_kg_NF", 
+    "Quant_Liveweight_kg_NM", 
+    "Quant_Liveweight_kg_JF", 
+    "Quant_Liveweight_kg_JM", 
+    "Quant_Liveweight_kg_AF", 
+    "Quant_Liveweight_kg_AM", 
+    "Quant_Liveweight_kg_O", 
+    "Quant_Meat_kg", 
+    
+    "Num_Offtake", 
+    "Num_Offtake_NF", 
+    "Num_Offtake_NM", 
+    "Num_Offtake_JF", 
+    "Num_Offtake_JM", 
+    "Num_Offtake_AF", 
+    "Num_Offtake_AM", 
+    "Num_Offtake_O", 
+    
+    "Offtake_Liveweight_kg", 
+    "Offtake_Liveweight_kg_JF", 
+    "Offtake_Liveweight_kg_JM", 
+    "Offtake_Liveweight_kg_AF", 
+    "Offtake_Liveweight_kg_AM", 
+    "Offtake_Liveweight_kg_O", 
+    
+    "Pop_growth", 
+    "Pop_growth_NF", 
+    "Pop_growth_NM", 
+    "Pop_growth_JF", 
+    "Pop_growth_JM", 
+    "Pop_growth_AF", 
+    "Pop_growth_AM", 
+    "Pop_growth_O", 
+    
+    "Monthly_growth_rate", 
+    "monthly_pop_growth", 
+    
+    "Quant_Manure", 
+    "Quant_Manure_NF", 
+    "Quant_Manure_NM", 
+    "Quant_Manure_JF", 
+    "Quant_Manure_JM", 
+    "Quant_Manure_AF", 
+    "Quant_Manure_AM", 
+    "Quant_Manure_O", 
+    
+    "Quant_Hides", 
+    "Quant_Hides_JF", 
+    "Quant_Hides_JM", 
+    "Quant_Hides_AF", 
+    "Quant_Hides_AM", 
+    "Quant_Hides_O", 
+    "Quant_Milk", 
+    "Quant_Wool", 
+    
+    "Cumulative_Dry_Matter", 
+    "Cumulative_Dry_Matter_NF", 
+    "Cumulative_Dry_Matter_NM", 
+    "Cumulative_Dry_Matter_JF", 
+    "CumUlative_Dry_Matter_JM", 
+    "Cumulative_Dry_Matter_AF", 
+    "Cumulative_Dry_Matter_AM", 
+    "Cumulative_Dry_Matter_O", 
+    
+    "Monthly_DM", 
+    
+    "Value_Offtake", 
+    "Value_Offtake_NF", 
+    "Value_Offtake_NM", 
+    "Value_Offtake_JF", 
+    "Value_Offtake_JM", 
+    "Value_Offtake_AF", 
+    "Value_Offtake_AM", 
+    "Value_Offtake_O", 
+    
+    "Value_Herd_Increase", 
+    "Value_Herd_Increase_NF", 
+    "Value_Herd_Increase_NM", 
+    "Value_Herd_Increase_JF", 
+    "Value_Herd_Increase_JM", 
+    "Value_Herd_Increase_AF", 
+    "Value_Herd_Increase_AM", 
+    "Value_Herd_Increase_O", 
+    
+    "Total_Value_increase", 
+    "Total_Value_increase_NF", 
+    "Total_Value_increase_NM", 
+    "Total_Value_increase_JF", 
+    "Total_Value_increase_JM", 
+    "Total_Value_increase_AF", 
+    "Total_Value_increase_AM", 
+    "Total_Value_increase_O", 
+    
+    "Feed_cost", 
+    "Feed_cost_NF", 
+    "Feed_cost_NM", 
+    "Feed_cost_JF", 
+    "Feed_cost_JM",
+    "Feed_cost_AF", 
+    "Feed_cost_AM", 
+    "Feed_cost_O", 
+    
+    "Labour_cost", 
+    "Labour_cost_NF", 
+    "Labour_cost_NM", 
+    "Labour_cost_JF", 
+    "Labour_cost_JM", 
+    "Labour_cost_AF", 
+    "Labour_cost_AM", 
+    "Labour_cost_O", 
+    
+    "Health_cost", 
+    "Health_cost_NF", 
+    "Health_cost_NM", 
+    "Health_cost_JF", 
+    "Health_cost_JM", 
+    "Health_cost_AF", 
+    "Health_cost_AM", 
+    "Health_cost_O", 
+    
+    "Capital_cost", 
+    "Capital_cost_NF", 
+    "Capital_cost_NM", 
+    "Capital_cost_JF", 
+    "Capital_cost_JM", 
+    "Capital_cost_AF", 
+    "Capital_cost_AM", 
+    "Capital_cost_O", 
+    
+    "Infrastructure_cost", 
+    "Infrastructure_cost_NF", 
+    "Infrastructure_cost_NM", 
+    "Infrastructure_cost_JF", 
+    "Infrastructure_cost_JM", 
+    "Infrastructure_cost_AF", 
+    "Infrastructure_cost_AM", 
+    "Infrastructure_cost_O", 
+    
+    "Total_expenditure", 
+    "Total_expenditure_NF", 
+    "Total_expenditure_NM", 
+    "Total_expenditure_JF", 
+    "Total_expenditure_JM", 
+    "Total_expenditure_AF", 
+    "Total_expenditure_AM", 
+    "Total_expenditure_O"
+  )
   
-  # Create a list to store the matrices
-  output_matrices <- list()
+  # Initialize a list to store the matrices
+  res <- list()
   
-  # Generate matrix names and initialize them
-  for (animal in animal_categories) {
-    for (cost in cost_categories) {
-      matrix_name <- paste(cost, "_", animal, "_M", sep = "")
-      output_matrices[[matrix_name]] <- matrix(, nrow = nruns, ncol = Num_months)
-    }
+  # Loop through categories and create matrices
+  for (cat in categories) {
+    res[[cat]] <- matrix(0, nrow = nruns, ncol = Num_months)
   }
+
+  
+  # -------------------------------------------------------------------
+  # TO-DO
+  # Create matrices to store the model output vectors at each time step
+  # -------------------------------------------------------------------
+  
+  
   
   for (i in 1:nruns) {
-    # Calculate total population at t0
+    # Total population is sum of age*sex segments
     Nt0 <- sum(N_NF_t0, N_NM_t0, N_JF_t0, N_JM_t0, N_AF_t0, N_AM_t0, N_O_t0)
     
     # Define population variables and set initial values from function arguments
-    population <- c(NF = N_NF_t0, NM = N_NM_t0, JF = N_JF_t0, JM = N_JM_t0, AF = N_AF_t0, AM = N_AM_t0, O = N_O_t0)
     N <- Nt0
+    age_sex_groups <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
+    for (group in age_sex_groups) {
+      assign(group, get(paste0("N_", group, "_t0")))
+    }
+    
+    # Age sex group prop of pop at t0 - this ratio should probably stay the same
+    prop_groups <- c(pNF_t0 = NF/N, pJF_t0 = JF/N, pAF_t0 = AF/N,
+                     pNM_t0 = NM/N, pJM_t0 = JM/N, pAM_t0 = AM/N, pO_t0 = O/N)
+    
     culls <- 0
-    Num_dead <- 0
     
-    # Calculate age-sex group proportions at t0
-    pNF_t0 <- population["NF"] / N
-    pJF_t0 <- population["JF"] / N
-    pAF_t0 <- population["AF"] / N
-    pNM_t0 <- population["NM"] / N
-    pJM_t0 <- population["JM"] / N
-    pAM_t0 <- population["AM"] / N
-    pO_t0 <- population["O"] / N
+    Num_dead <- rep(0, length(age_sex_groups))
     
-    # Initialize number of dead individuals per group
-    Num_dead_per_group <- rep(0, length(population))
+    ## Create empty variables to be used for calculating production
+    production_vars <- c("Liveweight_kg", "Offtake", "Manure_kg", "Hides", "Milk", "Meat_kg", "Wool", "draught_income",
+                         "Cumulative_DM", "Monthly_Dry_Matter", "popultation_growth_rate", "Monthly_growth_rate", "monthly_pop_growth",
+                         "Value_offt", "Value_herd_inc", "Feed", "Labour", "Health", "Capital")
     
-    # Create empty variables
-    for (animal in animal_categories) {
-      for (cost in cost_categories) {
-        variable_name <- paste(cost, "_", animal, sep = "")
-        model_env[[variable_name]] <- 0
-      }
-    }
-    
-    return(model_env)
-    
-  }
-  
-  animal_categories <- append(animal_categories, "N")
-  matrix_names <- c("num", "Monthly_mortality", "Total_Mortality", "Value_of_Total_Mortality",
-                    "Quant_Liveweight_kg", "Cumulative_draught_income", "Quant_Meat_kg", "Num_Offtake",
-                    "Offtake_Liveweight_kg", "Pop_growth", "Monthly_growth_rate", "Monthly_pop_growth",
-                    "Quant_Manure", "Quant_Hides", "Quant_Milk", "Quant_Wool",
-                    "Cumulative_Dry_Matter", "Value_Offtake", "Value_Herd_Increase", "Total_Value_increase",
-                    "Feed_cost", "Labour_cost", "Health_cost", "Capital_cost", "Infrastructure_cost",
-                    "Total_expenditure")
-  
-  # Loop over categories and matrix names to fill the matrices
-  for (cat in animal_categories) {
-    for (mat_name in matrix_names) {
-      var_name <- paste(mat_name, cat, sep = "_M")
-      assign(var_name, matrix(, nrow = nruns, ncol = Num_months))
+    for (var in production_vars) {
+      assign(var, rep(0, length(age_sex_groups)))
     }
   }
   
-  # Loop through months and fill the matrices based on your logic
-  for (i in 1:nruns) {
-    for (mat_name in matrix_names) {
-      for (cat in animal_categories) {
-        var_name <- paste(mat_name, cat, sep = "_M")
-        assign(var_name, fill_matrix_based_on_logic(var_name, i, cat, mat_name))
-      }
-    }
-  }
-  
-  # Define a function to fill matrices based on your logic
-  fill_matrix_based_on_logic <- function(var_name, i, cat, mat_name) {
-    # Here you implement your logic to fill the matrix entries
-    # You can use the var_name, i, cat, and mat_name variables to generate the appropriate values
-    # Return the filled matrix
-    return(get(var_name))
-  }
-
 }
 
 
