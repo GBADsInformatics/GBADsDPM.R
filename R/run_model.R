@@ -321,8 +321,8 @@ run_model <- function() {
     Num_dead <- rep(0, length(age_sex_groups))
     
     ## Create empty variables to be used for calculating production
-    production_vars <- c("Liveweight_kg", "Offtake", "Manure_kg", "Hides", "Milk", "Meat_kg", "Wool", "draught_income",
-                         "Cumulative_DM", "Monthly_Dry_Matter", "popultation_growth_rate", "Monthly_growth_rate", "monthly_pop_growth",
+    production_vars <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", "Hides", "Milk", "Meat_kg", "Wool", "Draught_income",
+                         "Cumulative_DM", "Monthly_Dry_Matter", "Population_growth_rate", "Monthly_growth_rate", "monthly_pop_growth",
                          "Value_offt", "Value_herd_inc", "Feed", "Labour", "Health", "Capital")
     
     for (var in production_vars) {
