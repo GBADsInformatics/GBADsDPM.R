@@ -85,35 +85,35 @@ run_model <- function() {
     "num", 
     
     "births", 
-    "oxen_J", 
-    "oxen_A", 
+    "Oxen_J", 
+    "Oxen_A", 
     
-    "growth_NF", 
-    "growth_NM", 
-    "growth_JF", 
-    "growth_JM", 
+    "Growth_NF", 
+    "Growth_NM", 
+    "Growth_JF", 
+    "Growth_JM", 
     
-    "deaths_NF", 
-    "deaths_NM", 
-    "deaths_JF", 
-    "deaths_JM", 
-    "deaths_AF", 
-    "deaths_AM", 
-    "deaths_O", 
+    "Deaths_NF", 
+    "Deaths_NM", 
+    "Deaths_JF", 
+    "Deaths_JM", 
+    "Deaths_AF", 
+    "Deaths_AM", 
+    "Deaths_O", 
     
-    "culls_AF", 
-    "culls_AM", 
-    "culls_O", 
+    "Culls_AF", 
+    "Culls_AM", 
+    "Culls_O", 
     
     "Cumulative_culls_AM", 
     
-    "offtake_NF", 
-    "offtake_NM", 
-    "offtake_JF", 
-    "offtake_JM", 
-    "offtake_AF", 
-    "offtake_AM", 
-    "offtake_O", 
+    "Offtake_NF", 
+    "Offtake_NM", 
+    "Offtake_JF", 
+    "Offtake_JM", 
+    "Offtake_AF", 
+    "Offtake_AM", 
+    "Offtake_O", 
     
     "Cumulative_draught_income", 
     
@@ -328,6 +328,12 @@ run_model <- function() {
     for (var in production_vars) {
       assign(var, rep(0, length(age_sex_groups)))
     }
+    
+    for (month in 1:Num_months) {
+      
+    }
+    
+    
   }
   
 }
