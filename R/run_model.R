@@ -134,6 +134,40 @@ run_model <- function() {
     
   }
   
+  animal_categories <- append(animal_categories, "N")
+  matrix_names <- c("num", "Monthly_mortality", "Total_Mortality", "Value_of_Total_Mortality",
+                    "Quant_Liveweight_kg", "Cumulative_draught_income", "Quant_Meat_kg", "Num_Offtake",
+                    "Offtake_Liveweight_kg", "Pop_growth", "Monthly_growth_rate", "Monthly_pop_growth",
+                    "Quant_Manure", "Quant_Hides", "Quant_Milk", "Quant_Wool",
+                    "Cumulative_Dry_Matter", "Value_Offtake", "Value_Herd_Increase", "Total_Value_increase",
+                    "Feed_cost", "Labour_cost", "Health_cost", "Capital_cost", "Infrastructure_cost",
+                    "Total_expenditure")
+  
+  # Loop over categories and matrix names to fill the matrices
+  for (cat in animal_categories) {
+    for (mat_name in matrix_names) {
+      var_name <- paste(mat_name, cat, sep = "_M")
+      assign(var_name, matrix(, nrow = nruns, ncol = Num_months))
+    }
+  }
+  
+  # Loop through months and fill the matrices based on your logic
+  for (i in 1:nruns) {
+    for (mat_name in matrix_names) {
+      for (cat in animal_categories) {
+        var_name <- paste(mat_name, cat, sep = "_M")
+        assign(var_name, fill_matrix_based_on_logic(var_name, i, cat, mat_name))
+      }
+    }
+  }
+  
+  # Define a function to fill matrices based on your logic
+  fill_matrix_based_on_logic <- function(var_name, i, cat, mat_name) {
+    # Here you implement your logic to fill the matrix entries
+    # You can use the var_name, i, cat, and mat_name variables to generate the appropriate values
+    # Return the filled matrix
+    return(get(var_name))
+  }
 
 }
 
