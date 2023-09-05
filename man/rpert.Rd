@@ -2,7 +2,7 @@
 % Please edit documentation in R/rpert.R
 \name{rpert}
 \alias{rpert}
-\title{Generate random variates from PERT distribution}
+\title{Generate random variates from PERT distribution.}
 \usage{
 rpert(n, x.min, x.max, x.mode, lambda = 4)
 }
@@ -21,10 +21,5 @@ rpert(n, x.min, x.max, x.mode, lambda = 4)
 A sample of random variates
 }
 \description{
-Returns random variates sampled from a modified PERT distribution given by 
-the following paramterization
-}
-\examples{
-# rpert(10000, 1, 10, 5)
-
+Returns random variates sampled from a modified PERT distribution given by the following parameterization
 }
