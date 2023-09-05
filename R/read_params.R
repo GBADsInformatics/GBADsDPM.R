@@ -1,14 +1,16 @@
+#' @title
+#' Import parameter file. 
+
 #' @description
-#' Import parameter file. Read in parameter file in YAML, JSON, or CSV format.
+#' Read in parameter file in YAML, JSON, or CSV format.
 #' 
 #' @param file_path Relative or absolute path to file
 #' @param file_type File type (One of: YAML (default), JSON, or CSV)
 #' 
 #' @example
-#' #' # read_parameters_from_file(file_path = "path/to/params.yaml", file_type = "yaml")
+#' # read_parameters_from_file(file_path = "path/to/params.yaml", file_type = "yaml")
 #' # read_parameters_from_file(file_path = "path/to/params.json", file_type = "json")
 #' # read_parameters_from_file(file_path = "path/to/params.csv", file_type = "csv")
-
 
 read_params <- function(file_path, file_type = "yaml") {
   if (!file.exists(file_path)) {

@@ -1,7 +1,9 @@
-#' @description
-#' Generate random variates from PERT distribution. Returns random variates sampled 
-#' from a modified PERT distribution given by the following parameterization
+#' @title
+#' Generate random variates from PERT distribution. 
 #' 
+#' @description
+#' Returns random variates sampled from a modified PERT distribution given by the following parameterization
+#'
 #' @param n Number of variates to generate
 #' @param x.min Minimum x value to sample
 #' @param x.max Maximum x value to sample

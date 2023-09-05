@@ -1,9 +1,11 @@
+#' @title
+#' Run the Animal Health Loss Envelope (AHLE) compartmental agent-based simulation model 
+#' 
 #' @description
-#' Run the Animal Health Loss Envelope (ALHE) compartmental agent-based simulation model using 
-#' parameters imported via \code{read_params()}
+#' Runs simulations using parameters imported via \code{read_params()}
 #' 
 #' @example 
-#' \code{run_model()}
+#' # run_model()
 #' 
 
 run_model <- function() {
@@ -82,9 +84,9 @@ run_model <- function() {
   
   # List of variable categories'
   categories <- c(
-    "num", 
+    "Num", 
     
-    "births", 
+    "Births", 
     "Oxen_J", 
     "Oxen_A", 
     
