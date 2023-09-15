@@ -2,10 +2,10 @@
 % Please edit documentation in R/run_model.R
 \name{run_model}
 \alias{run_model}
-\title{Run the Animal Health Loss Envelope (AHLE) compartmental agent-based simulation model}
+\title{Run the AHLE compartmental agent-based simulation model}
 \usage{
 run_model()
 }
 \description{
-Runs simulations using parameters imported via \code{read_params()}
+Runs scenario simulations using parameters imported via \code{read_params()}
 }

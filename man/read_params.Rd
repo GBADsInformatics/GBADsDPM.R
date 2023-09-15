@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_params.R
 \name{read_params}
 \alias{read_params}
-\title{Import parameter file.}
+\title{Import AHLE parameter file}
 \usage{
 read_params(file_path, file_type = "yaml")
 }
@@ -12,5 +12,5 @@ read_params(file_path, file_type = "yaml")
 \item{file_type}{File type (One of: YAML (default), JSON, or CSV)}
 }
 \description{
-Read in parameter file in YAML, JSON, or CSV format.
+Read in AHLE parameter file in YAML, JSON, or CSV format.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/rpert.R
 \name{rpert}
 \alias{rpert}
-\title{Generate random variates from PERT distribution}
+\title{Generate random variates from PERT distribution for AHLE modelling}
 \usage{
 rpert(n, x.min, x.max, x.mode, lambda = 4)
 }
