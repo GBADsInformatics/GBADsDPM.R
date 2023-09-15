@@ -1,5 +1,5 @@
 #' @title
-#' Generate random variates from PERT distribution
+#' Generate random variates from PERT distribution for AHLE modelling
 #' 
 #' @description
 #' Returns random variates sampled from a modified PERT distribution given by the following parameterization

@@ -1,8 +1,8 @@
 #' @title
-#' Import parameter file. 
+#' Import AHLE parameter file 
 
 #' @description
-#' Read in parameter file in YAML, JSON, or CSV format.
+#' Read in AHLE parameter file in YAML, JSON, or CSV format.
 #' 
 #' @param file_path Relative or absolute path to file
 #' @param file_type File type (One of: YAML (default), JSON, or CSV)

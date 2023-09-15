@@ -1,8 +1,8 @@
 #' @title
-#' Run the Animal Health Loss Envelope (AHLE) compartmental agent-based simulation model 
+#' Run the AHLE compartmental agent-based simulation model 
 #' 
 #' @description
-#' Runs simulations using parameters imported via \code{read_params()}
+#' Runs scenario simulations using parameters imported via \code{read_params()}
 #' 
 #' @example 
 #' # run_model()
