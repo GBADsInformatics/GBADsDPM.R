@@ -87,8 +87,6 @@ run_model <- function() {
     "Num", 
     
     "Births", 
-    "Oxen_J", 
-    "Oxen_A", 
     
     "Growth_NF", 
     "Growth_NM", 
@@ -101,11 +99,9 @@ run_model <- function() {
     "Deaths_JM", 
     "Deaths_AF", 
     "Deaths_AM", 
-    "Deaths_O", 
     
     "Culls_AF", 
     "Culls_AM", 
-    "Culls_O", 
     
     "Cumulative_culls_AM", 
     
@@ -115,7 +111,6 @@ run_model <- function() {
     "Offtake_JM", 
     "Offtake_AF", 
     "Offtake_AM", 
-    "Offtake_O", 
     
     "Cumulative_draught_income", 
     
@@ -127,7 +122,6 @@ run_model <- function() {
     "Total_Mortality_JM", 
     "Total_Mortality_AF", 
     "Total_Mortality_AM", 
-    "Total_Mortality_O", 
     
     "Value_of_Total_Mortality", 
     "Value_of_Total_Mortality_NF", 
@@ -136,7 +130,6 @@ run_model <- function() {
     "Value_of_Total_Mortality_JM", 
     "Value_of_Total_Mortality_AF", 
     "Value_of_Total_Mortality_AM", 
-    "Value_of_Total_Mortality_O", 
     
     "Quant_Liveweight_kg", 
     "Quant_Liveweight_kg_NF", 
@@ -145,7 +138,6 @@ run_model <- function() {
     "Quant_Liveweight_kg_JM", 
     "Quant_Liveweight_kg_AF", 
     "Quant_Liveweight_kg_AM", 
-    "Quant_Liveweight_kg_O", 
     "Quant_Meat_kg", 
     
     "Num_Offtake", 
@@ -155,14 +147,12 @@ run_model <- function() {
     "Num_Offtake_JM", 
     "Num_Offtake_AF", 
     "Num_Offtake_AM", 
-    "Num_Offtake_O", 
     
     "Offtake_Liveweight_kg", 
     "Offtake_Liveweight_kg_JF", 
     "Offtake_Liveweight_kg_JM", 
     "Offtake_Liveweight_kg_AF", 
     "Offtake_Liveweight_kg_AM", 
-    "Offtake_Liveweight_kg_O", 
     
     "Pop_growth", 
     "Pop_growth_NF", 
@@ -171,10 +161,9 @@ run_model <- function() {
     "Pop_growth_JM", 
     "Pop_growth_AF", 
     "Pop_growth_AM", 
-    "Pop_growth_O", 
     
     "Monthly_growth_rate", 
-    "monthly_pop_growth", 
+    "Monthly_pop_growth", 
     
     "Quant_Manure", 
     "Quant_Manure_NF", 
@@ -183,16 +172,13 @@ run_model <- function() {
     "Quant_Manure_JM", 
     "Quant_Manure_AF", 
     "Quant_Manure_AM", 
-    "Quant_Manure_O", 
     
     "Quant_Hides", 
     "Quant_Hides_JF", 
     "Quant_Hides_JM", 
     "Quant_Hides_AF", 
     "Quant_Hides_AM", 
-    "Quant_Hides_O", 
-    "Quant_Milk", 
-    "Quant_Wool", 
+    "Quant_Milk",
     
     "Cumulative_Dry_Matter", 
     "Cumulative_Dry_Matter_NF", 
@@ -201,7 +187,6 @@ run_model <- function() {
     "CumUlative_Dry_Matter_JM", 
     "Cumulative_Dry_Matter_AF", 
     "Cumulative_Dry_Matter_AM", 
-    "Cumulative_Dry_Matter_O", 
     
     "Monthly_DM", 
     
@@ -212,7 +197,6 @@ run_model <- function() {
     "Value_Offtake_JM", 
     "Value_Offtake_AF", 
     "Value_Offtake_AM", 
-    "Value_Offtake_O", 
     
     "Value_Herd_Increase", 
     "Value_Herd_Increase_NF", 
@@ -221,7 +205,6 @@ run_model <- function() {
     "Value_Herd_Increase_JM", 
     "Value_Herd_Increase_AF", 
     "Value_Herd_Increase_AM", 
-    "Value_Herd_Increase_O", 
     
     "Total_Value_increase", 
     "Total_Value_increase_NF", 
@@ -230,7 +213,6 @@ run_model <- function() {
     "Total_Value_increase_JM", 
     "Total_Value_increase_AF", 
     "Total_Value_increase_AM", 
-    "Total_Value_increase_O", 
     
     "Feed_cost", 
     "Feed_cost_NF", 
@@ -239,7 +221,6 @@ run_model <- function() {
     "Feed_cost_JM",
     "Feed_cost_AF", 
     "Feed_cost_AM", 
-    "Feed_cost_O", 
     
     "Labour_cost", 
     "Labour_cost_NF", 
@@ -248,7 +229,6 @@ run_model <- function() {
     "Labour_cost_JM", 
     "Labour_cost_AF", 
     "Labour_cost_AM", 
-    "Labour_cost_O", 
     
     "Health_cost", 
     "Health_cost_NF", 
@@ -257,7 +237,6 @@ run_model <- function() {
     "Health_cost_JM", 
     "Health_cost_AF", 
     "Health_cost_AM", 
-    "Health_cost_O", 
     
     "Capital_cost", 
     "Capital_cost_NF", 
@@ -266,7 +245,6 @@ run_model <- function() {
     "Capital_cost_JM", 
     "Capital_cost_AF", 
     "Capital_cost_AM", 
-    "Capital_cost_O", 
     
     "Infrastructure_cost", 
     "Infrastructure_cost_NF", 
@@ -275,7 +253,6 @@ run_model <- function() {
     "Infrastructure_cost_JM", 
     "Infrastructure_cost_AF", 
     "Infrastructure_cost_AM", 
-    "Infrastructure_cost_O", 
     
     "Total_expenditure", 
     "Total_expenditure_NF", 
@@ -283,9 +260,36 @@ run_model <- function() {
     "Total_expenditure_JF", 
     "Total_expenditure_JM", 
     "Total_expenditure_AF", 
-    "Total_expenditure_AM", 
-    "Total_expenditure_O"
+    "Total_expenditure_AM"
   )
+  
+  if (species == "cattle") {
+    append(categories, c("Oxen_J", 
+                         "Oxen_A",
+                         "Deaths_O", 
+                         "Culls_O", 
+                         "Offtake_O",
+                         "Total_Mortality_O",
+                         "Value_of_Total_Mortality_O",
+                         "Quant_Liveweight_kg_O",
+                         "Num_Offtake_O",
+                         "Offtake_Liveweight_kg_O", 
+                         "Pop_growth_O", 
+                         "Quant_Manure_O", 
+                         "Quant_Hides_O",
+                         "Cumulative_Dry_Matter_O",
+                         "Value_Offtake_O", 
+                         "Value_Herd_Increase_O", 
+                         "Total_Value_increase_O", 
+                         "Feed_cost_O",
+                         "Labour_cost_O", 
+                         "Health_cost_O",
+                         "Capital_cost_O",
+                         "Infrastructure_cost_O", 
+                         "Total_expenditure_O"))
+  } else if {species == "small ruminants"} {
+    append(categories, "Quant_Wool")
+  }
   
   # Initialize a list to store the matrices
   res <- list()
@@ -323,9 +327,13 @@ run_model <- function() {
     Num_dead <- rep(0, length(age_sex_groups))
     
     ## Create empty variables to be used for calculating production
-    production_vars <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", "Hides", "Milk", "Meat_kg", "Wool", "Draught_income",
+    production_vars <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", "Hides", "Milk", "Meat_kg", "Draught_income",
                          "Cumulative_DM", "Monthly_Dry_Matter", "Population_growth_rate", "Monthly_growth_rate", "monthly_pop_growth",
                          "Value_offt", "Value_herd_inc", "Feed", "Labour", "Health", "Capital")
+    
+    if(species == "small ruminants") {
+      append(production_vars, "Wool")
+    }
     
     for (var in production_vars) {
       assign(var, rep(0, length(age_sex_groups)))
