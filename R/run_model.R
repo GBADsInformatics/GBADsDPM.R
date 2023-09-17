@@ -363,11 +363,11 @@ run_model <- function() {
     
     for (month in 1:Num_months) {
       
-    }
+    } # end Num_months loop
     
     
-  }
+  } # end nruns loop
   
-}
+} # end function
 
 
