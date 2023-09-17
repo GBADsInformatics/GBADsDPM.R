@@ -289,6 +289,15 @@ run_model <- function() {
                          "Total_expenditure_O"))
   } else if {species == "small ruminants"} {
     append(categories, "Quant_Wool")
+  } else {
+    # poultry
+    append(categories, c("prop_females_laying",
+                         "lay_rate",
+                         "egg_brood_rate",
+                         "egg_sale_rate"
+                         "egg_consumption_rate"
+                         "hatch_rate"
+                         "egg_price"))
   }
   
   # Initialize a list to store the matrices
