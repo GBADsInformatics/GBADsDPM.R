@@ -322,14 +322,27 @@ run_model <- function() {
     
     # Define population variables and set initial values from function arguments
     N <- Nt0
-    age_sex_groups <- c("NF", "NM", "JF", "JM", "AF", "AM", "O")
+    age_sex_groups <- c("NF", "NM", "JF", "JM", "AF", "AM")
+    
+    if (species == "cattle") {
+      append(age_sex_groups, "O")
+    }
+    
     for (group in age_sex_groups) {
       assign(group, get(paste0("N_", group, "_t0")))
     }
     
     # Age sex group prop of pop at t0 - this ratio should probably stay the same
-    prop_groups <- c(pNF_t0 = NF/N, pJF_t0 = JF/N, pAF_t0 = AF/N,
-                     pNM_t0 = NM/N, pJM_t0 = JM/N, pAM_t0 = AM/N, pO_t0 = O/N)
+    prop_groups <- c(pNF_t0 = NF/N, 
+                     pJF_t0 = JF/N, 
+                     pAF_t0 = AF/N,
+                     pNM_t0 = NM/N, 
+                     pJM_t0 = JM/N, 
+                     pAM_t0 = AM/N)
+    
+    if (species == "cattle") {
+      append(prop_groups, pO_t0 = O/N)
+    }
     
     culls <- 0
     
@@ -337,7 +350,7 @@ run_model <- function() {
     
     ## Create empty variables to be used for calculating production
     production_vars <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", "Hides", "Milk", "Meat_kg", "Draught_income",
-                         "Cumulative_DM", "Monthly_Dry_Matter", "Population_growth_rate", "Monthly_growth_rate", "monthly_pop_growth",
+                         "Cumulative_DM", "Monthly_Dry_Matter", "Population_growth_rate", "Monthly_growth_rate", "Monthly_pop_growth",
                          "Value_offt", "Value_herd_inc", "Feed", "Labour", "Health", "Capital")
     
     if(species == "small ruminants") {
