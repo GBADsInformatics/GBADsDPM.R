@@ -313,7 +313,7 @@ run_model <- function() {
     Nt0 <- sum(N_NF_t0, N_NM_t0, N_JF_t0, N_JM_t0, N_AF_t0, N_AM_t0)
     
     if (species == "cattle") {
-      Nt0 <- append(Nt0, N_O_t0)
+      Nt0 <- Nt0 + N_O_t0
     }
     
     # Define population variables and set initial values from function arguments
