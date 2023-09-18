@@ -264,7 +264,7 @@ run_model <- function() {
   )
   
   if (species == "cattle") {
-    append(categories, c("Oxen_J", 
+    categories <- append(categories, c("Oxen_J", 
                          "Oxen_A",
                          "Deaths_O", 
                          "Culls_O", 
@@ -287,16 +287,16 @@ run_model <- function() {
                          "Capital_cost_O",
                          "Infrastructure_cost_O", 
                          "Total_expenditure_O"))
-  } else if {species == "small ruminants"} {
-    append(categories, "Quant_Wool")
+  } else if (species == "small ruminants") {
+    categories <- append(categories, "Quant_Wool")
   } else {
     # poultry
-    append(categories, c("prop_females_laying",
+    categories <- append(categories, c("prop_females_laying",
                          "lay_rate",
                          "egg_brood_rate",
-                         "egg_sale_rate"
-                         "egg_consumption_rate"
-                         "hatch_rate"
+                         "egg_sale_rate",
+                         "egg_consumption_rate",
+                         "hatch_rate",
                          "egg_price"))
   }
   
@@ -308,28 +308,24 @@ run_model <- function() {
     res[[cat]] <- matrix(0, nrow = nruns, ncol = Num_months)
   }
 
-  
-  # -------------------------------------------------------------------
-  # TO-DO
-  # Create matrices to store the model output vectors at each time step
-  # -------------------------------------------------------------------
-  
-  
-  
   for (i in 1:nruns) {
     # Total population is sum of age*sex segments
-    Nt0 <- sum(N_NF_t0, N_NM_t0, N_JF_t0, N_JM_t0, N_AF_t0, N_AM_t0, N_O_t0)
+    Nt0 <- sum(N_NF_t0, N_NM_t0, N_JF_t0, N_JM_t0, N_AF_t0, N_AM_t0)
+    
+    if (species == "cattle") {
+      Nt0 <- append(Nt0, N_O_t0)
+    }
     
     # Define population variables and set initial values from function arguments
     N <- Nt0
     age_sex_groups <- c("NF", "NM", "JF", "JM", "AF", "AM")
     
     if (species == "cattle") {
-      append(age_sex_groups, "O")
+      age_sex_groups <- append(age_sex_groups, "O")
     }
     
     for (group in age_sex_groups) {
-      assign(group, get(paste0("N_", group, "_t0")))
+      age_sex_groups <- assign(group, get(paste0("N_", group, "_t0")))
     }
     
     # Age sex group prop of pop at t0 - this ratio should probably stay the same
@@ -341,7 +337,7 @@ run_model <- function() {
                      pAM_t0 = AM/N)
     
     if (species == "cattle") {
-      append(prop_groups, pO_t0 = O/N)
+      prop_groups <- c(prop_groups, pO_t0 = O/N)
     }
     
     culls <- 0
@@ -353,8 +349,8 @@ run_model <- function() {
                          "Cumulative_DM", "Monthly_Dry_Matter", "Population_growth_rate", "Monthly_growth_rate", "Monthly_pop_growth",
                          "Value_offt", "Value_herd_inc", "Feed", "Labour", "Health", "Capital")
     
-    if(species == "small ruminants") {
-      append(production_vars, "Wool")
+    if (species == "small ruminants") {
+      production_vars <- append(production_vars, "Wool")
     }
     
     for (var in production_vars) {
