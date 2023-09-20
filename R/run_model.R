@@ -79,7 +79,13 @@ run_model <- function() {
   
   # List of variable categories'
   categories <- c(
-    "Num", 
+    "Num",
+    "NumNF",
+    "NumNM",
+    "NumJF",
+    "NumJM",
+    "NumAF",
+    "NumAM",
     
     "Births", 
     
@@ -387,6 +393,16 @@ run_model <- function() {
       res$Culls_AM[month] <- sample(CullM, 1) * AM
       res$Culls_O[month] <- sample(CullO, 1) * O
       
+      res$NumNF[month] = NF + res$Births[month] * 0.5 - res$Deaths_NF[month] - res$Growth_NF[month] - res$Offtake_NF[month]
+      res$NumJF[month] = JF + res$Growth_NF[month] - res$Growth_JF[month] - res$Offtake_JF[month] - res$Deaths_JF[month]
+      res$NumAF[month] = AF + res$Growth_JF[month] - res$Offtake_AF[month] - res$Deaths_AF[month] - res$Culls_AF[month]
+      
+      res$NumNM[month] = NM + res$Births[month] * 0.5 - growth_NM[month] - res$Deaths_NM[month] - res$Offtake_NM[month]
+      res$NumJM[month] = JM + res$Growth_NM[month] - res$Growth_JM[month] - res$Offtake_JM[month] - res$Deaths_JM[month] 
+      res$NumAM[month] = AM + res$Growth_JM[month] - res$Offtake_AM[month] - res$Deaths_AM[month] - res$Culls_AM[month] - res$Oxen_A[month]
+      res$NumO[month] = O + res$Oxen_A[month] - res$Offtake_O[month] - res$Deaths_O[month] - res$Culls_O[month]
+      
+      res$numN[month] = res$NumNF[month] + res$umJF[month] + res$NumAF[month] + res$NumNM[month] + res$NumJM[month] + res$NumAM[month] + res$NumO[month]
       
       
     } # end Num_months loop
