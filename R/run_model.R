@@ -9,11 +9,6 @@
 #' 
 
 run_model <- function() {
-  model_env <- new.env()  # create a new environment
-  
-  add_variable <- function(env, variable_name) {
-    env[[variable_name]] <- 0
-  }
   
   calculate_mu <- function(part, prolif) {
     return ((sample(part, size = 10000, replace = TRUE) * sample(prolif, size = 10000, replace = TRUE)) / 12)
@@ -184,7 +179,7 @@ run_model <- function() {
     "Cumulative_Dry_Matter_NF", 
     "Cumulative_Dry_Matter_NM", 
     "Cumulative_Dry_Matter_JF", 
-    "CumUlative_Dry_Matter_JM", 
+    "Cumulative_Dry_Matter_JM", 
     "Cumulative_Dry_Matter_AF", 
     "Cumulative_Dry_Matter_AM", 
     
@@ -291,13 +286,13 @@ run_model <- function() {
     categories <- append(categories, "Quant_Wool")
   } else {
     # poultry
-    categories <- append(categories, c("prop_females_laying",
-                         "lay_rate",
-                         "egg_brood_rate",
-                         "egg_sale_rate",
-                         "egg_consumption_rate",
-                         "hatch_rate",
-                         "egg_price"))
+    categories <- append(categories, c("Prop_females_laying",
+                         "Lay_rate",
+                         "Egg_brood_rate",
+                         "Egg_sale_rate",
+                         "Egg_consumption_rate",
+                         "Hatch_rate",
+                         "Egg_price"))
   }
   
   # Initialize a list to store the matrices
@@ -325,7 +320,9 @@ run_model <- function() {
     }
     
     for (group in age_sex_groups) {
-      age_sex_groups <- assign(group, get(paste0("N_", group, "_t0")))
+      var_name <- group  # Store the variable name in a separate variable
+      value <- get(paste0("N_", group, "_t0"))  # Get the value from the corresponding object
+      assign(var_name, value)  # Assign the value to the variable with the desired name
     }
     
     # Age sex group prop of pop at t0 - this ratio should probably stay the same
@@ -358,6 +355,39 @@ run_model <- function() {
     }
     
     for (month in 1:Num_months) {
+      # check and fix these - only 12 elements instead of nruns elements filled
+      res$Births[month] <- sample(Mu, 1) * AF 
+      
+      res$Deaths_NF[month] <- sample(AlphaN, 1) * NF
+      res$Deaths_JF[month] <- sample(AlphaJ, 1) * JF 
+      res$deaths_AF[month] <- sample(AlphaF, 1) * AF
+      
+      res$Deaths_NM[month] <- sample(AlphaN, 1) * NM
+      res$Deaths_JM[month] <- sample(AlphaJ, 1) * JM
+      res$Deaths_AM[month] <- sample(AlphaM, 1) * AM
+      res$Deaths_O[month] <- sample(AlphaO, 1) * O
+      
+      res$Offtake_NF[month] <- (sample(GammaNF, 1) * NF) #
+      res$fftake_NM[month] <- (sample(GammaNM, 1) * NM)
+      
+      res$Offtake_JF[month] <- sample(GammaJF, 1) * JF 
+      res$Offtake_AF[month] <- sample(GammaAF, 1) * AF
+      res$Offtake_JM[month] <- sample(GammaJM, 1) * JM 
+      res$Offtake_AM[month] <- sample(GammaAM, 1) * AM
+      res$Offtake_O[month] <- sample(GammaO, 1) * O
+      
+      res$Oxen_A[month] <- sample(castration_rate, 1) * AM
+      
+      res$Growth_NF[month] <- sample(Beta_N, 1) * NF
+      res$Growth_JF[month] <- sample(Beta_J, 1) * JF
+      res$Growth_NM[month] <- sample(Beta_N, 1) * NM
+      res$Growth_JM[month] <- sample(Beta_J, 1) * JM
+      
+      res$Culls_AF[month] <- sample(CullF, 1) * AF
+      res$Culls_AM[month] <- sample(CullM, 1) * AM
+      res$Culls_O[month] <- sample(CullO, 1) * O
+      
+      
       
     } # end Num_months loop
     
