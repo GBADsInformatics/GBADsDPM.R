@@ -79,13 +79,13 @@ run_model <- function() {
   
   # List of variable categories'
   categories <- c(
-    "Num",
     "NumNF",
     "NumNM",
     "NumJF",
     "NumJM",
     "NumAF",
     "NumAM",
+    "NumN",
     
     "Births", 
     
@@ -265,7 +265,8 @@ run_model <- function() {
   )
   
   if (species == "cattle") {
-    categories <- append(categories, c("Oxen_J", 
+    categories <- append(categories, c("NumO",
+                         "Oxen_J", 
                          "Oxen_A",
                          "Deaths_O", 
                          "Culls_O", 
@@ -324,7 +325,7 @@ run_model <- function() {
     if (species == "cattle") {
       age_sex_groups <- append(age_sex_groups, "O")
     }
-    
+
     for (group in age_sex_groups) {
       var_name <- group  # Store the variable name in a separate variable
       value <- get(paste0("N_", group, "_t0"))  # Get the value from the corresponding object
@@ -361,50 +362,67 @@ run_model <- function() {
     }
     
     for (month in 1:Num_months) {
+      
       # check and fix these - only 12 elements instead of nruns elements filled
-      res$Births[month] <- sample(Mu, 1) * AF 
-      
+      res$Births[month] <- sample(Mu, 1) * AF
+
       res$Deaths_NF[month] <- sample(AlphaN, 1) * NF
-      res$Deaths_JF[month] <- sample(AlphaJ, 1) * JF 
-      res$deaths_AF[month] <- sample(AlphaF, 1) * AF
-      
+      res$Deaths_JF[month] <- sample(AlphaJ, 1) * JF
+      res$Deaths_AF[month] <- sample(AlphaF, 1) * AF
+
       res$Deaths_NM[month] <- sample(AlphaN, 1) * NM
       res$Deaths_JM[month] <- sample(AlphaJ, 1) * JM
       res$Deaths_AM[month] <- sample(AlphaM, 1) * AM
-      res$Deaths_O[month] <- sample(AlphaO, 1) * O
-      
-      res$Offtake_NF[month] <- (sample(GammaNF, 1) * NF) #
-      res$fftake_NM[month] <- (sample(GammaNM, 1) * NM)
-      
-      res$Offtake_JF[month] <- sample(GammaJF, 1) * JF 
+
+      res$Offtake_NF[month] <- (sample(GammaNF, 1) * NF)
+      res$Offtake_NM[month] <- (sample(GammaNM, 1) * NM)
+
+      res$Offtake_JF[month] <- sample(GammaJF, 1) * JF
       res$Offtake_AF[month] <- sample(GammaAF, 1) * AF
-      res$Offtake_JM[month] <- sample(GammaJM, 1) * JM 
+      res$Offtake_JM[month] <- sample(GammaJM, 1) * JM
       res$Offtake_AM[month] <- sample(GammaAM, 1) * AM
-      res$Offtake_O[month] <- sample(GammaO, 1) * O
-      
-      res$Oxen_A[month] <- sample(castration_rate, 1) * AM
-      
+
       res$Growth_NF[month] <- sample(Beta_N, 1) * NF
       res$Growth_JF[month] <- sample(Beta_J, 1) * JF
       res$Growth_NM[month] <- sample(Beta_N, 1) * NM
       res$Growth_JM[month] <- sample(Beta_J, 1) * JM
-      
+
       res$Culls_AF[month] <- sample(CullF, 1) * AF
       res$Culls_AM[month] <- sample(CullM, 1) * AM
-      res$Culls_O[month] <- sample(CullO, 1) * O
       
-      res$NumNF[month] = NF + res$Births[month] * 0.5 - res$Deaths_NF[month] - res$Growth_NF[month] - res$Offtake_NF[month]
-      res$NumJF[month] = JF + res$Growth_NF[month] - res$Growth_JF[month] - res$Offtake_JF[month] - res$Deaths_JF[month]
-      res$NumAF[month] = AF + res$Growth_JF[month] - res$Offtake_AF[month] - res$Deaths_AF[month] - res$Culls_AF[month]
+      res$NumNF[month] <- NF + res$Births[month] * 0.5 - res$Deaths_NF[month] - res$Growth_NF[month] - res$Offtake_NF[month]
+      res$NumJF[month] <- JF + res$Growth_NF[month] - res$Growth_JF[month] - res$Offtake_JF[month] - res$Deaths_JF[month]
+      res$NumAF[month] <- AF + res$Growth_JF[month] - res$Offtake_AF[month] - res$Deaths_AF[month] - res$Culls_AF[month]
+
+      res$NumNM[month] <- NM + res$Births[month] * 0.5 - res$Growth_NM[month] - res$Deaths_NM[month] - res$Offtake_NM[month]
+      res$NumJM[month] <- JM + res$Growth_NM[month] - res$Growth_JM[month] - res$Offtake_JM[month] - res$Deaths_JM[month]
+      res$NumAM[month] <- AM + res$Growth_JM[month] - res$Offtake_AM[month] - res$Deaths_AM[month] - res$Culls_AM[month]
       
-      res$NumNM[month] = NM + res$Births[month] * 0.5 - growth_NM[month] - res$Deaths_NM[month] - res$Offtake_NM[month]
-      res$NumJM[month] = JM + res$Growth_NM[month] - res$Growth_JM[month] - res$Offtake_JM[month] - res$Deaths_JM[month] 
-      res$NumAM[month] = AM + res$Growth_JM[month] - res$Offtake_AM[month] - res$Deaths_AM[month] - res$Culls_AM[month] - res$Oxen_A[month]
-      res$NumO[month] = O + res$Oxen_A[month] - res$Offtake_O[month] - res$Deaths_O[month] - res$Culls_O[month]
+      res$NumN[month] = res$NumNF[month] + res$NumJF[month] + res$NumAF[month] + res$NumNM[month] + res$NumJM[month] + res$NumAM[month]
       
-      res$numN[month] = res$NumNF[month] + res$umJF[month] + res$NumAF[month] + res$NumNM[month] + res$NumJM[month] + res$NumAM[month] + res$NumO[month]
+      if (species == "cattle") {
+        res$Deaths_O[month] <- sample(AlphaO, 1) * O
+        res$Offtake_O[month] <- sample(GammaO, 1) * O
+        res$Culls_O[month] <- sample(CullO, 1) * O
+        res$Oxen_A[month] <- sample(castration_rate, 1) * AM
+        res$NumO[month] <- O + res$Oxen_A[month] - res$Offtake_O[month] - res$Deaths_O[month] - res$Culls_O[month]
+        res$NumAM[month] <- res$NumAM[month] - res$Oxen_A[month]
+        # this line causes a replacement zero error
+        res$numN[month] <- res$numN[month] + res$NumO[month]
+      }
+
+      NF <- res$NumNF[month]
+      JF <- res$NumJF[month]
+      AF <- res$NumAF[month]
+      NM <- res$NumNM[month]
+      JM <- res$NumJM[month]
+      AM <- res$NumAM[month]
+      N <- res$NumN[month]
       
-      
+      if (species == "cattle") {
+        O <- res$NumO[month]
+      }
+
     } # end Num_months loop
     
     
