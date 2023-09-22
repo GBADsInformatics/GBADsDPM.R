@@ -411,7 +411,6 @@ run_model <- function() {
         res$Oxen_A[month] <- sample(castration_rate, 1) * AM
         res$NumO[month] <- O + res$Oxen_A[month] - res$Offtake_O[month] - res$Deaths_O[month] - res$Culls_O[month]
         res$NumAM[month] <- res$NumAM[month] - res$Oxen_A[month]
-        # this line causes a replacement zero error
         res$numN[month] <- res$numN[month] + res$NumO[month]
       }
 
@@ -439,14 +438,33 @@ run_model <- function() {
       Num_dead_AF <- res$Total_Mortality_AF[month]
       res$Total_Mortality_AM[month] <- Num_dead_AM + res$Deaths_AM[month]
       Num_dead_AM <- res$Total_Mortality_AM[month]
-      res$Total_Mortality_O[month] <- Num_dead_O + res$Deaths_O[month]
-      Num_dead_O <- res$Total_Mortality_O[month]
       
       res$Total_Mortality[month] <- res$Total_Mortality_NF[month] + res$Total_Mortality_NM[month] + 
         res$Total_Mortality_JF[month] + res$Total_Mortality_JM[month] + 
-        res$Total_Mortality_AF[month] + res$Total_Mortality_AM[month] +
-        res$Total_Mortality_O[month]
+        res$Total_Mortality_AF[month] + res$Total_Mortality_AM[month] 
       
+      if (species == "cattle") {
+        res$Total_Mortality_O[month] <- Num_dead_O + res$Deaths_O[month]
+        Num_dead_O <- res$Total_Mortality_O[month]
+        res$Total_Mortality[month] <- res$Total_Mortality[month] + res$Total_Mortality_O[month]
+      }
+      
+      res$Value_of_Total_Mortality_NF[month] <- res$Total_Mortality_NF[month] * fvNF
+      res$Value_of_Total_Mortality_NM[month] <- res$Total_Mortality_NM[month] * fvNM
+      res$Value_of_Total_Mortality_JF[month] <- res$Total_Mortality_JF[month] * fvJF
+      res$Value_of_Total_Mortality_JM[month] <- res$Total_Mortality_JM[month] * fvJM
+      res$Value_of_Total_Mortality_AF[month] <- res$Total_Mortality_AF[month] * fvAF
+      res$Value_of_Total_Mortality_AM[month] <- res$Total_Mortality_AM[month] * fvAM
+      
+      res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality_NF[month] + res$Value_of_Total_Mortality_NM[month] + 
+        res$Value_of_Total_Mortality_JF[month] + res$Value_of_Total_Mortality_JM[month] + 
+        res$Value_of_Total_Mortality_AF[month] + res$Value_of_Total_Mortality_AM[month] 
+       
+      
+      if (species == "cattle") {
+        res$Value_of_Total_Mortality_O[month] <- res$Total_Mortality_O[month] * fvO
+        res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality[month] + res$Value_of_Total_Mortality_O[month]
+      }
 
     } # end Num_months loop
     
