@@ -346,7 +346,11 @@ run_model <- function() {
     
     culls <- 0
     
-    Num_dead <- rep(0, length(age_sex_groups))
+    Num_dead <- 0
+    
+    for (group in age_sex_groups) {
+      assign(paste("Num_dead", group, sep = "_"), 0)
+    }
     
     ## Create empty variables to be used for calculating production
     production_vars <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", "Hides", "Milk", "Meat_kg", "Draught_income",
@@ -422,6 +426,27 @@ run_model <- function() {
       if (species == "cattle") {
         O <- res$NumO[month]
       }
+      
+      res$Total_Mortality_NF[month] <- Num_dead_NF + res$Deaths_NF[month]
+      Num_dead_NF <- res$Total_Mortality_NF[month]
+      res$Total_Mortality_NM[month] <- Num_dead_NM + res$Deaths_NM[month]
+      Num_dead_NM <- res$Total_Mortality_NM[month]
+      res$Total_Mortality_JF[month] <- Num_dead_JF + res$Deaths_JF[month]
+      Num_dead_JF <- res$Total_Mortality_JF[month]
+      res$Total_Mortality_JM[month] <- Num_dead_JM + res$Deaths_JM[month]
+      Num_dead_JM <- res$Total_Mortality_JM[month]
+      res$Total_Mortality_AF[month] <- Num_dead_AF + res$Deaths_AF[month]
+      Num_dead_AF <- res$Total_Mortality_AF[month]
+      res$Total_Mortality_AM[month] <- Num_dead_AM + res$Deaths_AM[month]
+      Num_dead_AM <- res$Total_Mortality_AM[month]
+      res$Total_Mortality_O[month] <- Num_dead_O + res$Deaths_O[month]
+      Num_dead_O <- res$Total_Mortality_O[month]
+      
+      res$Total_Mortality[month] <- res$Total_Mortality_NF[month] + res$Total_Mortality_NM[month] + 
+        res$Total_Mortality_JF[month] + res$Total_Mortality_JM[month] + 
+        res$Total_Mortality_AF[month] + res$Total_Mortality_AM[month] +
+        res$Total_Mortality_O[month]
+      
 
     } # end Num_months loop
     
