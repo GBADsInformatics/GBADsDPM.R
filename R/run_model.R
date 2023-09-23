@@ -265,7 +265,7 @@ run_model <- function() {
   )
   
   if (species == "cattle") {
-    categories <- append(categories, c("NumO",
+    vector_categories <- append(categories, c("NumO",
                          "Oxen_J", 
                          "Oxen_A",
                          "Deaths_O", 
@@ -290,10 +290,10 @@ run_model <- function() {
                          "Infrastructure_cost_O", 
                          "Total_expenditure_O"))
   } else if (species == "small ruminants") {
-    categories <- append(categories, "Quant_Wool")
+    vector_categories <- append(vector_categories, "Quant_Wool")
   } else {
     # poultry
-    categories <- append(categories, c("Prop_females_laying",
+    vector_categories <- append(ector_categories, c("Prop_females_laying",
                          "Lay_rate",
                          "Egg_brood_rate",
                          "Egg_sale_rate",
@@ -306,9 +306,221 @@ run_model <- function() {
   res <- list()
   
   # Loop through categories and create matrices
-  for (cat in categories) {
-    res[[cat]] <- matrix(0, nrow = nruns, ncol = Num_months)
+  for (vec in vector_categories) {
+    res[[vec]] <- rep(0, Num_months)
   }
+  
+  matrix_categories <- c("NumNF",
+                         "NumNM",
+                         "NumJF",
+                         "NumJM",
+                         "NumAF",
+                         "NumAM",
+                         "NumN",
+                         
+                         "Monthly_mortality", 
+                         "Total_Mortality",
+                         "Total_Mortality_NF", 
+                         "Total_Mortality_NM", 
+                         "Total_Mortality_JF", 
+                         "Total_Mortality_JM", 
+                         "Total_Mortality_AF", 
+                         "Total_Mortality_AM", 
+                         
+                         "Value_of_Total_Mortality", 
+                         "Value_of_Total_Mortality_NF", 
+                         "Value_of_Total_Mortality_NM", 
+                         "Value_of_Total_Mortality_JF", 
+                         "Value_of_Total_Mortality_JM", 
+                         "Value_of_Total_Mortality_AF", 
+                         "Value_of_Total_Mortality_AM", 
+                         
+                         "Quant_Liveweight_kg", 
+                         "Quant_Liveweight_kg_NF", 
+                         "Quant_Liveweight_kg_NM", 
+                         "Quant_Liveweight_kg_JF", 
+                         "Quant_Liveweight_kg_JM", 
+                         "Quant_Liveweight_kg_AF", 
+                         "Quant_Liveweight_kg_AM", 
+                         
+                         "Cumulative_draught_income",
+                         
+                         "Quant_Meat_kg", 
+                         
+                         "Num_Offtake", 
+                         "Num_Offtake_NF", 
+                         "Num_Offtake_NM", 
+                         "Num_Offtake_JF", 
+                         "Num_Offtake_JM", 
+                         "Num_Offtake_AF", 
+                         "Num_Offtake_AM", 
+                         
+                         "Offtake_Liveweight_kg", 
+                         "Offtake_Liveweight_kg_JF", 
+                         "Offtake_Liveweight_kg_JM", 
+                         "Offtake_Liveweight_kg_AF", 
+                         "Offtake_Liveweight_kg_AM", 
+    
+                         "Pop_growth", 
+                         "Pop_growth_NF", 
+                         "Pop_growth_NM", 
+                         "Pop_growth_JF", 
+                         "Pop_growth_JM", 
+                         "Pop_growth_AF", 
+                         "Pop_growth_AM", 
+                         
+                         "Monthly_growth_rate", 
+                         "Monthly_pop_growth", 
+                         
+                         "Quant_Manure", 
+                         "Quant_Manure_NF", 
+                         "Quant_Manure_NM", 
+                         "Quant_Manure_JF", 
+                         "Quant_Manure_JM", 
+                         "Quant_Manure_AF", 
+                         "Quant_Manure_AM", 
+                         
+                         "Value_manure",
+                         "Value_manure_NF",
+                         "Value_manure_NM",
+                         "Value_Manure_JF", 
+                         "Value_Manure_JM", 
+                         "Value_Manure_AF", 
+                         "Value_Manure_AM", 
+                         
+                         "Quant_Hides", 
+                         "Quant_Hides_JF", 
+                         "Quant_Hides_JM", 
+                         "Quant_Hides_AF", 
+                         "Quant_Hides_AM", 
+                         
+                         "Value_Hides", 
+                         "Value_Hides_JF", 
+                         "Value_Hides_JM", 
+                         "Value_Hides_AF", 
+                         "Value_Hides_AM", 
+                         
+                         "Quant_Milk",
+                         "Value_Milk",
+                         
+                         "Cumulative_Dry_Matter", 
+                         "Cumulative_Dry_Matter_NF", 
+                         "Cumulative_Dry_Matter_NM", 
+                         "Cumulative_Dry_Matter_JF", 
+                         "Cumulative_Dry_Matter_JM", 
+                         "Cumulative_Dry_Matter_AF", 
+                         "Cumulative_Dry_Matter_AM", 
+                         
+                         "Monthly_DM",
+                         
+                         "Value_Offtake", 
+                         "Value_Offtake_NF", 
+                         "Value_Offtake_NM", 
+                         "Value_Offtake_JF", 
+                         "Value_Offtake_JM", 
+                         "Value_Offtake_AF", 
+                         "Value_Offtake_AM", 
+                         
+                         "Value_Herd_Increase", 
+                         "Value_Herd_Increase_NF", 
+                         "Value_Herd_Increase_NM", 
+                         "Value_Herd_Increase_JF", 
+                         "Value_Herd_Increase_JM", 
+                         "Value_Herd_Increase_AF", 
+                         "Value_Herd_Increase_AM", 
+                         
+                         "Total_Value_increase", 
+                         "Total_Value_increase_NF", 
+                         "Total_Value_increase_NM", 
+                         "Total_Value_increase_JF", 
+                         "Total_Value_increase_JM", 
+                         "Total_Value_increase_AF", 
+                         "Total_Value_increase_AM", 
+                         
+                         "Production_value_herd_offtake_hide_manure",
+                         "Production_value_herd_offtake_hide_manure_NF",
+                         "Production_value_herd_offtake_hide_manure_NM",
+                         "Production_value_herd_offtake_hide_manure_JF",
+                         "Production_value_herd_offtake_hide_manure_JM",
+                         "Production_value_herd_offtake_hide_manure_AF",
+                         "Production_value_herd_offtake_hide_manure_AM",
+                         
+                         "Feed_cost", 
+                         "Feed_cost_NF", 
+                         "Feed_cost_NM", 
+                         "Feed_cost_JF", 
+                         "Feed_cost_JM",
+                         "Feed_cost_AF", 
+                         "Feed_cost_AM", 
+                         
+                         "Labour_cost", 
+                         "Labour_cost_NF", 
+                         "Labour_cost_NM", 
+                         "Labour_cost_JF", 
+                         "Labour_cost_JM", 
+                         "Labour_cost_AF", 
+                         "Labour_cost_AM", 
+                         
+                         "Health_cost", 
+                         "Health_cost_NF", 
+                         "Health_cost_NM", 
+                         "Health_cost_JF", 
+                         "Health_cost_JM", 
+                         "Health_cost_AF", 
+                         "Health_cost_AM", 
+                         
+                         "Capital_cost", 
+                         "Capital_cost_NF", 
+                         "Capital_cost_NM", 
+                         "Capital_cost_JF", 
+                         "Capital_cost_JM", 
+                         "Capital_cost_AF", 
+                         "Capital_cost_AM", 
+                         
+                         "Infrastructure_cost", 
+                         "Infrastructure_cost_NF", 
+                         "Infrastructure_cost_NM", 
+                         "Infrastructure_cost_JF", 
+                         "Infrastructure_cost_JM", 
+                         "Infrastructure_cost_AF", 
+                         "Infrastructure_cost_AM", 
+                         
+                         "Total_expenditure", 
+                         "Total_expenditure_NF", 
+                         "Total_expenditure_NM", 
+                         "Total_expenditure_JF", 
+                         "Total_expenditure_JM", 
+                         "Total_expenditure_AF", 
+                         "Total_expenditure_AM"
+                         
+  )
+  
+  if (species == "cattle") {
+    matrix_categories <- append(matrix_categories, c("NumO",
+                                                     "Total_Mortality_O", 
+                                                     "Value_of_Total_Mortality_O",
+                                                     "Quant_Liveweight_kg_O",
+                                                     "Num_Offtake_O", 
+                                                     "Offtake_Liveweight_kg_O", 
+                                                     "Pop_growth_O", 
+                                                     "Quant_Manure_O",
+                                                     "Value_Manure_O",
+                                                     "Quant_Hides_O",
+                                                     "Value_Hides_O", 
+                                                     "Cumulative_Dry_Matter_O", 
+                                                     "Value_Offtake_O", 
+                                                     "Value_Herd_Increase_O",
+                                                     "Total_Value_increase_O",
+                                                     "Production_value_herd_offtake_hide_manure_O",
+                                                     "Feed_cost_O", 
+                                                     "Labour_cost_O", 
+                                                     "Health_cost_O", 
+                                                     "Capital_cost_O", 
+                                                     "Infrastructure_cost_O", 
+                                                     "Total_expenditure_O"))
+  }
+  
+  
 
   for (i in 1:nruns) {
     # Total population is sum of age*sex segments
@@ -449,22 +661,104 @@ run_model <- function() {
         res$Total_Mortality[month] <- res$Total_Mortality[month] + res$Total_Mortality_O[month]
       }
       
-      res$Value_of_Total_Mortality_NF[month] <- res$Total_Mortality_NF[month] * fvNF
-      res$Value_of_Total_Mortality_NM[month] <- res$Total_Mortality_NM[month] * fvNM
-      res$Value_of_Total_Mortality_JF[month] <- res$Total_Mortality_JF[month] * fvJF
-      res$Value_of_Total_Mortality_JM[month] <- res$Total_Mortality_JM[month] * fvJM
-      res$Value_of_Total_Mortality_AF[month] <- res$Total_Mortality_AF[month] * fvAF
-      res$Value_of_Total_Mortality_AM[month] <- res$Total_Mortality_AM[month] * fvAM
+      ### Fix This
       
-      res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality_NF[month] + res$Value_of_Total_Mortality_NM[month] + 
-        res$Value_of_Total_Mortality_JF[month] + res$Value_of_Total_Mortality_JM[month] + 
-        res$Value_of_Total_Mortality_AF[month] + res$Value_of_Total_Mortality_AM[month] 
-       
+      # res$Value_of_Total_Mortality_NF[month] <- res$Total_Mortality_NF[month] * fvNF
+      # res$Value_of_Total_Mortality_NM[month] <- res$Total_Mortality_NM[month] * fvNM
+      # res$Value_of_Total_Mortality_JF[month] <- res$Total_Mortality_JF[month] * fvJF
+      # res$Value_of_Total_Mortality_JM[month] <- res$Total_Mortality_JM[month] * fvJM
+      # res$Value_of_Total_Mortality_AF[month] <- res$Total_Mortality_AF[month] * fvAF
+      # res$Value_of_Total_Mortality_AM[month] <- res$Total_Mortality_AM[month] * fvAM
+      # 
+      # res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality_NF[month] + res$Value_of_Total_Mortality_NM[month] + 
+      #   res$Value_of_Total_Mortality_JF[month] + res$Value_of_Total_Mortality_JM[month] + 
+      #   res$Value_of_Total_Mortality_AF[month] + res$Value_of_Total_Mortality_AM[month] 
+      #  
+      # 
+      # if (species == "cattle") {
+      #   res$Value_of_Total_Mortality_O[month] <- res$Total_Mortality_O[month] * fvO
+      #   res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality[month] + res$Value_of_Total_Mortality_O[month]
+      # }
+      
+      res$Pop_growth[month] <-  res$NumN[month] - Nt0
+      res$Pop_growth_NF[month] <-  NF - N_NF_t0
+      res$Pop_growth_NM[month] <-  NM - N_NM_t0
+      res$Pop_growth_JF[month] <-  JF - N_JF_t0
+      res$Pop_growth_JM[month] <-  JM - N_JM_t0
+      res$Pop_growth_AF[month] <-  AF - N_AF_t0
+      res$Pop_growth_AM[month] <-  AM - N_AM_t0
       
       if (species == "cattle") {
-        res$Value_of_Total_Mortality_O[month] <- res$Total_Mortality_O[month] * fvO
-        res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality[month] + res$Value_of_Total_Mortality_O[month]
+        res$Pop_growth_O[month] <- O - N_O_t0
       }
+      
+      res$Quant_Liveweight_kg_NF[month] <- NF * sample(lwNF, 1)
+      res$Quant_Liveweight_kg_NM[month] <- NM * sample(lwNM, 1)
+      res$Quant_Liveweight_kg_JF[month] <- JF * sample(lwJF, 1)
+      res$Quant_Liveweight_kg_JM[month] <- JM * sample(lwJM, 1)
+      res$Quant_Liveweight_kg_AF[month] <- AF * sample(lwAF, 1)
+      res$Quant_Liveweight_kg_AM[month] <- AM * sample(lwAM, 1)
+      res$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
+      
+      res$Quant_Liveweight_kg[month] <- sum(res$Quant_Liveweight_kg_NF[month],
+                                            res$Quant_Liveweight_kg_NM[month],
+                                            res$Quant_Liveweight_kg_JF[month],
+                                            res$Quant_Liveweight_kg_JM[month],
+                                            res$Quant_Liveweight_kg_AF[month],
+                                            res$Quant_Liveweight_kg_AM[month])
+      
+      if (species == "cattle") {
+        res$Quant_Liveweight_kg[month] <- res$Quant_Liveweight_kg[month] + res$Quant_Liveweight_kg_O[month]
+      }
+      
+      res$Num_Offtake_NF[month] <- Offtake_NF + res$Offtake_NF[month]
+      res$Num_Offtake_NM[month] <- Offtake_NM + res$Offtake_NM[month]
+      res$Num_Offtake_JF[month] <- Offtake_JF + res$Offtake_JF[month]
+      res$Num_Offtake_JM[month] <- Offtake_JM + res$Offtake_JM[month]
+      res$Num_Offtake_AF[month] <- Offtake_AF + res$Offtake_AF[month]
+      res$Num_Offtake_AM[month] <- Offtake_AM + res$Offtake_AM[month] + res$Culls_AM[month]
+      res$Num_Offtake_O[month] <- Offtake_O + res$Offtake_O[month] + res$ulls_O[month]
+      
+      Offtake_NF <- Num_Offtake_NF[month]
+      Offtake_NM <- Num_Offtake_NM[month]
+      Offtake_JF <- Num_Offtake_JF[month]
+      Offtake_JM <- Num_Offtake_JM[month]
+      Offtake_AF <- Num_Offtake_AF[month]
+      Offtake_AM <- Num_Offtake_AM[month]
+      Offtake_O <- Num_Offtake_O[month]
+      
+      res$Num_Offtake[month] <- sum(Num_Offtake_NF[month],
+                                    Num_Offtake_NM[month],
+                                    Num_Offtake_JF[month],
+                                    Num_Offtake_JM[month],
+                                    Num_Offtake_AF[month],
+                                    Num_Offtake_AM[month])
+      
+      if (species == "cattle") {
+          res$Num_Offtake[month] <- res$Num_Offtake[month] + Num_Offtake_O[month]
+      }
+      
+      Offtake <- res$Num_Offtake[month]
+
+      res$Offtake_Liveweight_kg_JF[month] <- sample(lwJF, 1) * Offtake_JF
+      res$Offtake_Liveweight_kg_JM[month] <- sample(lwJM, 1) * Offtake_JM
+      res$Offtake_Liveweight_kg_AF[month] <- sample(lwAF, 1) * Offtake_AF
+      res$Offtake_Liveweight_kg_AM[month] <- sample(lwAM, 1) * Offtake_AM
+      
+      if (species == "cattle") {
+        res$Offtake_Liveweight_kg_O[month] <- sample(lwO, 1) * Offtake_O
+      }
+      
+      res$Offtake_Liveweight_kg[month] <- sum(res$Offtake_Liveweight_kg_JF[month],
+                                              res$Offtake_Liveweight_kg_JM[month],
+                                              res$Offtake_Liveweight_kg_AF[month],
+                                              res$Offtake_Liveweight_kg_AM[month])
+      
+      if (species == "cattle") {
+        res$Offtake_Liveweight_kg[month] <-  res$Offtake_Liveweight_kg[month] + res$Offtake_Liveweight_kg_O[month]
+      }
+      
+      
 
     } # end Num_months loop
     
