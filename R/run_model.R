@@ -295,17 +295,17 @@ run_model <- function() {
     # poultry
     vector_categories <- append(vector_categories, c("Quant_Eggs_sold",
                          "Quant_Eggs_consumed",
-                         "Value_Eggs_sold"
+                         "Value_Eggs_sold",
                          "Value_Eggs_consumed",
                          ))
   }
   
-  # Initialize a list to store the matrices
-  res <- list()
+  # Initialize a list to store the vectors
+  res_vec <- list()
   
   # Loop through categories and create matrices
   for (vec in vector_categories) {
-    res[[vec]] <- rep(0, Num_months)
+    res_vec[[vec]] <- rep(0, Num_months)
   }
   
   matrix_categories <- c("NumNF",
@@ -523,10 +523,15 @@ run_model <- function() {
     matrix_categories <- append(matrix_categories, c("Quant_Eggs_consumed",
                                                      "Quant_Eggs_sold",
                                                      "Value_Eggs_consumed",
-                                                     "Value_Eggs_sold")
+                                                     "Value_Eggs_sold"))
   }
+
+  # Initialize a list to store the matrices
+  res_mat <- list()
   
-  
+  for (mat in matrix_categories) {
+    res_mat[[mat]] <- matrix(0, nrow = nruns, ncol = Num_months)
+  }
 
   for (i in 1:nruns) {
     # Total population is sum of age*sex segments
@@ -570,160 +575,161 @@ run_model <- function() {
       assign(paste("Num_dead", group, sep = "_"), 0)
     }
     
-    ## Create empty variables to be used for calculating production
-    production_vars <- c("Liveweight_kg", "Offtake", "Offtake_Liveweight", "Manure_kg", "Hides", "Milk", "Meat_kg", "Draught_income",
-                         "Cumulative_DM", "Monthly_Dry_Matter", "Population_growth_rate", "Monthly_growth_rate", "Monthly_pop_growth",
-                         "Value_offt", "Value_herd_inc", "Feed", "Labour", "Health", "Capital")
-    
-    if (species == "small ruminants") {
-      production_vars <- append(production_vars, "Wool")
-    }
-    
-    for (var in production_vars) {
-      assign(var, rep(0, length(age_sex_groups)))
-    }
-    
     for (month in 1:Num_months) {
       
       # check and fix these - only 12 elements instead of nruns elements filled
-      res$Births[month] <- sample(Mu, 1) * AF
+      res_vec$Births[month] <- sample(Mu, 1) * AF
 
-      res$Deaths_NF[month] <- sample(AlphaN, 1) * NF
-      res$Deaths_JF[month] <- sample(AlphaJ, 1) * JF
-      res$Deaths_AF[month] <- sample(AlphaF, 1) * AF
+      res_vec$Deaths_NF[month] <- sample(AlphaN, 1) * NF
+      res_vec$Deaths_JF[month] <- sample(AlphaJ, 1) * JF
+      res_vec$Deaths_AF[month] <- sample(AlphaF, 1) * AF
 
-      res$Deaths_NM[month] <- sample(AlphaN, 1) * NM
-      res$Deaths_JM[month] <- sample(AlphaJ, 1) * JM
-      res$Deaths_AM[month] <- sample(AlphaM, 1) * AM
+      res_vec$Deaths_NM[month] <- sample(AlphaN, 1) * NM
+      res_vec$Deaths_JM[month] <- sample(AlphaJ, 1) * JM
+      res_vec$Deaths_AM[month] <- sample(AlphaM, 1) * AM
 
-      res$Offtake_NF[month] <- (sample(GammaNF, 1) * NF)
-      res$Offtake_NM[month] <- (sample(GammaNM, 1) * NM)
+      res_vec$Offtake_NF[month] <- sample(GammaNF, 1) * NF
+      res_vec$Offtake_NM[month] <- sample(GammaNM, 1) * NM
 
-      res$Offtake_JF[month] <- sample(GammaJF, 1) * JF
-      res$Offtake_AF[month] <- sample(GammaAF, 1) * AF
-      res$Offtake_JM[month] <- sample(GammaJM, 1) * JM
-      res$Offtake_AM[month] <- sample(GammaAM, 1) * AM
+      res_vec$Offtake_JF[month] <- sample(GammaJF, 1) * JF
+      res_vec$Offtake_AF[month] <- sample(GammaAF, 1) * AF
+      res_vec$Offtake_JM[month] <- sample(GammaJM, 1) * JM
+      res_vec$Offtake_AM[month] <- sample(GammaAM, 1) * AM
 
-      res$Growth_NF[month] <- sample(Beta_N, 1) * NF
-      res$Growth_JF[month] <- sample(Beta_J, 1) * JF
-      res$Growth_NM[month] <- sample(Beta_N, 1) * NM
-      res$Growth_JM[month] <- sample(Beta_J, 1) * JM
+      res_vec$Growth_NF[month] <- sample(Beta_N, 1) * NF
+      res_vec$Growth_JF[month] <- sample(Beta_J, 1) * JF
+      res_vec$Growth_NM[month] <- sample(Beta_N, 1) * NM
+      res_vec$Growth_JM[month] <- sample(Beta_J, 1) * JM
 
-      res$Culls_AF[month] <- sample(CullF, 1) * AF
-      res$Culls_AM[month] <- sample(CullM, 1) * AM
+      res_vec$Culls_AF[month] <- sample(CullF, 1) * AF
+      res_vec$Culls_AM[month] <- sample(CullM, 1) * AM
       
-      res$NumNF[month] <- NF + res$Births[month] * 0.5 - res$Deaths_NF[month] - res$Growth_NF[month] - res$Offtake_NF[month]
-      res$NumJF[month] <- JF + res$Growth_NF[month] - res$Growth_JF[month] - res$Offtake_JF[month] - res$Deaths_JF[month]
-      res$NumAF[month] <- AF + res$Growth_JF[month] - res$Offtake_AF[month] - res$Deaths_AF[month] - res$Culls_AF[month]
+      res_vec$NumNF[month] <- NF + res_vec$Births[month] * 0.5 - res_vec$Deaths_NF[month] - res_vec$Growth_NF[month] - res_vec$Offtake_NF[month]
+      res_vec$NumJF[month] <- JF + res_vec$Growth_NF[month] - res_vec$Growth_JF[month] - res_vec$Offtake_JF[month] - res_vec$Deaths_JF[month]
+      res_vec$NumAF[month] <- AF + res_vec$Growth_JF[month] - res_vec$Offtake_AF[month] - res_vec$Deaths_AF[month] - res_vec$Culls_AF[month]
 
-      res$NumNM[month] <- NM + res$Births[month] * 0.5 - res$Growth_NM[month] - res$Deaths_NM[month] - res$Offtake_NM[month]
-      res$NumJM[month] <- JM + res$Growth_NM[month] - res$Growth_JM[month] - res$Offtake_JM[month] - res$Deaths_JM[month]
-      res$NumAM[month] <- AM + res$Growth_JM[month] - res$Offtake_AM[month] - res$Deaths_AM[month] - res$Culls_AM[month]
+      res_vec$NumNM[month] <- NM + res_vec$Births[month] * 0.5 - res_vec$Growth_NM[month] - res_vec$Deaths_NM[month] - res_vec$Offtake_NM[month]
+      res_vec$NumJM[month] <- JM + res_vec$Growth_NM[month] - res_vec$Growth_JM[month] - res_vec$Offtake_JM[month] - res_vec$Deaths_JM[month]
+      res_vec$NumAM[month] <- AM + res_vec$Growth_JM[month] - res_vec$Offtake_AM[month] - res_vec$Deaths_AM[month] - res_vec$Culls_AM[month]
       
-      res$NumN[month] = res$NumNF[month] + res$NumJF[month] + res$NumAF[month] + res$NumNM[month] + res$NumJM[month] + res$NumAM[month]
+      res_vec$NumN[month] = sum(res_vec$NumNF[month],
+                                res_vec$NumJF[month],
+                                res_vec$NumAF[month],
+                                res_vec$NumNM[month],
+                                res_vec$NumJM[month],
+                                res_vec$NumAM[month])
       
       if (species == "cattle") {
-        res$Deaths_O[month] <- sample(AlphaO, 1) * O
-        res$Offtake_O[month] <- sample(GammaO, 1) * O
-        res$Culls_O[month] <- sample(CullO, 1) * O
-        res$Oxen_A[month] <- sample(castration_rate, 1) * AM
-        res$NumO[month] <- O + res$Oxen_A[month] - res$Offtake_O[month] - res$Deaths_O[month] - res$Culls_O[month]
-        res$NumAM[month] <- res$NumAM[month] - res$Oxen_A[month]
-        res$numN[month] <- res$numN[month] + res$NumO[month]
+        res_vec$Deaths_O[month] <- sample(AlphaO, 1) * O
+        res_vec$Offtake_O[month] <- sample(GammaO, 1) * O
+        res_vec$Culls_O[month] <- sample(CullO, 1) * O
+        res_vec$Oxen_A[month] <- sample(castration_rate, 1) * AM
+        res_vec$NumO[month] <- O + res_vec$Oxen_A[month] - res_vec$Offtake_O[month] - res_vec$Deaths_O[month] - res_vec$Culls_O[month]
+        res_vec$NumAM[month] <- res_vec$NumAM[month] - res_vec$Oxen_A[month]
+        res_vec$numN[month] <- res_vec$numN[month] + res_vec$NumO[month]
       }
 
-      NF <- res$NumNF[month]
-      JF <- res$NumJF[month]
-      AF <- res$NumAF[month]
-      NM <- res$NumNM[month]
-      JM <- res$NumJM[month]
-      AM <- res$NumAM[month]
-      N <- res$NumN[month]
+      NF <- res_vec$NumNF[month]
+      JF <- res_vec$NumJF[month]
+      AF <- res_vec$NumAF[month]
+      NM <- res_vec$NumNM[month]
+      JM <- res_vec$NumJM[month]
+      AM <- res_vec$NumAM[month]
+      N <- res_vec$NumN[month]
       
       if (species == "cattle") {
-        O <- res$NumO[month]
+        O <- res_vec$NumO[month]
       }
       
-      res$Total_Mortality_NF[month] <- Num_dead_NF + res$Deaths_NF[month]
-      Num_dead_NF <- res$Total_Mortality_NF[month]
-      res$Total_Mortality_NM[month] <- Num_dead_NM + res$Deaths_NM[month]
-      Num_dead_NM <- res$Total_Mortality_NM[month]
-      res$Total_Mortality_JF[month] <- Num_dead_JF + res$Deaths_JF[month]
-      Num_dead_JF <- res$Total_Mortality_JF[month]
-      res$Total_Mortality_JM[month] <- Num_dead_JM + res$Deaths_JM[month]
-      Num_dead_JM <- res$Total_Mortality_JM[month]
-      res$Total_Mortality_AF[month] <- Num_dead_AF + res$Deaths_AF[month]
-      Num_dead_AF <- res$Total_Mortality_AF[month]
-      res$Total_Mortality_AM[month] <- Num_dead_AM + res$Deaths_AM[month]
-      Num_dead_AM <- res$Total_Mortality_AM[month]
+      res_vec$Total_Mortality_NF[month] <- Num_dead_NF + res_vec$Deaths_NF[month]
+      Num_dead_NF <- res_vec$Total_Mortality_NF[month]
+      res_vec$Total_Mortality_NM[month] <- Num_dead_NM + res_vec$Deaths_NM[month]
+      Num_dead_NM <- res_vec$Total_Mortality_NM[month]
+      res_vec$Total_Mortality_JF[month] <- Num_dead_JF + res_vec$Deaths_JF[month]
+      Num_dead_JF <- res_vec$Total_Mortality_JF[month]
+      res_vec$Total_Mortality_JM[month] <- Num_dead_JM + res_vec$Deaths_JM[month]
+      Num_dead_JM <- res_vec$Total_Mortality_JM[month]
+      res_vec$Total_Mortality_AF[month] <- Num_dead_AF + res_vec$Deaths_AF[month]
+      Num_dead_AF <- res_vec$Total_Mortality_AF[month]
+      res_vec$Total_Mortality_AM[month] <- Num_dead_AM + res_vec$Deaths_AM[month]
+      Num_dead_AM <- res_vec$Total_Mortality_AM[month]
       
-      res$Total_Mortality[month] <- res$Total_Mortality_NF[month] + res$Total_Mortality_NM[month] + 
-        res$Total_Mortality_JF[month] + res$Total_Mortality_JM[month] + 
-        res$Total_Mortality_AF[month] + res$Total_Mortality_AM[month] 
+      res_vec$Total_Mortality[month] <- sum(res_vec$Total_Mortality_NF[month],
+                                            res_vec$Total_Mortality_NM[month], 
+                                            res_vec$Total_Mortality_JF[month],
+                                            res_vec$Total_Mortality_JM[month], 
+                                            res_vec$Total_Mortality_AF[month],
+                                            res_vec$Total_Mortality_AM[month]) 
       
       if (species == "cattle") {
-        res$Total_Mortality_O[month] <- Num_dead_O + res$Deaths_O[month]
-        Num_dead_O <- res$Total_Mortality_O[month]
-        res$Total_Mortality[month] <- res$Total_Mortality[month] + res$Total_Mortality_O[month]
+        res_vec$Total_Mortality_O[month] <- Num_dead_O + res_vec$Deaths_O[month]
+        Num_dead_O <- res_vec$Total_Mortality_O[month]
+        res_vec$Total_Mortality[month] <- res_vec$Total_Mortality[month] + res_vec$Total_Mortality_O[month]
       }
       
       ### Fix This
       
-      # res$Value_of_Total_Mortality_NF[month] <- res$Total_Mortality_NF[month] * fvNF
-      # res$Value_of_Total_Mortality_NM[month] <- res$Total_Mortality_NM[month] * fvNM
-      # res$Value_of_Total_Mortality_JF[month] <- res$Total_Mortality_JF[month] * fvJF
-      # res$Value_of_Total_Mortality_JM[month] <- res$Total_Mortality_JM[month] * fvJM
-      # res$Value_of_Total_Mortality_AF[month] <- res$Total_Mortality_AF[month] * fvAF
-      # res$Value_of_Total_Mortality_AM[month] <- res$Total_Mortality_AM[month] * fvAM
+      # res_vec$Value_of_Total_Mortality_NF[month] <- res_vec$Total_Mortality_NF[month] * fvNF
+      # res_vec$Value_of_Total_Mortality_NM[month] <- res_vec$Total_Mortality_NM[month] * fvNM
+      # res_vec$Value_of_Total_Mortality_JF[month] <- res_vec$Total_Mortality_JF[month] * fvJF
+      # res_vec$Value_of_Total_Mortality_JM[month] <- res_vec$Total_Mortality_JM[month] * fvJM
+      # res_vec$Value_of_Total_Mortality_AF[month] <- res_vec$Total_Mortality_AF[month] * fvAF
+      # res_vec$Value_of_Total_Mortality_AM[month] <- res_vec$Total_Mortality_AM[month] * fvAM
       # 
-      # res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality_NF[month] + res$Value_of_Total_Mortality_NM[month] + 
-      #   res$Value_of_Total_Mortality_JF[month] + res$Value_of_Total_Mortality_JM[month] + 
-      #   res$Value_of_Total_Mortality_AF[month] + res$Value_of_Total_Mortality_AM[month] 
+      # res_vec$Value_of_Total_Mortality[month] <- sum(res_vec$Value_of_Total_Mortality_NF[month],
+      #                                            res_ec$Value_of_Total_Mortality_NM[month], 
+      #                                            res_vec$Value_of_Total_Mortality_JF[month],
+      #                                            res_vec$Value_of_Total_Mortality_JM[month],
+      #                                            res_vec$Value_of_Total_Mortality_AF[month],
+      #                                            res_vec$Value_of_Total_Mortality_AM[month]) 
       #  
       # 
       # if (species == "cattle") {
-      #   res$Value_of_Total_Mortality_O[month] <- res$Total_Mortality_O[month] * fvO
-      #   res$Value_of_Total_Mortality[month] <- res$Value_of_Total_Mortality[month] + res$Value_of_Total_Mortality_O[month]
+      #   res_vec$Value_of_Total_Mortality_O[month] <- res_vec$Total_Mortality_O[month] * fvO
+      #   res_vec$Value_of_Total_Mortality[month] <- res_vec$Value_of_Total_Mortality[month] + res_vec$Value_of_Total_Mortality_O[month]
       # }
       
-      res$Pop_growth[month] <-  res$NumN[month] - Nt0
-      res$Pop_growth_NF[month] <-  NF - N_NF_t0
-      res$Pop_growth_NM[month] <-  NM - N_NM_t0
-      res$Pop_growth_JF[month] <-  JF - N_JF_t0
-      res$Pop_growth_JM[month] <-  JM - N_JM_t0
-      res$Pop_growth_AF[month] <-  AF - N_AF_t0
-      res$Pop_growth_AM[month] <-  AM - N_AM_t0
+      res_vec$Pop_growth[month] <-  res_vec$NumN[month] - Nt0
+      res_vec$Pop_growth_NF[month] <-  NF - N_NF_t0
+      res_vec$Pop_growth_NM[month] <-  NM - N_NM_t0
+      res_vec$Pop_growth_JF[month] <-  JF - N_JF_t0
+      res_vec$Pop_growth_JM[month] <-  JM - N_JM_t0
+      res_vec$Pop_growth_AF[month] <-  AF - N_AF_t0
+      res_vec$Pop_growth_AM[month] <-  AM - N_AM_t0
       
       if (species == "cattle") {
-        res$Pop_growth_O[month] <- O - N_O_t0
+        res_vec$Pop_growth_O[month] <- O - N_O_t0
       }
       
-      res$Quant_Liveweight_kg_NF[month] <- NF * sample(lwNF, 1)
-      res$Quant_Liveweight_kg_NM[month] <- NM * sample(lwNM, 1)
-      res$Quant_Liveweight_kg_JF[month] <- JF * sample(lwJF, 1)
-      res$Quant_Liveweight_kg_JM[month] <- JM * sample(lwJM, 1)
-      res$Quant_Liveweight_kg_AF[month] <- AF * sample(lwAF, 1)
-      res$Quant_Liveweight_kg_AM[month] <- AM * sample(lwAM, 1)
-      res$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
+      res_vec$Quant_Liveweight_kg_NF[month] <- NF * sample(lwNF, 1)
+      res_vec$Quant_Liveweight_kg_NM[month] <- NM * sample(lwNM, 1)
+      res_vec$Quant_Liveweight_kg_JF[month] <- JF * sample(lwJF, 1)
+      res_vec$Quant_Liveweight_kg_JM[month] <- JM * sample(lwJM, 1)
+      res_vec$Quant_Liveweight_kg_AF[month] <- AF * sample(lwAF, 1)
+      res_vec$Quant_Liveweight_kg_AM[month] <- AM * sample(lwAM, 1)
+      res_vec$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
       
-      res$Quant_Liveweight_kg[month] <- sum(res$Quant_Liveweight_kg_NF[month],
-                                            res$Quant_Liveweight_kg_NM[month],
-                                            res$Quant_Liveweight_kg_JF[month],
-                                            res$Quant_Liveweight_kg_JM[month],
-                                            res$Quant_Liveweight_kg_AF[month],
-                                            res$Quant_Liveweight_kg_AM[month])
+      res_vec$Quant_Liveweight_kg[month] <- sum(res_vec$Quant_Liveweight_kg_NF[month],
+                                            res_vec$Quant_Liveweight_kg_NM[month],
+                                            res_vec$Quant_Liveweight_kg_JF[month],
+                                            res_vec$Quant_Liveweight_kg_JM[month],
+                                            res_vec$Quant_Liveweight_kg_AF[month],
+                                            res_vec$Quant_Liveweight_kg_AM[month])
       
       if (species == "cattle") {
-        res$Quant_Liveweight_kg[month] <- res$Quant_Liveweight_kg[month] + res$Quant_Liveweight_kg_O[month]
+        res_vec$Quant_Liveweight_kg[month] <- res_vec$Quant_Liveweight_kg[month] + res_vec$Quant_Liveweight_kg_O[month]
       }
       
-      res$Num_Offtake_NF[month] <- Offtake_NF + res$Offtake_NF[month]
-      res$Num_Offtake_NM[month] <- Offtake_NM + res$Offtake_NM[month]
-      res$Num_Offtake_JF[month] <- Offtake_JF + res$Offtake_JF[month]
-      res$Num_Offtake_JM[month] <- Offtake_JM + res$Offtake_JM[month]
-      res$Num_Offtake_AF[month] <- Offtake_AF + res$Offtake_AF[month]
-      res$Num_Offtake_AM[month] <- Offtake_AM + res$Offtake_AM[month] + res$Culls_AM[month]
-      res$Num_Offtake_O[month] <- Offtake_O + res$Offtake_O[month] + res$ulls_O[month]
+      res_vec$Num_Offtake_NF[month] <- Offtake_NF + res_vec$Offtake_NF[month]
+      res_vec$Num_Offtake_NM[month] <- Offtake_NM + res_vec$Offtake_NM[month]
+      res_vec$Num_Offtake_JF[month] <- Offtake_JF + res_vec$Offtake_JF[month]
+      res_vec$Num_Offtake_JM[month] <- Offtake_JM + res_vec$Offtake_JM[month]
+      res_vec$Num_Offtake_AF[month] <- Offtake_AF + res_vec$Offtake_AF[month]
+      res_vec$Num_Offtake_AM[month] <- Offtake_AM + res_vec$Offtake_AM[month] + res_vec$Culls_AM[month]
+      
+      if (species == "cattle"){
+        res_vec$Num_Offtake_O[month] <- Offtake_O + res_vec$Offtake_O[month] + res_vec$Culls_O[month]
+      }
       
       Offtake_NF <- Num_Offtake_NF[month]
       Offtake_NM <- Num_Offtake_NM[month]
@@ -733,7 +739,7 @@ run_model <- function() {
       Offtake_AM <- Num_Offtake_AM[month]
       Offtake_O <- Num_Offtake_O[month]
       
-      res$Num_Offtake[month] <- sum(Num_Offtake_NF[month],
+      res_vec$Num_Offtake[month] <- sum(Num_Offtake_NF[month],
                                     Num_Offtake_NM[month],
                                     Num_Offtake_JF[month],
                                     Num_Offtake_JM[month],
@@ -741,27 +747,27 @@ run_model <- function() {
                                     Num_Offtake_AM[month])
       
       if (species == "cattle") {
-          res$Num_Offtake[month] <- res$Num_Offtake[month] + Num_Offtake_O[month]
+          res_vec$Num_Offtake[month] <- res_vec$Num_Offtake[month] + Num_Offtake_O[month]
       }
       
-      Offtake <- res$Num_Offtake[month]
+      Offtake <- res_vec$Num_Offtake[month]
 
-      res$Offtake_Liveweight_kg_JF[month] <- sample(lwJF, 1) * Offtake_JF
-      res$Offtake_Liveweight_kg_JM[month] <- sample(lwJM, 1) * Offtake_JM
-      res$Offtake_Liveweight_kg_AF[month] <- sample(lwAF, 1) * Offtake_AF
-      res$Offtake_Liveweight_kg_AM[month] <- sample(lwAM, 1) * Offtake_AM
+      res_vec$Offtake_Liveweight_kg_JF[month] <- sample(lwJF, 1) * Offtake_JF
+      res_vec$Offtake_Liveweight_kg_JM[month] <- sample(lwJM, 1) * Offtake_JM
+      res_vec$Offtake_Liveweight_kg_AF[month] <- sample(lwAF, 1) * Offtake_AF
+      res_vec$Offtake_Liveweight_kg_AM[month] <- sample(lwAM, 1) * Offtake_AM
       
       if (species == "cattle") {
-        res$Offtake_Liveweight_kg_O[month] <- sample(lwO, 1) * Offtake_O
+        res_vec$Offtake_Liveweight_kg_O[month] <- sample(lwO, 1) * Offtake_O
       }
       
-      res$Offtake_Liveweight_kg[month] <- sum(res$Offtake_Liveweight_kg_JF[month],
-                                              res$Offtake_Liveweight_kg_JM[month],
-                                              res$Offtake_Liveweight_kg_AF[month],
-                                              res$Offtake_Liveweight_kg_AM[month])
+      res_vec$Offtake_Liveweight_kg[month] <- sum(res_vec$Offtake_Liveweight_kg_JF[month],
+                                              res_vec$Offtake_Liveweight_kg_JM[month],
+                                              res_vec$Offtake_Liveweight_kg_AF[month],
+                                              res_vec$Offtake_Liveweight_kg_AM[month])
       
       if (species == "cattle") {
-        res$Offtake_Liveweight_kg[month] <-  res$Offtake_Liveweight_kg[month] + res$Offtake_Liveweight_kg_O[month]
+        res_vec$Offtake_Liveweight_kg[month] <-  res_vec$Offtake_Liveweight_kg[month] + res_vec$Offtake_Liveweight_kg_O[month]
       }
       
       
