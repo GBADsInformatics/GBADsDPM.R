@@ -293,13 +293,11 @@ run_model <- function() {
     vector_categories <- append(vector_categories, "Quant_Wool")
   } else {
     # poultry
-    vector_categories <- append(ector_categories, c("Prop_females_laying",
-                         "Lay_rate",
-                         "Egg_brood_rate",
-                         "Egg_sale_rate",
-                         "Egg_consumption_rate",
-                         "Hatch_rate",
-                         "Egg_price"))
+    vector_categories <- append(vector_categories, c("Quant_Eggs_sold",
+                         "Quant_Eggs_consumed",
+                         "Value_Eggs_sold"
+                         "Value_Eggs_consumed",
+                         ))
   }
   
   # Initialize a list to store the matrices
@@ -518,6 +516,14 @@ run_model <- function() {
                                                      "Capital_cost_O", 
                                                      "Infrastructure_cost_O", 
                                                      "Total_expenditure_O"))
+  } else if (species == "small ruminants") {
+    matrix_categories <- append(matrix_categories, "Quant_Wool")
+  } else {
+    # poultry
+    matrix_categories <- append(matrix_categories, c("Quant_Eggs_consumed",
+                                                     "Quant_Eggs_sold",
+                                                     "Value_Eggs_consumed",
+                                                     "Value_Eggs_sold")
   }
   
   
