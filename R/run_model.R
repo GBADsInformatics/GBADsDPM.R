@@ -731,7 +731,10 @@ run_model <- function() {
       res_vec$Quant_Liveweight_kg_JM[month] <- JM * sample(lwJM, 1)
       res_vec$Quant_Liveweight_kg_AF[month] <- AF * sample(lwAF, 1)
       res_vec$Quant_Liveweight_kg_AM[month] <- AM * sample(lwAM, 1)
-      res_vec$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
+      
+      if (species == "cattle") {
+        res_vec$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
+      }
       
       res_vec$Quant_Liveweight_kg[month] <- sum(res_vec$Quant_Liveweight_kg_NF[month],
                                             res_vec$Quant_Liveweight_kg_NM[month],
@@ -761,17 +764,20 @@ run_model <- function() {
       Offtake_JM <- res_vec$Num_Offtake_JM[month]
       Offtake_AF <- res_vec$Num_Offtake_AF[month]
       Offtake_AM <- res_vec$Num_Offtake_AM[month]
-      Offtake_O <- res_vec$Num_Offtake_O[month]
-      
-      res_vec$Num_Offtake[month] <- sum(Num_Offtake_NF[month],
-                                    Num_Offtake_NM[month],
-                                    Num_Offtake_JF[month],
-                                    Num_Offtake_JM[month],
-                                    Num_Offtake_AF[month],
-                                    Num_Offtake_AM[month])
       
       if (species == "cattle") {
-          res_vec$Num_Offtake[month] <- res_vec$Num_Offtake[month] + Num_Offtake_O[month]
+        Offtake_O <- res_vec$Num_Offtake_O[month]
+      }
+      
+      res_vec$Num_Offtake[month] <- sum(res_vec$Num_Offtake_NF[month],
+                                    res_vec$Num_Offtake_NM[month],
+                                    res_vec$Num_Offtake_JF[month],
+                                    res_vec$Num_Offtake_JM[month],
+                                    res_vec$Num_Offtake_AF[month],
+                                    res_vec$Num_Offtake_AM[month])
+      
+      if (species == "cattle") {
+          res_vec$Num_Offtake[month] <- res_vec$Num_Offtake[month] + res_vec$Num_Offtake_O[month]
       }
       
       Offtake <- res_vec$Num_Offtake[month]
