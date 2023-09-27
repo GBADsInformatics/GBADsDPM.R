@@ -810,10 +810,51 @@ run_model <- function() {
         res_vec$Offtake_Liveweight_kg[month] <-  res_vec$Offtake_Liveweight_kg[month] + res_vec$Offtake_Liveweight_kg_O[month]
       }
       
+      res_vec$Quant_Meat_kg[month] = Meat_kg + sum(res_vec$Offtake_Liveweight_kg_JF[month], 
+                                                  res_vec$Offtake_Liveweight_kg_JM[month],
+                                                  res_vec$Offtake_Liveweight_kg_AF[month],
+                                                  res_vec$Offtake_Liveweight_kg_AM[month]) * ccy
+      
+      if (species == "cattle") {    
+        res_vec$Quant_Meat_kg[month] <- res_vec$Quant_Meat_kg[month] + res_vec$Offtake_Liveweight_kg_O[month] * ccy
+      }
+      
+      res_vec$Meat_kg <- res_vec$Quant_Meat_kg[month]
+      
+      res_vec$Cumulative_draught_income[month] <- res_vec$Draught_income + O * sample(draught_rate, 1) * draught_day_value * 30
+      res_vec$Draught_income <- Cumulative_draught_income[month]
+      
+      res_vec$Quant_Hides_JF[month] <- Hides_JF +  res_vec$deaths_JF[month] * hides_rate_mor
+      res_vec$Quant_Hides_JM[month] <- Hides_JM + res_vec$deaths_JM[month] * hides_rate_mor
+      res_vec$Quant_Hides_AF[month] <- Hides_AF + res_vec$deaths_AF[month] * hides_rate_mor
+      res_vec$Quant_Hides_AM[month] <- Hides_AM + res_vec$deaths_AM[month] * hides_rate_mor
+      
+      if (species == "cattle"){
+        res_vec$Quant_Hides_O[month] = Hides_O + res_vec$deaths_O[month] * hides_rate_mor 
+      }
+      
+      Hides_JF <- res_vec$Quant_Hides_JF[month]
+      Hides_JM <- res_vec$Quant_Hides_JM[month]
+      Hides_AF <- res_vec$Quant_Hides_AF[month]
+      Hides_AM <- res_vec$Quant_Hides_AM[month]
+      
+      if (species == "cattle") {
+        Hides_O <- res_vec$Quant_Hides_O[month]
+      }
+      
+      res_vec$Quant_Hides[month] = sum(res_vec$Quant_Hides_JF[month],
+                                       res_vec$Quant_Hides_JM[month],
+                                       res_vec$Quant_Hides_AF[month],
+                                       res_vec$Quant_Hides_AM[month])
+      
+      if (species == "cattle") {
+        res_vec$Quant_Hides[month] <- res_vec$Quant_Hides[month] + res_vec$Quant_Hides_O[month]
+      }
+      
+      Hides = res_vec$Quant_Hides[month]
       
 
     } # end Num_months loop
-    
     
   } # end nruns loop
   
