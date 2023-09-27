@@ -571,8 +571,17 @@ run_model <- function() {
     Num_dead <- 0
     Liveweight_kg <- 0
     Offtake <- 0
+    Offtake_liveweight <- 0
     Manure_kg <- 0
+    Hides <- 0
+    Milk <- 0
+    Meat_kg <- 0
+    Draught_income <- 0
     Cumulative_DM <- 0
+    Monthly_Dry_Matter <- 0
+    Population_growth_rate <- 0
+    Monthly_growth_rate <- 0
+    Monthly_pop_growth <- 0
     Value_Offt <- 0
     Value_herd_inc <- 0
     Feed <- 0
@@ -580,11 +589,12 @@ run_model <- function() {
     Health <- 0
     Capital <- 0
     
-    production_vars <- c("Culls", 
-                         "Num_dead", 
+    production_vars <- c("Num_dead", 
                          "Liveweight_kg",
                          "Offtake",
+                         "Offtake_Liveweight",
                          "Manure_kg",
+                         "Hides",
                          "Cumulative_DM",
                          "Value_offt",
                          "Value_herd_inc",
