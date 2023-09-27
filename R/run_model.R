@@ -36,11 +36,7 @@ run_model <- function() {
   kg_DM_req_JM <- calculate_dry_matter_requirements(lwJM, prpn_lskeepers_purch_feed, DM_req_prpn_JM)
   kg_DM_req_AF <- calculate_dry_matter_requirements(lwAF, prpn_lskeepers_purch_feed, DM_req_prpn_AF)
   kg_DM_req_AM <- calculate_dry_matter_requirements(lwAM, prpn_lskeepers_purch_feed, DM_req_prpn_AM)
-  
-  if (species == "cattle") {
-    kg_DM_req_O <- calculate_dry_matter_requirements(lwO, prpn_lskeepers_purch_feed, DM_req_prpn_O)
-  }
-  
+    
   # Calculate purchased feed
   DM_purch_NF <- calculate_purchased_feed(kg_DM_req_NF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
   DM_purch_NM <- calculate_purchased_feed(kg_DM_req_NM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
@@ -49,10 +45,6 @@ run_model <- function() {
   DM_purch_AF <- calculate_purchased_feed(kg_DM_req_AF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
   DM_purch_AM <- calculate_purchased_feed(kg_DM_req_AM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
   
-  if (species == "cattle") {
-    DM_purch_O <- calculate_purchased_feed(kg_DM_req_O, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
-  }
-  
   # Calculate KG Feed purchased
   KG_Feed_purchased_NF <- DM_purch_NF / DM_in_feed
   KG_Feed_purchased_NM <- DM_purch_NM / DM_in_feed
@@ -60,10 +52,6 @@ run_model <- function() {
   KG_Feed_purchased_JM <- DM_purch_JM / DM_in_feed
   KG_Feed_purchased_AF <- DM_purch_AF / DM_in_feed
   KG_Feed_purchased_AM <- DM_purch_AM / DM_in_feed
-  
-  if (species == "cattle") {
-    KG_Feed_purchased_O <- DM_purch_O / DM_in_feed
-  }
   
   # Calculate expenditure on feed
   Expenditure_on_feed_NF <- calculate_expenditure_on_feed(KG_Feed_purchased_NF, Feed_cost_kg)
@@ -74,6 +62,9 @@ run_model <- function() {
   Expenditure_on_feed_AM <- calculate_expenditure_on_feed(KG_Feed_purchased_AM, Feed_cost_kg)
   
   if (species == "cattle") {
+    kg_DM_req_O <- calculate_dry_matter_requirements(lwO, prpn_lskeepers_purch_feed, DM_req_prpn_O)
+    DM_purch_O <- calculate_purchased_feed(kg_DM_req_O, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
+    KG_Feed_purchased_O <- DM_purch_O / DM_in_feed
     Expenditure_on_feed_O <- calculate_expenditure_on_feed(KG_Feed_purchased_O, Feed_cost_kg)
   }
   
@@ -742,10 +733,6 @@ run_model <- function() {
       res_vec$Quant_Liveweight_kg_AF[month] <- AF * sample(lwAF, 1)
       res_vec$Quant_Liveweight_kg_AM[month] <- AM * sample(lwAM, 1)
       
-      if (species == "cattle") {
-        res_vec$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
-      }
-      
       res_vec$Quant_Liveweight_kg[month] <- sum(res_vec$Quant_Liveweight_kg_NF[month],
                                             res_vec$Quant_Liveweight_kg_NM[month],
                                             res_vec$Quant_Liveweight_kg_JF[month],
@@ -754,6 +741,7 @@ run_model <- function() {
                                             res_vec$Quant_Liveweight_kg_AM[month])
       
       if (species == "cattle") {
+        res_vec$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
         res_vec$Quant_Liveweight_kg[month] <- res_vec$Quant_Liveweight_kg[month] + res_vec$Quant_Liveweight_kg_O[month]
       }
       
@@ -819,18 +807,18 @@ run_model <- function() {
         res_vec$Quant_Meat_kg[month] <- res_vec$Quant_Meat_kg[month] + res_vec$Offtake_Liveweight_kg_O[month] * ccy
       }
       
-      res_vec$Meat_kg <- res_vec$Quant_Meat_kg[month]
+      Meat_kg <- res_vec$Quant_Meat_kg[month]
       
-      res_vec$Cumulative_draught_income[month] <- res_vec$Draught_income + O * sample(draught_rate, 1) * draught_day_value * 30
-      res_vec$Draught_income <- Cumulative_draught_income[month]
+      res_vec$Cumulative_draught_income[month] <- Draught_income + O * sample(draught_rate, 1) * draught_day_value * 30
+      Draught_income <-  res_vec$Cumulative_draught_income[month]
       
-      res_vec$Quant_Hides_JF[month] <- Hides_JF +  res_vec$deaths_JF[month] * hides_rate_mor
-      res_vec$Quant_Hides_JM[month] <- Hides_JM + res_vec$deaths_JM[month] * hides_rate_mor
-      res_vec$Quant_Hides_AF[month] <- Hides_AF + res_vec$deaths_AF[month] * hides_rate_mor
-      res_vec$Quant_Hides_AM[month] <- Hides_AM + res_vec$deaths_AM[month] * hides_rate_mor
+      res_vec$Quant_Hides_JF[month] <- Hides_JF +  res_vec$Deaths_JF[month] * hides_rate_mor
+      res_vec$Quant_Hides_JM[month] <- Hides_JM + res_vec$Deaths_JM[month] * hides_rate_mor
+      res_vec$Quant_Hides_AF[month] <- Hides_AF + res_vec$Deaths_AF[month] * hides_rate_mor
+      res_vec$Quant_Hides_AM[month] <- Hides_AM + res_vec$Deaths_AM[month] * hides_rate_mor
       
       if (species == "cattle"){
-        res_vec$Quant_Hides_O[month] = Hides_O + res_vec$deaths_O[month] * hides_rate_mor 
+        res_vec$Quant_Hides_O[month] = Hides_O + res_vec$Deaths_O[month] * hides_rate_mor 
       }
       
       Hides_JF <- res_vec$Quant_Hides_JF[month]
@@ -842,7 +830,7 @@ run_model <- function() {
         Hides_O <- res_vec$Quant_Hides_O[month]
       }
       
-      res_vec$Quant_Hides[month] = sum(res_vec$Quant_Hides_JF[month],
+      res_vec$Quant_Hides[month] <- sum(res_vec$Quant_Hides_JF[month],
                                        res_vec$Quant_Hides_JM[month],
                                        res_vec$Quant_Hides_AF[month],
                                        res_vec$Quant_Hides_AM[month])
@@ -851,7 +839,76 @@ run_model <- function() {
         res_vec$Quant_Hides[month] <- res_vec$Quant_Hides[month] + res_vec$Quant_Hides_O[month]
       }
       
-      Hides = res_vec$Quant_Hides[month]
+      Hides <- res_vec$Quant_Hides[month]
+      
+      res_vec$Quant_Milk[month] <- Milk + AF * sample(part, 1)/12 * prop_F_milked * sample(lac_duration, 1) * sample(avg_daily_yield_ltr, 1) 
+      
+      Milk <- res_vec$Quant_Milk[month]
+
+      res_vec$Quant_Manure_NF[month] <- Manure_kg_NF + NF * sample(Man_N, 1) * 30  
+      res_vec$Quant_Manure_NM[month] <- Manure_kg_NM + NM * sample(Man_N, 1) * 30 
+      res_vec$Quant_Manure_JF[month] <- Manure_kg_JF + JF * sample(Man_J, 1) * 30
+      res_vec$Quant_Manure_JM[month] <- Manure_kg_JM + JM * sample(Man_J, 1) * 30 
+      res_vec$Quant_Manure_AF[month] <- Manure_kg_AF + AF * sample(Man_A, 1) * 30
+      res_vec$Quant_Manure_AM[month] <- Manure_kg_AM + AM * sample(Man_A, 1) * 30
+      
+      if (species == "cattle") {
+        res_vec$Quant_Manure_O[month] <- Manure_kg_O + O * sample(Man_A, 1) * 30  
+      }
+      
+      Manure_kg_NF <-  res_vec$Quant_Manure_NF[month]
+      Manure_kg_NM <-  res_vec$Quant_Manure_NM[month]
+      Manure_kg_JF <-  res_vec$Quant_Manure_JF[month]
+      Manure_kg_JM <-  res_vec$Quant_Manure_JM[month]
+      Manure_kg_AF <-  res_vec$Quant_Manure_AF[month]
+      Manure_kg_AM <-  res_vec$Quant_Manure_AM[month]
+      
+      
+      res_vec$Quant_Manure[month] <- sum(res_vec$Quant_Manure_NF[month],
+                                         res_vec$Quant_Manure_NM[month],
+                                         res_vec$Quant_Manure_JF[month],
+                                         res_vec$Quant_Manure_JM[month],
+                                         res_vec$Quant_Manure_AF[month],
+                                         res_vec$Quant_Manure_AM[month])
+      
+      if (species == "cattle") {
+        Manure_kg_O <-  res_vec$Quant_Manure_O[month]
+        res_vec$Quant_Manure[month] <- res_vec$Quant_Manure[month] + res_vec$Quant_Manure_O[month]
+      }
+      
+      Manure_kg <- res_vec$Quant_Manure[month]
+      
+      res_vec$Cumulative_Dry_Matter_NF[month] <- Cumulative_DM_NF + NF * sample(kg_DM_req_NF, 1) * 30 
+      res_vec$Cumulative_Dry_Matter_NM[month] <- Cumulative_DM_NM + NM * sample(kg_DM_req_NM, 1) * 30
+      res_vec$Cumulative_Dry_Matter_JF[month] <- Cumulative_DM_JF + JF * sample(kg_DM_req_JF, 1) * 30 
+      res_vec$Cumulative_Dry_Matter_JM[month] <- Cumulative_DM_JM + JM * sample(kg_DM_req_JM, 1) * 30 
+      res_vec$Cumulative_Dry_Matter_AF[month] <- Cumulative_DM_AF + AF * sample(kg_DM_req_AF, 1) * 30
+      res_vec$Cumulative_Dry_Matter_AM[month] <- Cumulative_DM_AM + AM * sample(kg_DM_req_AM, 1) * 30
+      
+      if (species == "cattle") {
+        res_vec$Cumulative_Dry_Matter_O[month] <- Cumulative_DM_O + O * sample(kg_DM_req_O, 1) * 30
+      }
+      
+      Cumulative_DM_NF <- res_vec$Cumulative_Dry_Matter_NF[month]
+      Cumulative_DM_NM <- res_vec$Cumulative_Dry_Matter_NM[month]
+      Cumulative_DM_JF <- res_vec$Cumulative_Dry_Matter_JF[month]
+      Cumulative_DM_JM <- res_vec$Cumulative_Dry_Matter_JM[month]
+      Cumulative_DM_AF <- res_vec$Cumulative_Dry_Matter_AF[month]
+      Cumulative_DM_AM <- res_vec$Cumulative_Dry_Matter_AM[month]
+      
+      res_vec$Cumulative_Dry_Matter[month] <- sum(res_vec$Cumulative_Dry_Matter_NF[month],
+                                                  res_vec$Cumulative_Dry_Matter_NM[month],
+                                                  res_vec$Cumulative_Dry_Matter_JF[month],
+                                                  res_vec$Cumulative_Dry_Matter_JM[month],
+                                                  res_vec$Cumulative_Dry_Matter_AF[month],
+                                                  res_vec$Cumulative_Dry_Matter_AM[month])
+      
+      if (species == "cattle") {
+        Cumulative_DM_O <- res_vec$Cumulative_Dry_Matter_O[month]
+        res_vec$Cumulative_Dry_Matter[month] <-  res_vec$Cumulative_Dry_Matter[month] +  res_vec$Cumulative_Dry_Matter_O[month]
+      }
+      
+      Cumulative_DM <- res_vec$Cumulative_Dry_Matter[month]
       
 
     } # end Num_months loop
