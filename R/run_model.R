@@ -885,10 +885,6 @@ run_model <- function() {
       res_vec$Cumulative_Dry_Matter_AF[month] <- Cumulative_DM_AF + AF * sample(kg_DM_req_AF, 1) * 30
       res_vec$Cumulative_Dry_Matter_AM[month] <- Cumulative_DM_AM + AM * sample(kg_DM_req_AM, 1) * 30
       
-      if (species == "cattle") {
-        res_vec$Cumulative_Dry_Matter_O[month] <- Cumulative_DM_O + O * sample(kg_DM_req_O, 1) * 30
-      }
-      
       Cumulative_DM_NF <- res_vec$Cumulative_Dry_Matter_NF[month]
       Cumulative_DM_NM <- res_vec$Cumulative_Dry_Matter_NM[month]
       Cumulative_DM_JF <- res_vec$Cumulative_Dry_Matter_JF[month]
@@ -904,11 +900,37 @@ run_model <- function() {
                                                   res_vec$Cumulative_Dry_Matter_AM[month])
       
       if (species == "cattle") {
+        res_vec$Cumulative_Dry_Matter_O[month] <- Cumulative_DM_O + O * sample(kg_DM_req_O, 1) * 30
         Cumulative_DM_O <- res_vec$Cumulative_Dry_Matter_O[month]
         res_vec$Cumulative_Dry_Matter[month] <-  res_vec$Cumulative_Dry_Matter[month] +  res_vec$Cumulative_Dry_Matter_O[month]
       }
       
       Cumulative_DM <- res_vec$Cumulative_Dry_Matter[month]
+      
+      res_vec$Value_Offtake_JF[month] <- sample(fvJF, 1) * Offtake_JF 
+      Value_offt_JF <- res_vec$Value_Offtake_JF[month]
+      
+      res_vec$Value_Offtake_JM[month] <- sample(fvJM, 1) * Offtake_JM
+      Value_offt_JM <- res_vec$Value_Offtake_JM[month]
+      
+      res_vec$Value_Offtake_AF[month] <- sample(fvAF, 1) * Offtake_AF
+      Value_offt_AF <-  res_vec$Value_Offtake_AF[month]
+      
+      res_vec$Value_Offtake_AM[month] <- sample(fvAM, 1) * Offtake_AM  
+      Value_offt_AM <-  res_vec$Value_Offtake_AM[month]
+      
+      res_vec$Value_Offtake[month] = sum(res_vec$Value_Offtake_JF[month],
+                                         res_vec$Value_Offtake_JM[month],
+                                         res_vec$Value_Offtake_AF[month],
+                                         res_vec$Value_Offtake_AM[month])
+     
+       if (species == "cattle") {
+         res_vec$Value_Offtake_O[month] <- sample(fvO, 1) * Offtake_O
+         Value_offt_O <- res_vec$Value_Offtake_O[month]
+         res_vec$Value_Offtake[month] <- res_vec$Value_Offtake[month] + res_vec$Value_Offtake_O[month]
+       }
+      
+      Value_offt <- res_vec$Value_Offtake[month] 
       
 
     } # end Num_months loop
