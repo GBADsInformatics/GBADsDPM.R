@@ -662,10 +662,6 @@ run_model <- function() {
       AM <- res_vec$NumAM[month]
       N <- res_vec$NumN[month]
       
-      if (species == "cattle") {
-        O <- res_vec$NumO[month]
-      }
-      
       res_vec$Total_Mortality_NF[month] <- Num_dead_NF + res_vec$Deaths_NF[month]
       Num_dead_NF <- res_vec$Total_Mortality_NF[month]
       res_vec$Total_Mortality_NM[month] <- Num_dead_NM + res_vec$Deaths_NM[month]
@@ -687,6 +683,7 @@ run_model <- function() {
                                             res_vec$Total_Mortality_AM[month]) 
       
       if (species == "cattle") {
+        O <- res_vec$NumO[month]
         res_vec$Total_Mortality_O[month] <- Num_dead_O + res_vec$Deaths_O[month]
         Num_dead_O <- res_vec$Total_Mortality_O[month]
         res_vec$Total_Mortality[month] <- res_vec$Total_Mortality[month] + res_vec$Total_Mortality_O[month]
@@ -715,12 +712,12 @@ run_model <- function() {
       # }
       
       res_vec$Pop_growth[month] <-  res_vec$NumN[month] - Nt0
-      res_vec$Pop_growth_NF[month] <-  NF - N_NF_t0
-      res_vec$Pop_growth_NM[month] <-  NM - N_NM_t0
-      res_vec$Pop_growth_JF[month] <-  JF - N_JF_t0
-      res_vec$Pop_growth_JM[month] <-  JM - N_JM_t0
-      res_vec$Pop_growth_AF[month] <-  AF - N_AF_t0
-      res_vec$Pop_growth_AM[month] <-  AM - N_AM_t0
+      res_vec$Pop_growth_NF[month] <- NF - N_NF_t0
+      res_vec$Pop_growth_NM[month] <- NM - N_NM_t0
+      res_vec$Pop_growth_JF[month] <- JF - N_JF_t0
+      res_vec$Pop_growth_JM[month] <- JM - N_JM_t0
+      res_vec$Pop_growth_AF[month] <- AF - N_AF_t0
+      res_vec$Pop_growth_AM[month] <- AM - N_AM_t0
       
       if (species == "cattle") {
         res_vec$Pop_growth_O[month] <- O - N_O_t0
@@ -739,12 +736,7 @@ run_model <- function() {
                                             res_vec$Quant_Liveweight_kg_JM[month],
                                             res_vec$Quant_Liveweight_kg_AF[month],
                                             res_vec$Quant_Liveweight_kg_AM[month])
-      
-      if (species == "cattle") {
-        res_vec$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
-        res_vec$Quant_Liveweight_kg[month] <- res_vec$Quant_Liveweight_kg[month] + res_vec$Quant_Liveweight_kg_O[month]
-      }
-      
+
       res_vec$Num_Offtake_NF[month] <- Offtake_NF + res_vec$offtake_NF[month]
       res_vec$Num_Offtake_NM[month] <- Offtake_NM + res_vec$offtake_NM[month]
       res_vec$Num_Offtake_JF[month] <- Offtake_JF + res_vec$offtake_JF[month]
@@ -753,6 +745,8 @@ run_model <- function() {
       res_vec$Num_Offtake_AM[month] <- Offtake_AM + res_vec$offtake_AM[month] + res_vec$Culls_AM[month]
       
       if (species == "cattle"){
+        res_vec$Quant_Liveweight_kg_O[month] <- O * sample(lwO, 1)
+        res_vec$Quant_Liveweight_kg[month] <- res_vec$Quant_Liveweight_kg[month] + res_vec$Quant_Liveweight_kg_O[month]
         res_vec$Num_Offtake_O[month] <- Offtake_O + res_vec$Offtake_O[month] + res_vec$Culls_O[month]
       }
       
@@ -763,10 +757,6 @@ run_model <- function() {
       Offtake_AF <- res_vec$Num_Offtake_AF[month]
       Offtake_AM <- res_vec$Num_Offtake_AM[month]
       
-      if (species == "cattle") {
-        Offtake_O <- res_vec$Num_Offtake_O[month]
-      }
-      
       res_vec$Num_Offtake[month] <- sum(res_vec$Num_Offtake_NF[month],
                                     res_vec$Num_Offtake_NM[month],
                                     res_vec$Num_Offtake_JF[month],
@@ -775,7 +765,8 @@ run_model <- function() {
                                     res_vec$Num_Offtake_AM[month])
       
       if (species == "cattle") {
-          res_vec$Num_Offtake[month] <- res_vec$Num_Offtake[month] + res_vec$Num_Offtake_O[month]
+        Offtake_O <- res_vec$Num_Offtake_O[month]
+        res_vec$Num_Offtake[month] <- res_vec$Num_Offtake[month] + res_vec$Num_Offtake_O[month]
       }
       
       Offtake <- res_vec$Num_Offtake[month]
@@ -785,25 +776,20 @@ run_model <- function() {
       res_vec$Offtake_Liveweight_kg_AF[month] <- sample(lwAF, 1) * Offtake_AF
       res_vec$Offtake_Liveweight_kg_AM[month] <- sample(lwAM, 1) * Offtake_AM
       
-      if (species == "cattle") {
-        res_vec$Offtake_Liveweight_kg_O[month] <- sample(lwO, 1) * Offtake_O
-      }
-      
       res_vec$Offtake_Liveweight_kg[month] <- sum(res_vec$Offtake_Liveweight_kg_JF[month],
                                               res_vec$Offtake_Liveweight_kg_JM[month],
                                               res_vec$Offtake_Liveweight_kg_AF[month],
                                               res_vec$Offtake_Liveweight_kg_AM[month])
-      
-      if (species == "cattle") {
-        res_vec$Offtake_Liveweight_kg[month] <-  res_vec$Offtake_Liveweight_kg[month] + res_vec$Offtake_Liveweight_kg_O[month]
-      }
+
       
       res_vec$Quant_Meat_kg[month] = Meat_kg + sum(res_vec$Offtake_Liveweight_kg_JF[month], 
                                                   res_vec$Offtake_Liveweight_kg_JM[month],
                                                   res_vec$Offtake_Liveweight_kg_AF[month],
                                                   res_vec$Offtake_Liveweight_kg_AM[month]) * ccy
       
-      if (species == "cattle") {    
+      if (species == "cattle") { 
+        res_vec$Offtake_Liveweight_kg_O[month] <- sample(lwO, 1) * Offtake_O
+        res_vec$Offtake_Liveweight_kg[month] <-  res_vec$Offtake_Liveweight_kg[month] + res_vec$Offtake_Liveweight_kg_O[month]
         res_vec$Quant_Meat_kg[month] <- res_vec$Quant_Meat_kg[month] + res_vec$Offtake_Liveweight_kg_O[month] * ccy
       }
       
@@ -817,18 +803,10 @@ run_model <- function() {
       res_vec$Quant_Hides_AF[month] <- Hides_AF + res_vec$Deaths_AF[month] * hides_rate_mor
       res_vec$Quant_Hides_AM[month] <- Hides_AM + res_vec$Deaths_AM[month] * hides_rate_mor
       
-      if (species == "cattle"){
-        res_vec$Quant_Hides_O[month] = Hides_O + res_vec$Deaths_O[month] * hides_rate_mor 
-      }
-      
       Hides_JF <- res_vec$Quant_Hides_JF[month]
       Hides_JM <- res_vec$Quant_Hides_JM[month]
       Hides_AF <- res_vec$Quant_Hides_AF[month]
       Hides_AM <- res_vec$Quant_Hides_AM[month]
-      
-      if (species == "cattle") {
-        Hides_O <- res_vec$Quant_Hides_O[month]
-      }
       
       res_vec$Quant_Hides[month] <- sum(res_vec$Quant_Hides_JF[month],
                                        res_vec$Quant_Hides_JM[month],
@@ -836,6 +814,8 @@ run_model <- function() {
                                        res_vec$Quant_Hides_AM[month])
       
       if (species == "cattle") {
+        res_vec$Quant_Hides_O[month] = Hides_O + res_vec$Deaths_O[month] * hides_rate_mor 
+        Hides_O <- res_vec$Quant_Hides_O[month]
         res_vec$Quant_Hides[month] <- res_vec$Quant_Hides[month] + res_vec$Quant_Hides_O[month]
       }
       
@@ -852,17 +832,12 @@ run_model <- function() {
       res_vec$Quant_Manure_AF[month] <- Manure_kg_AF + AF * sample(Man_A, 1) * 30
       res_vec$Quant_Manure_AM[month] <- Manure_kg_AM + AM * sample(Man_A, 1) * 30
       
-      if (species == "cattle") {
-        res_vec$Quant_Manure_O[month] <- Manure_kg_O + O * sample(Man_A, 1) * 30  
-      }
-      
       Manure_kg_NF <-  res_vec$Quant_Manure_NF[month]
       Manure_kg_NM <-  res_vec$Quant_Manure_NM[month]
       Manure_kg_JF <-  res_vec$Quant_Manure_JF[month]
       Manure_kg_JM <-  res_vec$Quant_Manure_JM[month]
       Manure_kg_AF <-  res_vec$Quant_Manure_AF[month]
       Manure_kg_AM <-  res_vec$Quant_Manure_AM[month]
-      
       
       res_vec$Quant_Manure[month] <- sum(res_vec$Quant_Manure_NF[month],
                                          res_vec$Quant_Manure_NM[month],
@@ -872,6 +847,7 @@ run_model <- function() {
                                          res_vec$Quant_Manure_AM[month])
       
       if (species == "cattle") {
+        res_vec$Quant_Manure_O[month] <- Manure_kg_O + O * sample(Man_A, 1) * 30 
         Manure_kg_O <-  res_vec$Quant_Manure_O[month]
         res_vec$Quant_Manure[month] <- res_vec$Quant_Manure[month] + res_vec$Quant_Manure_O[month]
       }
@@ -963,7 +939,48 @@ run_model <- function() {
         res_vec$Value_Herd_Increase[month] <- res_vec$Value_Herd_Increase[month] + res_vec$Value_Herd_Increase_O[month]
       }
       
-      Value_herd_inc = res_vec$Value_Herd_Increase[month]
+      Value_herd_inc <- res_vec$Value_Herd_Increase[month]
+      
+      res_vec$Total_Value_increase[month] <- Value_herd_inc + Value_offt
+      res_vec$Total_Value_increase_NF[month] <- Value_herd_inc_NF 
+      res_vec$Total_Value_increase_NM[month] <- Value_herd_inc_NM 
+      res_vec$Total_Value_increase_JF[month] <- Value_herd_inc_JF + Value_offt_JF
+      res_vec$Total_Value_increase_JM[month] <- Value_herd_inc_JM + Value_offt_JM
+      res_vec$Total_Value_increase_AF[month] <- Value_herd_inc_AF + Value_offt_AF
+      res_vec$Total_Value_increase_AM[month] <- Value_herd_inc_AM + Value_offt_AM
+      
+      if (species == "cattle") {
+        res_vec$Total_Value_increase_O[month] <- Value_herd_inc_O + Value_offt_O
+        
+      }
+      
+      res_vec$Feed_cost_NF[month] <- Feed_NF + NF * sample(Expenditure_on_feed_NF, 1) * 30 
+      Feed_NF <- res_vec$Feed_cost_NF[month]
+      res_vec$Feed_cost_NM[month] <- Feed_NM + NM * sample(Expenditure_on_feed_NM, 1) * 30 
+      Feed_NM <- res_vec$Feed_cost_NM[month]
+      res_vec$Feed_cost_JF[month] <- Feed_JF + JF * sample(Expenditure_on_feed_JF, 1) * 30
+      Feed_JF <- res_vec$Feed_cost_JF[month]
+      res_vec$Feed_cost_JM[month] <- Feed_JM + JM * sample(Expenditure_on_feed_JM, 1) * 30
+      Feed_JM <- res_vec$Feed_cost_JM[month]
+      res_vec$Feed_cost_AF[month] <- Feed_AF + AF * sample(Expenditure_on_feed_AF, 1) * 30
+      Feed_AF <- res_vec$Feed_cost_AF[month]
+      res_vec$Feed_cost_AM[month] <- Feed_AM + AM * sample(Expenditure_on_feed_AM, 1) * 30 
+      Feed_AM <- res_vec$Feed_cost_AM[month]
+     
+      res_vec$Feed_cost[month] <- sum(res_vec$Feed_cost_NF[month],
+                                      res_vec$Feed_cost_NM[month],
+                                      res_vec$Feed_cost_JF[month],
+                                      res_vec$Feed_cost_JM[month],
+                                      res_vec$Feed_cost_AF[month],
+                                      res_vec$Feed_cost_AM[month])
+      
+      if (species == "cattle") {
+        res_vec$Feed_cost_O[month] <- Feed_O + O * sample(Expenditure_on_feed_O, 1) * 30
+        Feed_O <- res_vec$Feed_cost_O[month]
+        res_vec$Feed_cost[month] <- res_vec$Feed_cost[month] + res_vec$Feed_cost_O[month]
+      }
+      
+      Feed <- res_vec$Feed_cost[month]
       
 
     } # end Num_months loop
