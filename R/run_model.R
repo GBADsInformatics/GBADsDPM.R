@@ -932,6 +932,39 @@ run_model <- function() {
       
       Value_offt <- res_vec$Value_Offtake[month] 
       
+      res_vec$Value_Herd_Increase_NF[month] <- (NF - N_NF_t0) * sample(fvNF, 1)
+      Value_herd_inc_NF <- res_vec$Value_Herd_Increase_NF[month]
+      
+      res_vec$Value_Herd_Increase_NM[month] <- (NM - N_NM_t0) * sample(fvNM, 1)
+      Value_herd_inc_NM <- res_vec$Value_Herd_Increase_NM[month]
+      
+      res_vec$Value_Herd_Increase_JF[month] <- (JF - N_JF_t0) * sample(fvJF, 1)
+      Value_herd_inc_JF <- res_vec$Value_Herd_Increase_JF[month]
+      
+      res_vec$Value_Herd_Increase_JM[month] <- (JM - N_JM_t0) * sample(fvJM, 1)
+      Value_herd_inc_JM <- res_vec$Value_Herd_Increase_JM[month]
+      
+      res_vec$Value_Herd_Increase_AF[month] <- (AF - N_AF_t0) * sample(fvAF, 1)
+      Value_herd_inc_AF <- res_vec$Value_Herd_Increase_AF[month]
+      
+      res_vec$Value_Herd_Increase_AM[month] <- (AM - N_AM_t0) * sample(fvAM, 1)
+      Value_herd_inc_AM <- res_vec$Value_Herd_Increase_AM[month]
+      
+      res_vec$Value_Herd_Increase[month] <- sum(res_vec$Value_Herd_Increase_NF[month],
+                                                res_vec$Value_Herd_Increase_NM[month],
+                                                res_vec$Value_Herd_Increase_JF[month],
+                                                res_vec$Value_Herd_Increase_JM[month],
+                                                res_vec$Value_Herd_Increase_AF[month],
+                                                res_vec$Value_Herd_Increase_AM[month])
+      
+      if (species == "cattle") {
+        res_vec$Value_Herd_Increase_O[month] <- (O - N_O_t0) * (sample(fvO, 1))
+        Value_herd_inc_O <- res_vec$Value_Herd_Increase_O[month]
+        res_vec$Value_Herd_Increase[month] <- res_vec$Value_Herd_Increase[month] + res_vec$Value_Herd_Increase_O[month]
+      }
+      
+      Value_herd_inc = res_vec$Value_Herd_Increase[month]
+      
 
     } # end Num_months loop
     
