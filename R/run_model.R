@@ -954,6 +954,8 @@ run_model <- function() {
         
       }
       
+      ### Feed ### 
+      
       res_vec$Feed_cost_NF[month] <- Feed_NF + NF * sample(Expenditure_on_feed_NF, 1) * 30 
       Feed_NF <- res_vec$Feed_cost_NF[month]
       res_vec$Feed_cost_NM[month] <- Feed_NM + NM * sample(Expenditure_on_feed_NM, 1) * 30 
@@ -982,11 +984,73 @@ run_model <- function() {
       
       Feed <- res_vec$Feed_cost[month]
       
+      ### Labour ###
+      
+      res_vec$Labour_cost_NF[month] <- Labour_NF + NF * sample(Labour_cattle, 1) * lab_non_health 
+      res_vec$Labour_cost_NM[month] <- Labour_NM + NM * sample(Labour_cattle, 1) * lab_non_health  
+      res_vec$Labour_cost_JF[month] <- Labour_JF + JF * sample(Labour_cattle, 1) * lab_non_health  
+      res_vec$Labour_cost_JM[month] <- Labour_JM + JM * sample(Labour_cattle, 1) * lab_non_health  
+      res_vec$Labour_cost_AF[month] <- Labour_AF + AF * sample(Labour_cattle, 1) * lab_non_health + AF * prop_F_milked * sample(Labour_dairy, 1)  
+      res_vec$Labour_cost_AM[month] <- Labour_AM + AM * sample(Labour_cattle, 1) * lab_non_health 
+      
+      Labour_NF <- res_vec$Labour_cost_NF[month]
+      Labour_NM <- res_vec$Labour_cost_NM[month]
+      Labour_JF <- res_vec$Labour_cost_JF[month]
+      Labour_JM <- res_vec$Labour_cost_JM[month]
+      Labour_AF <- res_vec$Labour_cost_AF[month]
+      Labour_AM <- res_vec$Labour_cost_AM[month]
+      
+      
+      res_vec$Labour_cost[month] <- sum(res_vec$Labour_cost_NF[month],
+                                        res_vec$Labour_cost_NM[month],
+                                        res_vec$Labour_cost_JF[month],
+                                        res_vec$Labour_cost_JM[month],
+                                        res_vec$Labour_cost_AF[month],
+                                        res_vec$Labour_cost_AM[month])
+      Labour =  res_vec$Labour_cost[month]
+      
+      if (species == "cattle") {
+        res_vec$Labour_cost_O[month] <- Labour_O + O * sample(Labour_cattle, 1) * lab_non_health + O * sample(Labour_Oxen, 1)
+        Labour_O <- res_vec$Labour_cost_O[month]
+        res_vec$Labour_cost[month] <- res_vec$Labour_cost[month] + res_vec$Labour_cost_O[month]
+      }
+      
+      ### Health ##3
+      
+      res_vec$Health_cost_NF[month] <- Health_NF + NF * sample(Health_exp_prev, 1) + NF * sample(Health_exp_treatment, 1) 
+      res_vec$Health_cost_NM[month] <- Health_NM + NM * sample(Health_exp_prev, 1) + NM * sample(Health_exp_treatment, 1) 
+      res_vec$Health_cost_JF[month] <- Health_JF + JF * sample(Health_exp_prev, 1) + JF * sample(Health_exp_treatment, 1)
+      res_vec$Health_cost_JM[month] <- Health_JM + JM * sample(Health_exp_prev, 1) + JM * sample(Health_exp_treatment, 1)
+      res_vec$Health_cost_AF[month] <- Health_AF + AF * sample(Health_exp_prev, 1) + AF * sample(Health_exp_treatment, 1)
+      res_vec$Health_cost_AM[month] <- Health_AM + AM * sample(Health_exp_prev, 1) + AM * sample(Health_exp_treatment, 1)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+      Health_NF <- res_vec$Health_cost_NF[month]
+      Health_NM <- res_vec$Health_cost_NM[month]
+      Health_JF <- res_vec$Health_cost_JF[month]
+      Health_JM <- res_vec$Health_cost_JM[month]
+      Health_AF <- res_vec$Health_cost_AF[month]
+      Health_AM <- res_vec$Health_cost_AM[month]
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+      res_vec$Health_cost[month] <- sum(res_vec$Health_cost_NF[month],
+                                        res_vec$Health_cost_NM[month],
+                                        res_vec$Health_cost_JF[month],
+                                        res_vec$Health_cost_JM[month],
+                                        res_vec$Health_cost_AF[month],
+                                        res_vec$Health_cost_AM[month])
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+     Health = res_vec$Health_cost[month]
+                                                                                                                                                                                                                                                                                                                                                                                                                                               
+      if (species == "cattle") {
+        res_vec$Health_cost_O[month] <- Health_O + O * sample(Health_exp_prev, 1) + O * sample(Health_exp_treatment, 1) 
+        Health_O <- res_vec$Health_cost_O[month]                                                                                
+        res_vec$Health_cost[month] <-  res_vec$Health_cost[month] + res_vec$Health_cost_O[month]
+      }                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
     } # end Num_months loop
     
   } # end nruns loop
   
 } # end function
-
 
