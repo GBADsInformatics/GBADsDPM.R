@@ -1129,13 +1129,16 @@ run_model <- function() {
     } # end Num_months loop
     
     res_mat$NumNF[i, ] <- res_vec$NumNF
-    numJF_M[i, ] <- numJF
-    numAF_M[i, ] <- numAF
-    numNM_M[i, ] <- numNM
-    numJM_M[i, ] <- numJM
-    numAM_M[i, ] <- numAM
-    numO_M[i, ] <- numO
-    numN_M[i, ] <- numN
+    res_mat$NumJF[i, ] <- res_vec$NumJF
+    res_mat$NumAF[i, ] <- res_vec$NumAF
+    res_mat$NumNM[i, ] <- res_vec$NumNM
+    res_mat$NumJM[i, ] <- res_vec$NumJM
+    res_mat$NumAM[i, ] <- res_vec$NumAM
+    res_mat$NumN[i, ] <- res_vec$NumN
+    
+    if (species == "cattle") {
+      res_mat$NumO[i, ] <- res_vec$NumO
+    }
     
   } # end nruns loop
   
