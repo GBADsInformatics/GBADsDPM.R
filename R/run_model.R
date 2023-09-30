@@ -883,6 +883,8 @@ run_model <- function() {
       
       Cumulative_DM <- res_vec$Cumulative_Dry_Matter[month]
       
+      ### Offtake value ###
+      
       res_vec$Value_Offtake_JF[month] <- sample(fvJF, 1) * Offtake_JF 
       Value_offt_JF <- res_vec$Value_Offtake_JF[month]
       
@@ -907,6 +909,8 @@ run_model <- function() {
        }
       
       Value_offt <- res_vec$Value_Offtake[month] 
+      
+      ### Herd increase value ###
       
       res_vec$Value_Herd_Increase_NF[month] <- (NF - N_NF_t0) * sample(fvNF, 1)
       Value_herd_inc_NF <- res_vec$Value_Herd_Increase_NF[month]
@@ -941,6 +945,8 @@ run_model <- function() {
       
       Value_herd_inc <- res_vec$Value_Herd_Increase[month]
       
+      ### Total value increase ###
+      
       res_vec$Total_Value_increase[month] <- Value_herd_inc + Value_offt
       res_vec$Total_Value_increase_NF[month] <- Value_herd_inc_NF 
       res_vec$Total_Value_increase_NM[month] <- Value_herd_inc_NM 
@@ -954,7 +960,7 @@ run_model <- function() {
         
       }
       
-      ### Feed ### 
+      ### Feed cost ### 
       
       res_vec$Feed_cost_NF[month] <- Feed_NF + NF * sample(Expenditure_on_feed_NF, 1) * 30 
       Feed_NF <- res_vec$Feed_cost_NF[month]
@@ -984,7 +990,7 @@ run_model <- function() {
       
       Feed <- res_vec$Feed_cost[month]
       
-      ### Labour ###
+      ### Labour cost ###
       
       res_vec$Labour_cost_NF[month] <- Labour_NF + NF * sample(Labour_cattle, 1) * lab_non_health 
       res_vec$Labour_cost_NM[month] <- Labour_NM + NM * sample(Labour_cattle, 1) * lab_non_health  
@@ -1015,7 +1021,7 @@ run_model <- function() {
         res_vec$Labour_cost[month] <- res_vec$Labour_cost[month] + res_vec$Labour_cost_O[month]
       }
       
-      ### Health ##3
+      ### Health cost ###
       
       res_vec$Health_cost_NF[month] <- Health_NF + NF * sample(Health_exp_prev, 1) + NF * sample(Health_exp_treatment, 1) 
       res_vec$Health_cost_NM[month] <- Health_NM + NM * sample(Health_exp_prev, 1) + NM * sample(Health_exp_treatment, 1) 
@@ -1046,9 +1052,90 @@ run_model <- function() {
         res_vec$Health_cost_O[month] <- Health_O + O * sample(Health_exp_prev, 1) + O * sample(Health_exp_treatment, 1) 
         Health_O <- res_vec$Health_cost_O[month]                                                                                
         res_vec$Health_cost[month] <-  res_vec$Health_cost[month] + res_vec$Health_cost_O[month]
-      }                                                                                                                                                                                                                                                                                                                                                                                                                                       
+      } 
+     
+      ### Capital cost ###
+     
+     res_vec$Capital_cost_NF[month] <- res_vec$NumNF[1] * sample(fvNF, 1) * Interest_rate 
+     Capital_NF <- res_vec$Capital_cost_NF[month]
+     
+     res_vec$Capital_cost_NM[month] <- res_vec$NumNM[1] * sample(fvNM, 1) * Interest_rate  
+     Capital_NM <- res_vec$Capital_cost_NM[month]
+     
+     res_vec$Capital_cost_JF[month] <-res_vec$NumJF[1] * sample(fvJF, 1) * Interest_rate  
+     Capital_JF = res_vec$Capital_cost_JF[month]
+     
+     res_vec$Capital_cost_JM[month] <- res_vec$NumJM[1] * sample(fvJM, 1) * Interest_rate  
+     Capital_JM <- res_vec$Capital_cost_JM[month]
+     
+     res_vec$Capital_cost_AF[month] <- res_vec$NumAF[1] * sample(fvAF, 1) * Interest_rate  
+     Capital_AF <- res_vec$Capital_cost_AF[month]
+     
+     res_vec$Capital_cost_AM[month] <- res_vec$NumAM[1] * sample(fvAM, 1) * Interest_rate  
+     Capital_AM <- res_vec$Capital_cost_AM[month]
+     
+     # total pop capital cost
+     res_vec$Capital_cost[month] <- sum(res_vec$Capital_cost_NF[month],
+                                       res_vec$Capital_cost_NM[month],
+                                       res_vec$Capital_cost_JF[month],
+                                       res_vec$Capital_cost_JM[month],
+                                       res_vec$Capital_cost_AF[month],
+                                       res_vec$Capital_cost_AM[month])
+     
+     if (species == "cattle") {
+       res_vec$Capital_cost_O[month] <- res_vec$NumO[1] * sample(fvO, 1) * Interest_rate
+       Capital_O <- res_vec$Capital_cost_O[month]
+       res_vec$Capital_cost[month] <- res_vec$Capital_cost[month] + res_vec$Capital_cost_O[month]
+     }
+     
+     Capital <- res_vec$Capital_cost[month]
+     
+     ### Infrastructure cost ###
+     
+     res_vec$Infrastructure_cost_NF[month] <- N_NF_t0 * sample(Infrastructure_per_head, 1)
+     res_vec$Infrastructure_cost_NM[month] <- N_NM_t0 * sample(Infrastructure_per_head, 1)
+     res_vec$Infrastructure_cost_JF[month] <- N_JF_t0 * sample(Infrastructure_per_head, 1)
+     res_vec$Infrastructure_cost_JM[month] <- N_JM_t0 * sample(Infrastructure_per_head, 1)
+     res_vec$Infrastructure_cost_AF[month] <- N_AF_t0 * sample(Infrastructure_per_head, 1)
+     res_vec$Infrastructure_cost_AM[month] <- N_AM_t0 * sample(Infrastructure_per_head, 1)
+     
+     res_vec$Infrastructure_cost[month] <- sum(res_vec$Infrastructure_cost_NF[month],
+                                               res_vec$Infrastructure_cost_NM[month],
+                                               res_vec$Infrastructure_cost_JF[month],
+                                               res_vec$Infrastructure_cost_JM[month],
+                                               res_vec$Infrastructure_cost_AF[month],
+                                               res_vec$Infrastructure_cost_AM[month])
+     
+     if (species == "cattle") {
+       res_vec$Infrastructure_cost_O[month] <- N_O_t0 * sample(Infrastructure_per_head, 1)
+       res_vec$Infrastructure_cost[month] <- res_vec$Infrastructure_cost[month] + res_vec$Infrastructure_cost_O[month]
+     }
+     
+     # Total expenditure ###
+     
+     res_vec$Total_expenditure[month] =  res_vec$Feed_cost[month] + Health + Labour + Capital + res_vec$Infrastructure_cost[month]
+     
+     res_vec$Total_expenditure_NF[month] =  Feed_NF + Health_NF + Labour_NF + Capital_NF + res_vec$Infrastructure_cost_NF[month]
+     res_vec$Total_expenditure_NM[month] =  Feed_NM + Health_NM + Labour_NM + Capital_NM + res_vec$Infrastructure_cost_NM[month]
+     res_vec$Total_expenditure_JF[month] =  Feed_JF + Health_JF + Labour_JF + Capital_JF + res_vec$Infrastructure_cost_JF[month]
+     res_vec$Total_expenditure_JM[month] =  Feed_JM + Health_JM + Labour_JM + Capital_JM + res_vec$Infrastructure_cost_JM[month]
+     res_vec$Total_expenditure_AF[month] =  Feed_AF + Health_AF + Labour_AF + Capital_AF + res_vec$Infrastructure_cost_AF[month]
+     res_vec$Total_expenditure_AM[month] =  Feed_AM + Health_AM + Labour_AM + Capital_AM + res_vec$Infrastructure_cost_AM[month]
+     
+     if (species == "cattle"){
+       res_vec$Total_expenditure_O[month] =  Feed_O + Health_O + Labour_O + Capital_O + res_vec$Infrastructure_cost_O[month]
+     }
 
     } # end Num_months loop
+    
+    res_mat$NumNF[i, ] <- res_vec$NumNF
+    numJF_M[i, ] <- numJF
+    numAF_M[i, ] <- numAF
+    numNM_M[i, ] <- numNM
+    numJM_M[i, ] <- numJM
+    numAM_M[i, ] <- numAM
+    numO_M[i, ] <- numO
+    numN_M[i, ] <- numN
     
   } # end nruns loop
   
