@@ -1006,7 +1006,6 @@ run_model <- function() {
       Labour_AF <- res_vec$Labour_cost_AF[month]
       Labour_AM <- res_vec$Labour_cost_AM[month]
       
-      
       res_vec$Labour_cost[month] <- sum(res_vec$Labour_cost_NF[month],
                                         res_vec$Labour_cost_NM[month],
                                         res_vec$Labour_cost_JF[month],
@@ -1074,7 +1073,6 @@ run_model <- function() {
      res_vec$Capital_cost_AM[month] <- res_vec$NumAM[1] * sample(fvAM, 1) * Interest_rate  
      Capital_AM <- res_vec$Capital_cost_AM[month]
      
-     # total pop capital cost
      res_vec$Capital_cost[month] <- sum(res_vec$Capital_cost_NF[month],
                                        res_vec$Capital_cost_NM[month],
                                        res_vec$Capital_cost_JF[month],
@@ -1128,6 +1126,8 @@ run_model <- function() {
 
     } # end Num_months loop
     
+    ### Fill matrices ###
+    
     res_mat$NumNF[i, ] <- res_vec$NumNF
     res_mat$NumJF[i, ] <- res_vec$NumJF
     res_mat$NumAF[i, ] <- res_vec$NumAF
@@ -1136,8 +1136,196 @@ run_model <- function() {
     res_mat$NumAM[i, ] <- res_vec$NumAM
     res_mat$NumN[i, ] <- res_vec$NumN
     
+    res_mat$Monthly_mortality[i, ] <- res_vec$Monthly_mortality
+    res_mat$Total_Mortality[i, ] <- res_vec$Total_Mortality
+    
+    res_mat$Total_Mortality_NF[i, ] <- res_vec$Total_Mortality_NF
+    res_mat$Total_Mortality_NM[i, ] <- res_vec$Total_Mortality_NM
+    res_mat$Total_Mortality_JF[i, ] <- res_vec$Total_Mortality_JF
+    res_mat$Total_Mortality_JM[i, ] <- res_vec$Total_Mortality_JM
+    res_mat$Total_Mortality_AF[i, ] <- res_vec$Total_Mortality_AF
+    res_mat$Total_Mortality_AM[i, ] <- res_vec$Total_Mortality_AM
+    
+    res_mat$Value_of_Total_Mortality[i, ] <- res_vec$Value_of_Total_Mortality
+    
+    res_mat$Value_of_Total_Mortality_NF[i, ] <- res_vec$Value_of_Total_Mortality_NF
+    res_mat$Value_of_Total_Mortality_NM[i, ] <- res_vec$Value_of_Total_Mortality_NM
+    res_mat$Value_of_Total_Mortality_JF[i, ] <- res_vec$Value_of_Total_Mortality_JF
+    res_mat$Value_of_Total_Mortality_JM[i, ] <- res_vec$Value_of_Total_Mortality_JM
+    res_mat$Value_of_Total_Mortality_AF[i, ] <- res_vec$Value_of_Total_Mortality_AF
+    res_mat$ Value_of_Total_Mortality_AM[i, ] <- res_vec$Value_of_Total_Mortality_AM
+    
+    res_mat$Quant_Liveweight_kg[i, ] <- res_vec$Quant_Liveweight_kg
+    
+    res_mat$Quant_Liveweight_kg_NF[i, ] <- res_vec$Quant_Liveweight_kg_NF
+    res_mat$Quant_Liveweight_kg_NM[i, ] <- res_vec$Quant_Liveweight_kg_NM
+    res_mat$Quant_Liveweight_kg_JF[i, ] <- res_vec$Quant_Liveweight_kg_JF
+    res_mat$Quant_Liveweight_kg_JM[i, ] <- res_vec$Quant_Liveweight_kg_JM
+    res_mat$Quant_Liveweight_kg_AF[i, ] <- res_vec$Quant_Liveweight_kg_AF
+    res_mat$Quant_Liveweight_kg_AM[i, ] <- res_vec$Quant_Liveweight_kg_AM
+    
+    res_mat$Cumulative_draught_income[i,] <- res_vec$Cumulative_draught_income
+
+    res_mat$Quant_Meat_kg[i, ] <- res_vec$Quant_Meat_kg
+    
+    res_mat$Num_Offtake[i, ] <- res_vec$Num_Offtake
+    
+    res_mat$Num_Offtake_NF[i, ] <- res_vec$Num_Offtake_NF
+    res_mat$Num_Offtake_NM[i, ] <- res_vec$Num_Offtake_NM
+    res_mat$Num_Offtake_JF[i, ] <- res_vec$Num_Offtake_JF
+    res_mat$Num_Offtake_JM[i, ] <- res_vec$Num_Offtake_JM
+    res_mat$Num_Offtake_AF[i, ] <- res_vec$Num_Offtake_AF
+    res_mat$Num_Offtake_AM[i, ] <- res_vec$Num_Offtake_AM
+    
+    res_mat$Offtake_Liveweight_kg[i, ] <- res_vec$Offtake_Liveweight_kg
+    
+    res_mat$Offtake_Liveweight_kg_JF[i, ] <- res_vec$Offtake_Liveweight_kg_JF
+    res_mat$Offtake_Liveweight_kg_JM[i, ] <- res_vec$Offtake_Liveweight_kg_JM
+    res_mat$Offtake_Liveweight_kg_AF[i, ] <- res_vec$Offtake_Liveweight_kg_AF
+    res_mat$Offtake_Liveweight_kg_AM[i, ] <- res_vec$Offtake_Liveweight_kg_AM
+    
+    res_mat$Pop_growth[i, ] <- res_vec$Pop_growth
+    
+    res_mat$Pop_growth_NF[i, ] <- res_vec$Pop_growth_NF
+    res_mat$Pop_growth_NM[i, ] <- res_vec$Pop_growth_NM
+    res_mat$Pop_growth_JF[i, ] <- res_vec$Pop_growth_JF
+    res_mat$Pop_growth_JM[i, ] <- res_vec$Pop_growth_JM
+    res_mat$Pop_growth_AF[i, ] <- res_vec$Pop_growth_AF
+    res_mat$Pop_growth_AM[i, ] <- res_vec$Pop_growth_AM
+    
+    res_mat$Monthly_growth_rate[i, ] <- res_vec$Monthly_growth_rate
+    res_mat$Monthly_pop_growth[i, ] <- res_vec$Monthly_pop_growth
+    
+    res_mat$Quant_Manure[i, ] <- res_vec$Quant_Manure
+    res_mat$Quant_Manure_NF[i, ] <- res_vec$Quant_Manure_NF
+    res_mat$Quant_Manure_NM[i, ] <- res_vec$Quant_Manure_NM
+    res_mat$Quant_Manure_JF[i, ] <- res_vec$Quant_Manure_JF
+    res_mat$Quant_Manure_JM[i, ] <- res_vec$Quant_Manure_JM
+    res_mat$Quant_Manure_AF[i, ] <- res_vec$Quant_Manure_AF
+    res_mat$Quant_Manure_AM[i, ] <- res_vec$Quant_Manure_AM
+    
+    res_mat$Quant_Hides[i, ] <- res_vec$Quant_Hides
+    
+    res_mat$Quant_Hides_JF[i, ] <- res_vec$Quant_Hides_JF
+    res_mat$Quant_Hides_JM[i, ] <- res_vec$Quant_Hides_JM
+    res_mat$Quant_Hides_AF[i, ] <- res_vec$Quant_Hides_AF
+    res_mat$Quant_Hides_AM[i, ] <- res_vec$Quant_Hides_AM
+    
+    res_mat$Quant_Milk[i, ] <- res_vec$Quant_Milk
+    res_mat$Quant_Wool[i, ] <- res_vec$Quant_Wool
+    
+    res_mat$Cumulative_Dry_Matter[i, ] <- res_vec$Cumulative_Dry_Matter
+    
+    res_mat$Cumulative_Dry_Matter_NF[i, ] <- res_vec$Cumulative_Dry_Matter_NF
+    res_mat$Cumulative_Dry_Matter_NM[i, ] <- res_vec$Cumulative_Dry_Matter_NM
+    res_mat$Cumulative_Dry_Matter_JF[i, ] <- res_vec$Cumulative_Dry_Matter_JF
+    res_mat$Cumulative_Dry_Matter_JM[i, ] <- res_vec$Cumulative_Dry_Matter_JM
+    res_mat$Cumulative_Dry_Matter_AF[i, ] <- res_vec$Cumulative_Dry_Matter_AF
+    res_mat$Cumulative_Dry_Matter_AM[i, ] <- res_vec$Cumulative_Dry_Matter_AM
+    
+    res_mat$Monthly_DM[i, ] <- res_vec$Monthly_DM
+
+    res_mat$Value_Offtake[i, ] <- res_vec$Value_Offtake
+    res_mat$Value_Offtake_NF[i, ] <- res_vec$Value_Offtake_NF
+    res_mat$Value_Offtake_NM[i, ] <- res_vec$Value_Offtake_NM
+    
+    res_mat$Value_Offtake_JF[i, ] <- res_vec$Value_Offtake_JF
+    res_mat$Value_Offtake_JM[i, ] <- res_vec$Value_Offtake_JM
+    res_mat$Value_Offtake_AF[i, ] <- res_vec$Value_Offtake_AF
+    res_mat$Value_Offtake_AM[i, ] <- res_vec$Value_Offtake_AM
+    
+    res_mat$Value_Herd_Increase[i, ] <- res_vec$Value_Herd_Increase
+    
+    res_mat$Value_Herd_Increase_NF[i, ] <- res_vec$Value_Herd_Increase_NF
+    res_mat$Value_Herd_Increase_NM[i, ] <- res_vec$Value_Herd_Increase_NM
+    res_mat$Value_Herd_Increase_JF[i, ] <- res_vec$Value_Herd_Increase_JF
+    res_mat$Value_Herd_Increase_JM[i, ] <- res_vec$Value_Herd_Increase_JM
+    res_mat$Value_Herd_Increase_AF[i, ] <- res_vec$Value_Herd_Increase_AF
+    res_mat$Value_Herd_Increase_AM[i, ] <- res_vec$Value_Herd_Increase_AM
+    
+    res_mat$Total_Value_increase[i, ] <- res_vec$Total_Value_increase
+    
+    res_mat$Total_Value_increase_NF[i, ] <- res_vec$Total_Value_increase_NF
+    res_mat$Total_Value_increase_NM[i, ] <- res_vec$Total_Value_increase_NM
+    res_mat$Total_Value_increase_JF[i, ] <- res_vec$Total_Value_increase_JF
+    res_mat$Total_Value_increase_JM[i, ] <- res_vec$Total_Value_increase_JM
+    res_mat$Total_Value_increase_AF[i, ] <- res_vec$Total_Value_increase_AF
+    res_mat$Total_Value_increase_AM[i, ] <- res_vec$Total_Value_increase_AM
+    
+    res_mat$Feed_cost[i, ] <- res_vec$Feed_cost
+    
+    res_mat$Feed_cost_NF[i, ] <- res_vec$Feed_cost_NF
+    res_mat$Feed_cost_NM[i, ] <- res_vec$Feed_cost_NM
+    res_mat$Feed_cost_JF[i, ] <- res_vec$Feed_cost_JF
+    res_mat$Feed_cost_JM[i, ] <- res_vec$Feed_cost_JM
+    res_mat$Feed_cost_AF[i, ] <- res_vec$Feed_cost_AF
+    res_mat$Feed_cost_AM[i, ] <- res_vec$Feed_cost_AM
+    
+    res_mat$Labour_cost[i, ] <- res_vec$Labour_cost
+    
+    res_mat$Labour_cost_NF[i, ] <- res_vec$Labour_cost_NF
+    res_mat$Labour_cost_NM[i, ] <- res_vec$Labour_cost_NM
+    res_mat$Labour_cost_JF[i, ] <- res_vec$Labour_cost_JF
+    res_mat$Labour_cost_JM[i, ] <- res_vec$Labour_cost_JM
+    res_mat$Labour_cost_AF[i, ] <- res_vec$Labour_cost_AF
+    res_mat$Labour_cost_AM[i, ] <- res_vec$Labour_cost_AM
+    
+    res_mat$Health_cost[i, ] <- res_vec$Health_cost
+    
+    res_mat$Health_cost_NF[i, ] <- res_vec$Health_cost_NF
+    res_mat$Health_cost_NM[i, ] <- res_vec$Health_cost_NM
+    res_mat$Health_cost_JF[i, ] <- res_vec$Health_cost_JF
+    res_mat$Health_cost_JM[i, ] <- res_vec$Health_cost_JM
+    res_mat$Health_cost_AF[i, ] <- res_vec$Health_cost_AF
+    res_mat$Health_cost_AM[i, ] <- res_vec$Health_cost_AM
+    
+    res_mat$Capital_cost[i, ] <- res_vec$Capital_cost
+    
+    res_mat$Capital_cost_NF[i, ] <- res_vec$Capital_cost_NF
+    res_mat$Capital_cost_NM[i, ] <- res_vec$Capital_cost_NM
+    res_mat$Capital_cost_JF[i, ] <- res_vec$Capital_cost_JF
+    res_mat$Capital_cost_JM[i, ] <- res_vec$Capital_cost_JM
+    res_mat$Capital_cost_AF[i, ] <- res_vec$Capital_cost_AF
+    res_mat$Capital_cost_AM[i, ] <- res_vec$Capital_cost_AM
+    
+    res_mat$Infrastructure_cost[i, ] <- res_vec$Infrastructure_cost
+    res_mat$Infrastructure_cost_NF[i, ] <- res_vec$Infrastructure_cost_NF
+    res_mat$Infrastructure_cost_NM[i, ] <- res_vec$Infrastructure_cost_NM
+    res_mat$Infrastructure_cost_JF[i, ] <- res_vec$Infrastructure_cost_JF
+    res_mat$Infrastructure_cost_JM[i, ] <- res_vec$Infrastructure_cost_JM
+    res_mat$Infrastructure_cost_AF[i, ] <- res_vec$Infrastructure_cost_AF
+    res_mat$Infrastructure_cost_AM[i, ] <- res_vec$Infrastructure_cost_AM
+    
+    res_mat$Total_expenditure[i, ] <- res_vec$Total_expenditure
+
+    res_mat$Total_expenditure_NF[i, ] <- res_vec$Total_expenditure_NF
+    res_mat$Total_expenditure_NM[i, ] <- res_vec$Total_expenditure_NM
+    res_mat$Total_expenditure_JF[i, ] <- res_vec$Total_expenditure_JF
+    res_mat$Total_expenditure_JM[i, ] <- res_vec$Total_expenditure_JM
+    res_mat$Total_expenditure_AF[i, ] <- res_vec$Total_expenditure_AF
+    res_mat$Total_expenditure_AM[i, ] <- res_vec$Total_expenditure_AM
+    
     if (species == "cattle") {
       res_mat$NumO[i, ] <- res_vec$NumO
+      res_mat$Total_Mortality_O[i, ] <- res_vec$Total_Mortality_O
+      res_mat$Total_Mortality_O[i, ] <- res_vec$Total_Mortality_O
+      res_mat$Value_of_Total_Mortality_O[i, ] <- res_vec$Value_of_Total_Mortality_O
+      res_mat$Quant_Liveweight_kg_O[i, ] <- res_vec$Quant_Liveweight_kg_O
+      res_mat$Num_Offtake_O[i, ] <- res_vec$Num_Offtake_O
+      res_mat$Offtake_Liveweight_kg_O[i, ] <- res_vec$Offtake_Liveweight_kg_O
+      res_mat$Pop_growth_O[i, ] <- res_vec$Pop_growth_O
+      res_mat$Quant_Manure_O[i, ] <- res_vec$Quant_Manure_O
+      res_mat$Quant_Hides_O[i, ] <- res_vec$Quant_Hides_O
+      res_mat$Cumulative_Dry_Matter_O[i, ] <- res_vec$Cumulative_Dry_Matter_O
+      res_mat$Value_Offtake_O[i, ] <- res_vec$Value_Offtake_O
+      res_mat$Value_Herd_Increase_O[i, ] <- res_vec$Value_Herd_Increase_O
+      res_mat$Total_Value_increase_O[i, ] <- res_vec$Total_Value_increase_O
+      res_mat$Feed_cost_O[i, ] <- res_vec$Feed_cost_O
+      res_mat$Labour_cost_O[i, ] <- res_vec$Labour_cost_O
+      res_mat$Health_cost_O[i, ] <- res_vec$Health_cost_O
+      res_mat$Capital_cost_O[i, ] <- res_vec$Capital_cost_O
+      res_mat$Infrastructure_cost_O[i, ] <- res_vec$Infrastructure_cost_O
+      res_mat$Total_expenditure_O[i, ] <- res_vec$Total_expenditure_O
     }
     
   } # end nruns loop
