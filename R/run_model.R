@@ -699,12 +699,12 @@ run_model <- function() {
       # res_vec$Value_of_Total_Mortality_AM[month] <- res_vec$Total_Mortality_AM[month] * fvAM
       # 
       # res_vec$Value_of_Total_Mortality[month] <- sum(res_vec$Value_of_Total_Mortality_NF[month],
-      #                                            res_ec$Value_of_Total_Mortality_NM[month], 
+      #                                            res_vec$Value_of_Total_Mortality_NM[month],
       #                                            res_vec$Value_of_Total_Mortality_JF[month],
       #                                            res_vec$Value_of_Total_Mortality_JM[month],
       #                                            res_vec$Value_of_Total_Mortality_AF[month],
-      #                                            res_vec$Value_of_Total_Mortality_AM[month]) 
-      #  
+      #                                            res_vec$Value_of_Total_Mortality_AM[month])
+      # 
       # 
       # if (species == "cattle") {
       #   res_vec$Value_of_Total_Mortality_O[month] <- res_vec$Total_Mortality_O[month] * fvO
@@ -1329,6 +1329,134 @@ run_model <- function() {
     }
     
   } # end nruns loop
+  
+  Total_number_change_NF <- Num_Offtake_NF + Pop_growth_NF
+  mean(Total_number_change_NF[, 12])
+  
+  Total_number_change_NM <- Num_Offtake_NM + Pop_growth_NM
+  mean(Total_number_change_NM[, 12])
+  
+  Total_number_change_JF <- Num_Offtake_JF + Pop_growth_JF
+  mean(Total_number_change_JF)
+  
+  Total_number_change_JM <- Num_Offtake_JM + Pop_growth_JM
+  mean(Total_number_change_JM)
+  
+  Total_number_change_AF <- Num_Offtake_AF + Pop_growth_AF
+  mean(Total_number_change_AF)
+  
+  Total_number_change_AM <- Num_Offtake_AM + Pop_growth_AM
+  mean(Total_number_change_AM)
+  
+  Total_number_change <- sum(Total_number_change_NF,
+                             Total_number_change_NM,
+                             Total_number_change_JF,
+                             Total_number_change_JM,
+                             Total_number_change_AF,
+                             Total_number_change_AM)
+
+  Value_Milk <- Quant_Milk * milk_value_ltr
+  
+  Value_Hides_JF <- Quant_Hides_JF * sample(hides_value, 1)
+  Value_Hides_JM <- Quant_Hides_JM * sample(hides_value, 1)
+  Value_Hides_AF <- Quant_Hides_AF * sample(hides_value, 1)
+  Value_Hides_AM <- Quant_Hides_AM * sample(hides_value, 1)
+  
+  Value_Hides <- sum(Value_Hides_JF,
+                     Value_Hides_JM,
+                     Value_Hides_AF,
+                     Value_Hides_AM)
+                     
+  Value_Manure <- Quant_Manure * Man_value
+  Value_Manure_NF <- Quant_Manure_NF * Man_value
+  Value_Manure_NM <- Quant_Manure_NM * Man_value
+  Value_Manure_JF <- Quant_Manure_JF * Man_value
+  Value_Manure_JM <- Quant_Manure_JM * Man_value
+  Value_Manure_AF <- Quant_Manure_AF * Man_value
+  Value_Manure_AM <- Quant_Manure_AM * Man_value
+  
+  Production_value_herd_offteake_hide_man_NF <- Total_Value_increase_NF + Value_Manure_NF
+  Production_value_herd_offteake_hide_man_NM <- Total_Value_increase_NM + Value_Manure_NM
+  Production_value_herd_offteake_hide_man_JF <- Total_Value_increase_JF + Value_Manure_JF + Value_Hides_JF
+  Production_value_herd_offteake_hide_man_JM <- Total_Value_increase_JM + Value_Manure_JM + Value_Hides_JM
+  Production_value_herd_offteake_hide_man_AF <- Total_Value_increase_AF + Value_Manure_AF + Value_Hides_AF + Value_Milk
+  Production_value_herd_offteake_hide_man_AM <- Total_Value_increase_AM + Value_Manure_AM + Value_Hides_AM
+  
+  Production_value_herd_offtake_hide_manure <- sum(Production_value_herd_offtake_hide_manure_NF,
+                                                 Production_value_herd_offtake_hide_manure_NM, 
+                                                 Production_value_herd_offtake_hide_manure_JF,
+                                                 Production_value_herd_offtake_hide_manure_JM + 
+                                                 Production_value_herd_offtake_hide_manure_AF,
+                                                 Production_value_herd_offtake_hide_manure_AM)
+  
+  Gross_margin <- Production_value_herd_offteake_hide_man - Total_expenditure
+  Gross_margin_NF <- Production_value_herd_offteake_hide_man_NF - Total_expenditure_NF
+  Gross_margin_NM <- Production_value_herd_offteake_hide_man_NM - Total_expenditure_NM
+  Gross_margin_JF <- Production_value_herd_offteake_hide_man_JF - Total_expenditure_JF
+  Gross_margin_JM <- Production_value_herd_offteake_hide_man_JM - Total_expenditure_JM
+  Gross_margin_AF <- Production_value_herd_offteake_hide_man_AF - Total_expenditure_AF
+  Gross_margin_AM <- Production_value_herd_offteake_hide_man_AM - Total_expenditure_AM
+  
+  Num_Offtake_N <- Num_Offtake_NF + Num_Offtake_NM
+  Num_Offtake_J <- Num_Offtake_JF + Num_Offtake_JM
+  Pop_growth_N <- Pop_growth_NF + Pop_growth_NM
+  Pop_growth_J_M <- Pop_growth_JF + Pop_growth_JM
+
+  Total_number_change_N <- Num_Offtake_N + Pop_growth_N
+  Total_number_change_J <- Num_Offtake_J + Pop_growth_J
+  
+  Total_Mortality_N <- Total_Mortality_NF + Total_Mortality_NM
+  Total_Mortality_J <- Total_Mortality_JF + Total_Mortality_JM
+  
+  Value_of_Total_Mortality_N <- Value_of_Total_Mortality_NF + Value_of_Total_Mortality_NM
+  Value_of_Total_Mortality_J <- Value_of_Total_Mortality_JF + Value_of_Total_Mortality_JM
+  
+  Quant_Liveweight_kg_J <- Quant_Liveweight_kg_JF + Quant_Liveweight_kg_JM
+  Quant_Manure_N <- Quant_Manure_NF + Quant_Manure_NM
+  Quant_Manure_J <- Quant_Manure_JF + Quant_Manure_JM
+  Quant_Hides_J <- Quant_Hides_JF + Quant_Hides_JM
+  Cumilative_Dry_Matter_N <- Cumulative_Dry_Matter_NF + Cumulative_Dry_Matter_NM
+  Cumilative_Dry_Matter_J <- Cumulative_Dry_Matter_JF + Cumulative_Dry_Matter_JM
+  
+  Value_Offtake_N <- Value_Offtake_NF + Value_Offtake_NM
+  Value_Offtake_J <- Value_Offtake_JF + Value_Offtake_JM
+  Value_Herd_Increase_N <- Value_Herd_Increase_NF + Value_Herd_Increase_NM
+  Value_Herd_Increase_J <- Value_Herd_Increase_JF + Value_Herd_Increase_JM
+  Total_Value_increase_N <- Total_Value_increase_NF + Total_Value_increase_NM
+  Total_Value_increase_J <- Total_Value_increase_JF + Total_Value_increase_JM
+  Value_Manure_N <- Value_Manure_NF + Value_Manure_NM
+  Value_Manure_J <- Value_Manure_JF + Value_Manure_JM
+  Value_Hides_J <- Value_Hides_JF + Value_Hides_JM
+  Production_value_herd_offteake_hide_man_N <- Production_value_herd_offteake_hide_man_NF + Production_value_herd_offteake_hide_man_NM
+  Production_value_herd_offteake_hide_man_J <- Production_value_herd_offteake_hide_man_JF + Production_value_herd_offteake_hide_man_JM
+  
+  Feed_cost_N <- Feed_cost_NF + Feed_cost_NM
+  Feed_cost_J <- Feed_cost_JF + Feed_cost_JM
+  Labour_cost_N <- Labour_cost_NF + Labour_cost_NM
+  Labour_cost_J <- Labour_cost_JF + Labour_cost_JM
+  Health_cost_N <- Health_cost_NF + Health_cost_NM
+  Health_cost_J <- Health_cost_JF + Health_cost_JM
+  Capital_cost_N <- Capital_cost_NF + Capital_cost_NM
+  Capital_cost_J <- Capital_cost_JF + Capital_cost_JM
+  Infrastructure_cost_N <- Infrastructure_cost_NF + Infrastructure_cost_NM
+  Infrastructure_cost_J <- Infrastructure_cost_JF + Infrastructure_cost_JM
+  Total_expenditure_N <- Total_expenditure_N + Total_expenditure_NM
+  Total_expenditure_J <- Total_expenditure_JF + Total_expenditure_JM
+  
+  Gross_margin_N <- Gross_margin_NF + Gross_margin_NM
+  Gross_margin_J <- Gross_margin_JF + Gross_margin_JM
+  
+  if (species == "cattle") {
+    Total_number_change_O <- Num_Offtake_O + Pop_growth_O
+    mean(Total_number_change_O)
+    Total_number_change <- Total_number_change + Total_number_change_O
+    Value_Hides_O <- Quant_Hides_AM * sample(hides_value, 1)
+    Value_Hides <- Value_Hides + Value_Hides_O
+    Value_Manure_O <- Quant_Manure_O * Man_value
+    Production_value_herd_offtake_hide_manure_O <- Total_Value_increase_O + Value_Manure_O + Value_Hides_O + Cumulative_draught_income
+    Production_value_herd_offtake_hide_manure <- Production_value_herd_offtake_hide_manure + Production_value_herd_offtake_hide_manure_O
+    Gross_margin_O <- Production_value_herd_offteake_hide_man_O - Total_expenditure_O
+  }
   
 } # end function
 
