@@ -1425,8 +1425,8 @@ run_model <- function() {
   
   Value_Hides_J <- res_mat$Value_Hides_JF + res_mat$Value_Hides_JM
   
-  Production_value_herd_offteake_hide_manure_N <- res_mat$Production_value_herd_offtake_hide_manure_NF + res_mat$Production_value_herd_offtake_hide_manure_NM
-  Production_value_herd_offteake_hide_manure_J <- res_mat$Production_value_herd_offtake_hide_manure_JF + res_mat$Production_value_herd_offtake_hide_manure_JM
+  Production_value_herd_offtake_hide_manure_N <- res_mat$Production_value_herd_offtake_hide_manure_NF + res_mat$Production_value_herd_offtake_hide_manure_NM
+  Production_value_herd_offtake_hide_manure_J <- res_mat$Production_value_herd_offtake_hide_manure_JF + res_mat$Production_value_herd_offtake_hide_manure_JM
   
   Feed_cost_N <- res_mat$Feed_cost_NF + res_mat$Feed_cost_NM
   Feed_cost_J <- res_mat$Feed_cost_JF + res_mat$Feed_cost_JM
@@ -1459,6 +1459,122 @@ run_model <- function() {
     Production_value_herd_offtake_hide_manure <- res_mat$Production_value_herd_offtake_hide_manure + res_mat$Production_value_herd_offtake_hide_manure_O
     Gross_margin_O <- res_mat$Production_value_herd_offteake_hide_man_O - res_mat$Total_expenditure_O
   }
+  
+  # Get a list of all objects in the global environment
+  global_objects <- ls()
+  
+  # Initialize an empty list to store matrices
+  matrix_list <- list()
+  
+  # Loop through the global objects and check if they are matrices
+  for (object_name in global_objects) {
+    if (is.matrix(get(object_name))) {
+      matrix_list[[object_name]] <- get(object_name)
+    }
+  }
+  
+  # Print the list of matrices
+  matrix_list
+  
+  # Define a function to apply summary() to the last column of the matrix
+  apply_summary_last_col <- function(mat) {
+    summary(mat[, ncol(mat)])
+  }
+  
+  # Apply the function to all matrices in the list
+  summary_list <- lapply(matrix_list, apply_summary_last_col)
+  
+  
+  ###################################################################
+  
+  # =================================================================
+  # Summarize items and build data frame
+  # =================================================================
+  
+  build_summary_df <- function(items_to_summarize) {
+    suffixes <- c('Overall' = '_M','Neonatal Female' = '_NF_M'
+      ,'Neonatal Male' = '_NM_M'
+      ,'Neonatal Combined' = '_N_M'
+      ,'Juvenile Female' = '_JF_M'
+      ,'Juvenile Male' = '_JM_M'
+      ,'Juvenile Combined' = '_J_M'
+      ,'Adult Female' = '_AF_M'
+      ,'Adult Male' = '_AM_M'
+      ,'Oxen' = '_O_M'
+    )
+    summary_df_updated <- data.frame()  # Initialize data frame
+    for (i in seq(1, length(items_to_summarize))) 	# Loop through items to summarize
+    {
+      base_matrix <- items_to_summarize[i]
+      base_label <- names(base_matrix)
+      for (j in seq(1, length(suffixes))) 						# Loop through suffixes
+      {
+        suffix <- suffixes[j]
+        group <- names(suffix)
+        
+        if (exists(paste(base_matrix, suffix, sep=''), frame=-2)) 	# If matrix with this suffix exists
+        {
+          matrix_to_summarize <- dynGet(paste(base_matrix, suffix, sep=''))
+          vector_to_summarize <- matrix_to_summarize[,12]
+          
+          # Print details to console for debugging 
+          #print('base label:')
+          #print(base_label)
+          #print('group label:')
+          #print(group)
+          #print('matrix to summarize:')
+          #print(paste(base_matrix, suffix, sep=''))
+          
+          item_mean <- mean(vector_to_summarize)
+          item_sd <- sd(vector_to_summarize)
+          item_min <- min(vector_to_summarize)
+          item_q1 <- quantile(vector_to_summarize, 0.25)
+          item_median <- median(vector_to_summarize)
+          item_q3 <- quantile(vector_to_summarize, 0.75)
+          item_max <- max(vector_to_summarize)
+          
+          onerow_df <- data.frame(Item=base_label ,Group=group ,Mean=item_mean ,StDev=item_sd ,Min=item_min ,Q1=item_q1 ,Median=item_median ,Q3=item_q3 ,Max=item_max)
+          summary_df_updated <- rbind(summary_df_updated ,onerow_df)
+        }
+      }
+    }
+    return(summary_df_updated)
+  }
+
+  summary_df_updated <- build_summary_df(
+    items_to_summarize = c("Num Offtake" = "Num_Offtake",
+                           "Cumulative Pop Growth" = "Pop_growth",
+                           "Total Number Increase" = "Total_number_change",
+                           "Total Mortality" = "Total_Mortality",
+                           "Value of Total Mortality" = "Value_of_Total_Mortality",
+                           "Population Liveweight (kg)" = "Quant_Liveweight_kg",
+                           "Offtake Liveweight (kg)" = "Offtake_Liveweight_kg",
+                           "Meat (kg)" = "Quant_Meat_kg",
+                           "Manure" = "Quant_Manure",
+                           "Hides" = "Quant_Hides",
+                           "Milk" = "Quant_Milk",
+                           "Wool" = "Quant_Wool",
+                           "Cumulative Dry Matter" = "Cumulative_Dry_Matter",
+                           "Value of Offtake" = "Value_Offtake",
+                           "Value of Draught" = "Cumulative_draught_income",
+                           "Value of Herd Increase" = "Value_Herd_Increase",
+                           "Value of Herd Increase and Offtake" = "Total_Value_increase",
+                           "Value of Manure" = "Value_Manure",
+                           "Value of Hides" = "Value_Hides",
+                           "Value of Milk" = "Value_Milk",
+                           "Total Production Value" = "Production_value_herd_offtake_hide_manure",
+                           "Feed Cost" = "Feed_cost",
+                           "Labour Cost" = "Labour_cost",
+                           "Health Cost" = "Health_cost",
+                           "Capital Cost" = "Capital_cost",
+                           "Infrastructure Cost" = "Infrastructure_cost",
+                           "Total Expenditure" = "Total_expenditure",
+                           "Gross Margin" = "Gross_margin"
+    )
+  )
+  print('Compartmental model finished.')
+  return(list(Gross_margin[,12], summary_df_updated))
+}
   
 } # end function
 
