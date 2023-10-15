@@ -8,8 +8,9 @@
 #' # convert_yaml_to_json()
 #' 
 
-convert_yaml_to_json <- function(file_path) {
+convert_yaml_to_json <- function() {
   yaml_data <- read_yaml(file.choose())
   json_data <- toJSON(yaml_data, auto_unbox = TRUE, pretty = TRUE)
-  write_json(json_data, path = file_path)
+  json_file <- "params.json"
+  writeLines(json_data, con = json_file)
 }
