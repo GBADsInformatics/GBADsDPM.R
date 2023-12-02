@@ -2,18 +2,26 @@
 #' Run the AHLE compartmental agent-based simulation model 
 #' 
 #' @description
-#' Runs scenario simulations using parameters imported via \code{read_params()}
+#' Runs scenario simulations using parameters imported via \code{read_params(file_path, file_type = "yaml")}. 
+#' If desired, users can set a random seed to ensure reproducibility 
 #' 
 #' @example 
-#' # run_model()
+#' # run_model(seed_value = NULL)
 #' 
 
-run_model <- function() {
+run_model <- function(seed_value = NULL) {
   
-  calculate_mu <- function(part, prolif) {
-    return ((sample(part, size = 10000, replace = TRUE) * sample(prolif, size = 10000, replace = TRUE)) / 12)
+  # set seed for reproducibility
+  set.seed(seed_value)
+  
+  if (species == "cattle" || species == "small ruminants") {
+    calculate_mu <- function(part, prolif) {
+      return ((sample(part, size = 10000, replace = TRUE) * sample(prolif, size = 10000, replace = TRUE)) / 12)
+    }
+    # Calculate mu
+    Mu <- calculate_mu(part, prolif)
   }
-  
+
   calculate_dry_matter_requirements <- function(lw, prpn, dm_req_prpn) {
     return (dm_req_prpn * lw * prpn)
   }
@@ -26,9 +34,6 @@ run_model <- function() {
     return (kg_feed_purchased * feed_cost_kg)
   }
 
-  # Calculate mu
-  Mu <- calculate_mu(part, prolif)
-  
   # Calculate dry matter requirements
   kg_DM_req_NF <- calculate_dry_matter_requirements(lwNF, prpn_lskeepers_purch_feed, DM_req_prpn_NF)
   kg_DM_req_NM <- calculate_dry_matter_requirements(lwNM, prpn_lskeepers_purch_feed, DM_req_prpn_NM)
@@ -69,7 +74,7 @@ run_model <- function() {
   }
   
   # List of variable categories'
-  categories <- c(
+  vector_categories <- c(
     "NumNF",
     "NumNM",
     "NumJF",
@@ -256,7 +261,7 @@ run_model <- function() {
   )
   
   if (species == "cattle") {
-    vector_categories <- append(categories, c("NumO",
+    vector_categories <- append(vector_categories, c("NumO",
                          "Oxen_J", 
                          "Oxen_A",
                          "Deaths_O", 
@@ -281,7 +286,7 @@ run_model <- function() {
                          "Infrastructure_cost_O", 
                          "Total_expenditure_O"))
   } else if (species == "small ruminants") {
-    vector_categories <- append(vector_categories, "Quant_Wool")
+    # vector_categories <- append(vector_categories, "Quant_Wool")
   } else {
     # poultry
     vector_categories <- append(vector_categories, c("Quant_Eggs_sold",
@@ -508,7 +513,8 @@ run_model <- function() {
                                                      "Infrastructure_cost_O", 
                                                      "Total_expenditure_O"))
   } else if (species == "small ruminants") {
-    matrix_categories <- append(matrix_categories, "Quant_Wool")
+    # wool not implemented yet by Gemma
+    # matrix_categories <- append(matrix_categories, "Quant_Wool")
   } else {
     # poultry
     matrix_categories <- append(matrix_categories, c("Quant_Eggs_consumed",
@@ -529,7 +535,7 @@ run_model <- function() {
     Nt0 <- sum(N_NF_t0, N_NM_t0, N_JF_t0, N_JM_t0, N_AF_t0, N_AM_t0)
     
     if (species == "cattle") {
-      Nt0 <- Nt0 + N_O_t0
+      Nt0 <- Nt0 + N_O_t0 # new total population with oxen added
     }
     
     # Define population variables and set initial values from function arguments
@@ -580,6 +586,7 @@ run_model <- function() {
     Health <- 0
     Capital <- 0
     
+    # Production variables
     production_vars <- c("Num_dead", 
                          "Liveweight_kg",
                          "Offtake",
@@ -787,6 +794,18 @@ run_model <- function() {
                                                   res_vec$Offtake_Liveweight_kg_AF[month],
                                                   res_vec$Offtake_Liveweight_kg_AM[month]) * ccy
       
+      if (species == "poultry") {
+        res_vec$Quant_Eggs_sold[month] = Eggs_sold + AF * sample(prop_females_laying, 1) * sample(lay_rate, 1) * sample(egg_sale_rate,1) 
+        res_vec$Quant_Eggs_consumed[month] = Eggs_consumed + AF * sample(prop_females_laying, 1) * sample(lay_rate, 1) * sample(egg_consumption_rate, 1)
+        
+        Eggs_sold = res_vec$Quant_Eggs_sold[month]
+        Eggs_consumed = res_vec$Quant_Eggs_consumed[month]
+        
+        res_vec$Value_Eggs_sold[month] <- res_vec$Quant_Eggs_sold[month] * sample(egg_price, 1) 
+        res_vec$Value_Eggs_consumed[month] <- res_vec$Quant_Eggs_consumed[month] * sample(egg_price, 1) 
+        
+      }
+ 
       if (species == "cattle") { 
         res_vec$Offtake_Liveweight_kg_O[month] <- sample(lwO, 1) * Offtake_O
         res_vec$Offtake_Liveweight_kg[month] <-  res_vec$Offtake_Liveweight_kg[month] + res_vec$Offtake_Liveweight_kg_O[month]
@@ -892,7 +911,7 @@ run_model <- function() {
       Value_offt_JM <- res_vec$Value_Offtake_JM[month]
       
       res_vec$Value_Offtake_AF[month] <- sample(fvAF, 1) * Offtake_AF
-      Value_offt_AF <-  res_vec$Value_Offtake_AF[month]
+      Value_offt_AF <- res_vec$Value_Offtake_AF[month]
       
       res_vec$Value_Offtake_AM[month] <- sample(fvAM, 1) * Offtake_AM  
       Value_offt_AM <-  res_vec$Value_Offtake_AM[month]
@@ -1168,6 +1187,15 @@ run_model <- function() {
 
     res_mat$Quant_Meat_kg[i, ] <- res_vec$Quant_Meat_kg
     
+    if (species == "poultry") {
+      res_mat$Quant_Eggs_consumed[i, ] <- res_vec$Quant_Eggs_consumed
+      res_mat$Quant_Eggs_sold[i, ] <- res_vec$Quant_Eggs_sold
+      
+      res_mat$Value_Eggs_consumed[i, ] <- res_vec$Value_Eggs_consumed
+      res_mat$Value_Eggs_sold[i, ] <- res_vec$Value_Eggs_sold
+      
+    }
+
     res_mat$Num_Offtake[i, ] <- res_vec$Num_Offtake
     
     res_mat$Num_Offtake_NF[i, ] <- res_vec$Num_Offtake_NF
@@ -1212,7 +1240,7 @@ run_model <- function() {
     res_mat$Quant_Hides_AM[i, ] <- res_vec$Quant_Hides_AM
     
     res_mat$Quant_Milk[i, ] <- res_vec$Quant_Milk
-    res_mat$Quant_Wool[i, ] <- res_vec$Quant_Wool
+    # res_mat$Quant_Wool[i, ] <- res_vec$Quant_Wool
     
     res_mat$Cumulative_Dry_Matter[i, ] <- res_vec$Cumulative_Dry_Matter
     
@@ -1458,6 +1486,10 @@ run_model <- function() {
     Production_value_herd_offtake_hide_manure_O <- res_mat$Total_Value_increase_O + res_mat$Value_Manure_O + res_mat$Value_Hides_O + res_mat$Cumulative_draught_income
     Production_value_herd_offtake_hide_manure <- res_mat$Production_value_herd_offtake_hide_manure + res_mat$Production_value_herd_offtake_hide_manure_O
     Gross_margin_O <- res_mat$Production_value_herd_offteake_hide_man_O - res_mat$Total_expenditure_O
+  }
+  
+  if (species == "poultry") {
+    Production_value_herd_offteake_hide_manure_AF <- res_mat$Total_Value_increase_AF + res_mat$Value_Eggs_sold + res_mat$Value_Eggs_consumed
   }
   
   ### Generate summary of simulated estimates ###
