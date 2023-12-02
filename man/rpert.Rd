@@ -4,16 +4,16 @@
 \alias{rpert}
 \title{Generate random variates from PERT distribution for AHLE modelling}
 \usage{
-rpert(n, x.min, x.max, x.mode, lambda = 4)
+rpert(n, x_min, x_max, x_mode, lambda = 4)
 }
 \arguments{
 \item{n}{Number of variates to generate}
 
-\item{x.min}{Minimum x value to sample}
+\item{x_min}{Minimum x value to sample}
 
-\item{x.max}{Maximum x value to sample}
+\item{x_max}{Maximum x value to sample}
 
-\item{x.mode}{Most frequent x value to sample}
+\item{x_mode}{Most frequent x value to sample}
 
 \item{lambda}{Scaling factor (set to 4 by default)}
 }

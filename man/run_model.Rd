@@ -4,8 +4,9 @@
 \alias{run_model}
 \title{Run the AHLE compartmental agent-based simulation model}
 \usage{
-run_model()
+run_model(seed_value = NULL)
 }
 \description{
-Runs scenario simulations using parameters imported via \code{read_params()}
+Runs scenario simulations using parameters imported via \code{read_params(file_path, file_type = "yaml")}. 
+If desired, users can set a random seed to ensure reproducibility
 }
