@@ -1,4 +1,4 @@
-# Set working directory
+# Set working directory 
 
 setwd("/Users/jarrettphillips/desktop/GBADs Postdoc/GBADs R Package/R")
 
@@ -13,8 +13,9 @@ setwd("/Users/jarrettphillips/desktop/GBADs Postdoc/GBADs R Package/R")
 library(mc2d)
 library(truncnorm)
 library(yaml)
+library(jsonlite)
 
-# Import GBADS functions
+# Import GBADs functions
 
 source("rpert.R")
 source("read_params.R")
@@ -22,9 +23,19 @@ source("read_params.R")
 # Specify required arguments
 
 file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_cattle.yaml"
-file_type <- "yaml"
-species <- "cattle"
+# file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_small_ruminants.yaml"
+# file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_poultry.yaml"
 
-# Import scenario paramter file
+file_type <- "yaml"
+
+species <- "cattle"
+# species <- "small ruminants"
+# species <- "poultry"
+
+seed_value <- NULL
+
+# Import scenario parameter file
 
 read_params(file_path = file_path, file_type = file_type)
+
+
