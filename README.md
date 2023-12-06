@@ -30,7 +30,7 @@ AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s
 
 ## Package Functions
 
-GBADs comprises three main functions:
+{\tt GBADs} comprises three main functions:
 
 1.    read_params() reads in a model parameter file in YAML format into a user's R workspace 
 
