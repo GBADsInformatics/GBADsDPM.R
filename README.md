@@ -26,11 +26,14 @@ The AHLE is derived via a cost minimization as:
 
 ```math
 AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s_{i}({n_i}_t - n_{it}^*) - \sum_{j=1}^{J}r_j(y_{ij} - y_{ij}^*)\right)
+```
 
 ## Package Functions
 
-    Fun
-```
+GBADs comprises three main functions:
+
+1.    read_params()
+
 ## References
 
 Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J. Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the Animal Health-Loss Envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099.
