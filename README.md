@@ -33,7 +33,7 @@ AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s
 The GBADs R package comprises three main functions:
 
 1.    ```read_params(file_path, file_type)``` reads in a model parameter file in YAML format into a user's R workspace based on a specied ```file_path``` telling R where files are located on a user's system 
-2.    ```rpert(n, min, mode, max, lamda = 4)```
+2.    ```rpert(n, min, mode, max, lambda = 4)``` generates $n$ random variates within a given range from the PERT distribution based on specified minimum, maximum, and modal values, where ```x_min``` $<$ ```x_mode``` $<$ ```x_max```
 
 ## References
 
