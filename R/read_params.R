@@ -2,35 +2,28 @@
 #' Import AHLE parameter file 
 
 #' @description
-#' Read in AHLE parameter file in YAML, JSON, or CSV format.
+#' Read in AHLE parameter file in YAML format
 #' 
 #' @param file_path Relative or absolute path to file
-#' @param file_type File type (One of: YAML (default), JSON, or CSV)
+#' @param file_type File type (Currently only YAML is supported)
 #' 
 #' @example
-#' # read_parameters_from_file(file_path = "path/to/params.yaml", file_type = "yaml")
-#' # read_parameters_from_file(file_path = "path/to/params.json", file_type = "json")
-#' # read_parameters_from_file(file_path = "path/to/params.csv", file_type = "csv")
+#' # Read_parameters_from_file(file_path = "path/to/params.yaml", file_type = "yaml")
 
 read_params <- function(file_path, file_type = "yaml") {
+  # Error handling for incorrect file type
   if (!file.exists(file_path)) {
     stop("File not found: ", file_path)
   }
   
-  if (file_type == "yaml") {
-    # Read parameters from a YAML file
-    params_data <- read_yaml(file_path)
-  } else if (file_type == "json") {
-    # Read parameters from a JSON file
-    params_data <- fromJSON(file_path)
-  } else if (file_type == "csv") {
-    # Read parameters from a CSV file
-    params_data <- read_csv(file_path)
-  } else {
-    stop("Invalid file type. Supported file types: 'csv', 'json', 'yaml'")
+  if (file_type != "yaml") {
+    stop("Invalid file type. Supported file type: 'yaml'")
   }
   
-  # Function to recursively evaluate R expressions within a list
+  # Read in YAML file
+  params_data <- read_yaml(file_path)
+  
+  # Recursively evaluate R expressions within a list
   evaluate_r_expressions <- function(data) {
     if (is.list(data)) {
       for (key in names(data)) {
