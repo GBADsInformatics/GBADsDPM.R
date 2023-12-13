@@ -1527,7 +1527,7 @@ run_model <- function(seed_value = NULL) {
   df <- df[, c("Variable", "Min.", "1st Qu.", "Median", "Mean", "SD", "3rd Qu.", "Max.")]
 
   # Write the data frame to a CSV file
-  write.csv(df, file = paste(species, "_AHLE.csv"), row.names = FALSE)
+  write.csv(df, file = paste(species,"_AHLE.csv"), row.names = FALSE)
   
   
 } # end function
