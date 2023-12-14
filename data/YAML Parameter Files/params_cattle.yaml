@@ -1,6 +1,6 @@
 ##### cattle_trial_CLM_current #####
 
-# Species: cattle
+Species: cattle
 nruns: 10000
 Num_months: 12
 

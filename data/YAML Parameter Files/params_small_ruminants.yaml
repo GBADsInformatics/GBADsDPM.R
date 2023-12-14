@@ -1,6 +1,6 @@
 ##### CLM_S_Current #####
 
-# Species: small ruminants
+Species: small ruminants
 nruns: 10000
 Num_months: 12
 
@@ -120,3 +120,4 @@ Health_exp: runif(10000, (2.2/12), (2.8/12))
 
 Interest_rate: 0
 Infrastructure_per_head: 1
+
