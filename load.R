@@ -19,6 +19,7 @@ library(jsonlite)
 
 source("rpert.R")
 source("read_params.R")
+# source("run_model.R")
 
 # Specify required arguments
 
@@ -28,14 +29,13 @@ file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Pa
 
 file_type <- "yaml"
 
-species <- "cattle"
+#species <- "cattle"
 # species <- "small ruminants"
 # species <- "poultry"
 
-seed_value <- NULL
+seed_value <- 0673227 # set random seed for reproducibility
 
 # Import scenario parameter file
-
 read_params(file_path = file_path, file_type = file_type)
 
 
