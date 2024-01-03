@@ -1419,7 +1419,7 @@ run_compartmental_model <- function(seed_value = NULL) {
   Num_Offtake_J <- res_mat$Num_Offtake_JF + res_mat$Num_Offtake_JM
   
   Pop_growth_N <- res_mat$Pop_growth_NF + res_mat$Pop_growth_NM
-  Pop_growth_J_M <- res_mat$Pop_growth_JF + res_mat$Pop_growth_JM
+  Pop_growth_J <- res_mat$Pop_growth_JF + res_mat$Pop_growth_JM
 
   Total_number_change_N <- res_mat$Num_Offtake_N + res_mat$Pop_growth_N
   Total_number_change_J <- res_mat$Num_Offtake_J + res_mat$Pop_growth_J
