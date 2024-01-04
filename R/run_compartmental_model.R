@@ -1486,7 +1486,7 @@ run_compartmental_model <- function(seed_value = NULL) {
     Value_Manure_O <- res_mat$Quant_Manure_O * Man_value
     Production_value_herd_offtake_hide_manure_O <- res_mat$Total_Value_increase_O + res_mat$Value_Manure_O + res_mat$Value_Hides_O + res_mat$Cumulative_draught_income
     Production_value_herd_offtake_hide_manure <- res_mat$Production_value_herd_offtake_hide_manure + res_mat$Production_value_herd_offtake_hide_manure_O
-    Gross_margin_O <- res_mat$Production_value_herd_offteake_hide_man_O - res_mat$Total_expenditure_O
+    Gross_margin_O <- res_mat$Production_value_herd_offtake_hide_man_O - res_mat$Total_expenditure_O
   }
   
   if (species == "poultry") {
@@ -1496,17 +1496,17 @@ run_compartmental_model <- function(seed_value = NULL) {
   ### Generate summary of simulated estimates ###
   
   # Get a list of all objects in the global environment
-  global_objects <- ls()
+  # global_objects <- ls()'
   
-  # Initialize an empty list to store matrices
-  matrix_list <- list()
-  
-  # Loop through the global objects and check if they are matrices
-  for (object_name in global_objects) {
-    if (is.matrix(get(object_name))) {
-      matrix_list[[object_name]] <- get(object_name)
-    }
-  }
+  # # Initialize an empty list to store matrices
+  # matrix_list <- list()
+  # 
+  # # Loop through the global objects and check if they are matrices
+  # for (object_name in res_mat) {
+  #   if (is.matrix(get(object_name))) {
+  #     matrix_list[[object_name]] <- get(object_name)
+  #   }
+  # }
   
   # Define a function to apply summary() to the last column of the matrix
   apply_summary_last_column <- function(mat) {
@@ -1516,7 +1516,7 @@ run_compartmental_model <- function(seed_value = NULL) {
   }
   
   # Apply the function to all matrices in the list
-  summary_list <- lapply(matrix_list, apply_summary_last_column)
+  summary_list <- lapply(res_mat, apply_summary_last_column)
   
   # convert to dataframe
   df <- as.data.frame(do.call(rbind, summary_list))
