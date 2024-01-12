@@ -13,4 +13,5 @@ for (i in seq_along(variables_to_replace)) {
 # Create a new function with replaced variables
 new_fun <- eval(parse(text = modified_code))
 
+# Save function to file in working directory
 dump("new_fun", file = "fun.R")
