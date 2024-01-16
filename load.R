@@ -13,29 +13,25 @@ setwd("/Users/jarrettphillips/desktop/GBADs Postdoc/GBADs R Package/R")
 library(mc2d)
 library(truncnorm)
 library(yaml)
-library(jsonlite)
 
 # Import GBADs functions
 
 source("rpert.R")
 source("read_params.R")
-# source("run_model.R")
+source("run_compartmental_model.R")
 
 # Specify required arguments
-
 file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_cattle.yaml"
 # file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_small_ruminants.yaml"
 # file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_poultry.yaml"
 
 file_type <- "yaml"
 
-#species <- "cattle"
-# species <- "small ruminants"
-# species <- "poultry"
-
-seed_value <- 0673227 # set random seed for reproducibility
+seed_value <- NULL # set random seed for reproducibility
 
 # Import scenario parameter file
 read_params(file_path = file_path, file_type = file_type)
 
+# Run model 
+system.time(run_compartmental_model()) # measure CPU time
 
