@@ -34,11 +34,13 @@ The GBADs R package comprises three main functions:
 
 1.    ```read_params(file_path, file_type)``` reads in a model parameter file in YAML format into a user's R workspace based on a specied ```file_path``` telling R where files are located on a user's system 
 2.    ```rpert(n, min, mode, max, lambda = 4)``` generates ```n``` random variates within a given range from the PERT distribution based on specified minimum, maximum, and modal values, where ```x_min``` $<$ ```x_mode``` $<$ ```x_max```. Setting ```lambda = 4``` controls the shape (*i.e.*, flatness) of the distribution, effectively placing more or less weight on certain values
-3.   ```run__compartmental_model()``` runs a simulation of the AHLE for a scenario of interest using parameters found in the YAML file
+3.   ```run_compartmental_model()``` runs a simulation of the AHLE for a scenario of interest using parameters found in the YAML file
 
 ## How to Run
 
-1. Run the `load.R` script. This installs and loads required packages and sources necessary functions. The packages may need to be installed first.
+3. Download the code from GitHub.
+2. Run the `load.R` script. This installs and loads required packages and sources necessary functions. The packages may need to be installed first. You will need to change the working directory to correspond to your system.
+3. Call `run_compartmental_model()`. This will create a CSV file with summary statistics for variables of interest, 
 
 
 
