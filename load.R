@@ -18,7 +18,7 @@ library(yaml)
 
 source("rpert.R")
 source("read_params.R")
-source("run_compartmental_model.R")
+source("run_compartmental_model_V1.0.R")
 
 # Specify required arguments
 file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_cattle.yaml"
