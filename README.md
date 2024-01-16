@@ -38,7 +38,8 @@ The GBADs R package comprises three main functions:
 
 ## How to Run
 
-Run the `load.R` script. This installs and loads required packages and sources necessary functions.
+1. Run the `load.R` script. This installs and loads required packages and sources necessary functions. The packages may need to be installed first.
+
 
 
 ## References
