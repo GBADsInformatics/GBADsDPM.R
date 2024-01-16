@@ -36,6 +36,11 @@ The GBADs R package comprises three main functions:
 2.    ```rpert(n, min, mode, max, lambda = 4)``` generates ```n``` random variates within a given range from the PERT distribution based on specified minimum, maximum, and modal values, where ```x_min``` $<$ ```x_mode``` $<$ ```x_max```. Setting ```lambda = 4``` controls the shape (*i.e.*, flatness) of the distribution, effectively placing more or less weight on certain values
 3.   ```run__compartmental_model()``` runs a simulation of the AHLE for a scenario of interest using parameters found in the YAML file
 
+## How to Run
+
+Run the `load.R` script. This installs and loads required packages and sources necessary functions.
+
+
 ## References
 
 Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J. Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the Animal Health-Loss Envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099.
