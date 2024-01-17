@@ -697,7 +697,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Total_Mortality[month] <- res_vec$Total_Mortality[month] + res_vec$Total_Mortality_O[month]
       }
       
-      ### Fix This
+      ### Fix This - the LHS is a single value (monthn 12), but the RHS is a vector of length nruns
       
       # res_vec$Value_of_Total_Mortality_NF[month] <- res_vec$Total_Mortality_NF[month] * fvNF
       # res_vec$Value_of_Total_Mortality_NM[month] <- res_vec$Total_Mortality_NM[month] * fvNM
