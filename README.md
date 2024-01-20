@@ -1,6 +1,6 @@
 # GBADsDPM.R
 
-Welcome is the GBADsDPM (Global Burden of Animal Diseases Dynaic Population Model) R package repository!
+Welcome is the GBADsDPM (Global Burden of Animal Diseases Dynamic Population Model) R package repository!
 
 ## The Dynamic Population Model (DPM)
 
