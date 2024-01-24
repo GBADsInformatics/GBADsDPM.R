@@ -1,9 +1,9 @@
 # Load necessary libraries
 library(shiny)
 library(yaml)
-library(DT)  
+library(DT)
 library(mc2d)
-library(truncnorm)
+# library(truncnorm)
 
 # Define the read_params function
 read_params <- function(file_path, file_type = "yaml") {
@@ -11,14 +11,14 @@ read_params <- function(file_path, file_type = "yaml") {
   if (!file.exists(file_path)) {
     stop("File not found: ", file_path)
   }
-  
+
   if (file_type != "yaml") {
     stop("Invalid file type. Supported file type: YAML")
   }
-  
+
   # Read in YAML file
   params_data <- read_yaml(file_path)
-  
+
   # Recursively evaluate R expressions within a list
   evaluate_r_expressions <- function(data, exclude_eval = character()) {
     if (is.list(data)) {
@@ -32,7 +32,7 @@ read_params <- function(file_path, file_type = "yaml") {
       }
       if (grepl("^r\\w*\\(", data)) {
         data <- eval(parse(text = data))
-        # Evaluate rpert() 
+        # Evaluate rpert()
       } else if (identical(gsub("\\s+", "", data), as.character(parse(text = data)))) {
         data <- eval(parse(text = data))
       } else if (grepl("^\\d+\\s*[-+*/]\\s*\\d+$", data)) {
@@ -41,15 +41,15 @@ read_params <- function(file_path, file_type = "yaml") {
     }
     return(data)
   }
-  
+
   # Define strings that should not be evaluated
-  exclude_evaluation <- c("cattle", 
-                          "small ruminants", 
+  exclude_evaluation <- c("cattle",
+                          "small ruminants",
                           "poultry")
-  
+
   # Evaluate R expressions within the parameters data
   params_data <- evaluate_r_expressions(params_data, exclude_evaluation)
-  
+
   # Return the parameters
   return(params_data)
 }
@@ -62,11 +62,11 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
   if (x_range == 0) {
     return(rep(x_min, n))
   }
-  
+
   mu <- (x_min + x_max + lambda * x_mode) / (lambda + 2)
-  
+
   # special case if mu == mode
-  
+
   if (mu == x_mode) {
     v <- (lambda / 2) + 1
   }
@@ -74,7 +74,7 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
     v <- ((mu - x_min) * (2 * x_mode - x_min - x_max)) /
       ((x_mode - mu) * (x_max - x_min))
   }
-  
+
   w <- (v * (x_max - mu)) / (mu - x_min)
   return (rbeta(n, v, w) * x_range + x_min)
 }
@@ -89,14 +89,14 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   # Reactive values to store parameters
   params <- reactiveValues(data = NULL)
-  
+
   observeEvent(input$readButton, {
     file_path <- input$file$datapath
     params$data <- read_params(file_path)
-    
+
     # Round numeric values to 3 decimal places
-    rounded_data <- lapply(params$data, function(x) if (is.numeric(x)) round(x, 3) else x)
-    
+    rounded_data <- lapply(params$data, function(x) if (is.numeric(x)) round(x, 1) else x)
+
     output$table <- renderDT({
       # Display only the first 5 values of each vector
       shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x, 5) else x)
@@ -107,4 +107,3 @@ server <- function(input, output, session) {
 
 # Run the Shiny app
 shinyApp(ui, server)
-                  
