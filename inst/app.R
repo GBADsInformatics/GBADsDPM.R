@@ -11,14 +11,14 @@ read_params <- function(file_path, file_type = "yaml") {
   if (!file.exists(file_path)) {
     stop("File not found: ", file_path)
   }
-
+  
   if (file_type != "yaml") {
     stop("Invalid file type. Supported file type: YAML")
   }
-
+  
   # Read in YAML file
   params_data <- read_yaml(file_path)
-
+  
   # Recursively evaluate R expressions within a list
   evaluate_r_expressions <- function(data, exclude_eval = character()) {
     if (is.list(data)) {
@@ -41,15 +41,15 @@ read_params <- function(file_path, file_type = "yaml") {
     }
     return(data)
   }
-
+  
   # Define strings that should not be evaluated
   exclude_evaluation <- c("cattle",
                           "small ruminants",
                           "poultry")
-
+  
   # Evaluate R expressions within the parameters data
   params_data <- evaluate_r_expressions(params_data, exclude_evaluation)
-
+  
   # Return the parameters
   return(params_data)
 }
@@ -62,11 +62,11 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
   if (x_range == 0) {
     return(rep(x_min, n))
   }
-
+  
   mu <- (x_min + x_max + lambda * x_mode) / (lambda + 2)
-
+  
   # special case if mu == mode
-
+  
   if (mu == x_mode) {
     v <- (lambda / 2) + 1
   }
@@ -74,30 +74,44 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
     v <- ((mu - x_min) * (2 * x_mode - x_min - x_max)) /
       ((x_mode - mu) * (x_max - x_min))
   }
-
+  
   w <- (v * (x_max - mu)) / (mu - x_min)
   return (rbeta(n, v, w) * x_range + x_min)
 }
 
 # Define the Shiny app
 ui <- fluidPage(
-  mainPanel(img(src = "GBADs.png", align= "left", width = 200, height = 200)),
-  
-  fileInput("file", "Choose YAML File"),
-  numericInput("seed", label = "Set Seed Value For Reproducibility (Optional)", value = NULL),
-  actionButton("readButton", "Read Parameters"),
-  DTOutput("table")  # Display parameters in a DataTable
+  mainPanel(
+    img(src = "GBADs.png", align = "left", width = 200, height = 200),
+    fileInput("file", "Choose YAML File"),
+    checkboxInput("useRandomSeed", "Use Random Seed", FALSE),
+    uiOutput("seedInput"),
+    actionButton("readButton", "Read Parameters"),
+    DTOutput("table")  # Display parameters in a DataTable
+  )
 )
 
 server <- function(input, output, session) {
   # Reactive values to store parameters
   params <- reactiveValues(data = NULL)
   
+  # Render seed input based on checkbox
+  output$seedInput <- renderUI({
+    if (input$useRandomSeed) {
+      numericInput("seed", label = "Set Seed Value For Reproducibility", value = NULL)
+    } else {
+      NULL
+    }
+  })
+  
   observeEvent(input$readButton, {
     file_path <- input$file$datapath
-    if (!is.null(input$seed)) {
+    
+    # Set seed if provided
+    if (input$useRandomSeed && !is.null(input$seed)) {
       set.seed(as.numeric(input$seed))
     }
+    
     params$data <- read_params(file_path)
     
     # Round numeric values to 3 decimal places
@@ -113,3 +127,4 @@ server <- function(input, output, session) {
 
 # Run the Shiny app
 shinyApp(ui, server)
+
