@@ -83,7 +83,7 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
 ui <- fluidPage(
   mainPanel(img(src = "GBADs.png", align= "left", width = 200, height = 200)),
   
-  fileInput("file", "Choose YAML file"),
+  fileInput("file", "Choose YAML File"),
   numericInput("seed", label = "Seed Value", value = NULL),
   actionButton("readButton", "Read Parameters"),
   DTOutput("table")  # Display parameters in a DataTable
