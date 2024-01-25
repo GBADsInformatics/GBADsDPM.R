@@ -69,8 +69,7 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
   
   if (mu == x_mode) {
     v <- (lambda / 2) + 1
-  }
-  else {
+  } else {
     v <- ((mu - x_min) * (2 * x_mode - x_min - x_max)) /
       ((x_mode - mu) * (x_max - x_min))
   }
@@ -87,7 +86,8 @@ ui <- fluidPage(
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
     actionButton("readButton", "Read parameters"),
-    DTOutput("table")  # Display parameters in a DataTable
+    DTOutput("table"),  # Display parameters in a DataTable
+    uiOutput("roundingNote")  # Display rounding note
   )
 )
 
@@ -121,6 +121,11 @@ server <- function(input, output, session) {
       # Display only the first 5 values of each vector
       shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x, 5) else x)
       shortened_data <- t(shortened_data)
+    })
+    
+    # Display rounding note
+    output$roundingNote <- renderUI({
+      HTML("<b>Note</b>: Values in the above table have been rounded to 3 decimal places of precision.")
     })
   })
 }
