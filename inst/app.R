@@ -83,10 +83,10 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
 ui <- fluidPage(
   mainPanel(
     img(src = "GBADs.png", align = "left", width = 200, height = 200),
-    fileInput("file", "Choose YAML File"),
-    checkboxInput("useRandomSeed", "Use Random Seed", FALSE),
+    fileInput("file", "Choose YAML file"),
+    checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
-    actionButton("readButton", "Read Parameters"),
+    actionButton("readButton", "Read parameters"),
     DTOutput("table")  # Display parameters in a DataTable
   )
 )
@@ -98,7 +98,7 @@ server <- function(input, output, session) {
   # Render seed input based on checkbox
   output$seedInput <- renderUI({
     if (input$useRandomSeed) {
-      numericInput("seed", label = "Set Seed Value For Reproducibility", value = NULL)
+      numericInput("seed", label = "Set seed value (can be an integer of any length)", value = NULL)
     } else {
       NULL
     }
