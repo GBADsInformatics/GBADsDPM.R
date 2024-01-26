@@ -86,7 +86,10 @@ ui <- fluidPage(
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
     actionButton("readButton", "Read parameters"),
+    tags$br(),  # Add vertical whitespace
+    tags$br(),
     DTOutput("table"),  # Display parameters in a DataTable
+    uiOutput("valuesNote"),  # Display rounding note
     uiOutput("roundingNote")  # Display rounding note
   )
 )
@@ -118,14 +121,17 @@ server <- function(input, output, session) {
     rounded_data <- lapply(params$data, function(x) if (is.numeric(x)) round(x, 3) else x)
     
     output$table <- renderDT({
-      # Display only the first 5 values of each vector
-      shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x, 5) else x)
+      # Display only the first 6 values of each vector
+      shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x) else x)
       shortened_data <- t(shortened_data)
     })
     
-    # Display rounding note
+    # Display notes
+    output$valuesNote <- renderUI({
+      HTML("<b>Note 1</b>: Only the first six values are displayed in the table above.")
+    })
     output$roundingNote <- renderUI({
-      HTML("<b>Note</b>: Values in the above table have been rounded to 3 decimal places of precision.")
+      HTML("<b>Note 2</b>: Values in the above table have been rounded to 3 decimal places of precision.")
     })
   })
 }
