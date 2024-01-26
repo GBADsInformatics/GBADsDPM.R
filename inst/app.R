@@ -82,13 +82,13 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
 ui <- fluidPage(
   mainPanel(
     img(src = "GBADs.png", align = "left", width = 200, height = 200),
-    fileInput("file", "Choose YAML file"),
+    fileInput("file", "Choose YAML file", multiple = TRUE),
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
     actionButton("readButton", "Read parameters"),
     tags$br(),  # Add vertical whitespace
     tags$br(),
-    DTOutput("table"),  # Display parameters in a DataTable
+    uiOutput("tables"),  # Display parameters in DataTables
     uiOutput("valuesNote"),  # Display rounding note
     uiOutput("roundingNote")  # Display rounding note
   )
@@ -108,34 +108,40 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$readButton, {
-    file_path <- input$file$datapath
+    file_paths <- input$file$datapath
     
     # Set seed if provided
     if (input$useRandomSeed && !is.null(input$seed)) {
       set.seed(as.numeric(input$seed))
     }
     
-    params$data <- read_params(file_path)
-    
-    # Round numeric values to 3 decimal places
-    rounded_data <- lapply(params$data, function(x) if (is.numeric(x)) round(x, 3) else x)
-    
-    output$table <- renderDT({
+    all_tables <- lapply(file_paths, function(file_path) {
+      params$data <- read_params(file_path)
+      
+      # Round numeric values to 3 decimal places
+      rounded_data <- lapply(params$data, function(x) if (is.numeric(x)) round(x, 3) else x)
+      
       # Display only the first 6 values of each vector
       shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x) else x)
       shortened_data <- t(shortened_data)
+      
+      datatable(shortened_data)
+    })
+    
+    # Display multiple tables
+    output$tables <- renderUI({
+      do.call(tagList, all_tables)
     })
     
     # Display notes
     output$valuesNote <- renderUI({
-      HTML("<b>Note 1</b>: Only the first six values are displayed in the table above.")
+      HTML("<b>Note 1</b>: Only the first six values are displayed in each table above.")
     })
     output$roundingNote <- renderUI({
-      HTML("<b>Note 2</b>: Values in the above table have been rounded to 3 decimal places of precision.")
+      HTML("<b>Note 2</b>: Values in each table have been rounded to 3 decimal places of precision.")
     })
   })
 }
 
 # Run the Shiny app
 shinyApp(ui, server)
-
