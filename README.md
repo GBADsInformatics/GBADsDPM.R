@@ -38,7 +38,7 @@ The GBADs R package comprises three main functions:
 
 ## How to Run
 
-3. Download the code from GitHub.
+1. Download the code from GitHub.
 2. Run the `load.R` script. This installs and loads required packages and sources necessary functions. The packages may need to be installed first. You will need to change the working directory to correspond to your system. Additionally, you can set the `seed_value` to an integer of any length to ensure code reproducibility. This is useful if you don't plan on doing everything in one sitting. 
 3. Call `run_compartmental_model()`. This will create a CSV file with summary statistics for variables of interest and save the results to the user's working directory.
 
