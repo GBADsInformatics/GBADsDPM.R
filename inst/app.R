@@ -80,8 +80,15 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
 
 # Define the Shiny app
 ui <- fluidPage(
+  fluidRow(
+    column(2,
+           img(src = "GBADs.png", width = 150, height = 150)
+    ),
+    column(10,
+           titlePanel("The Dynamic Population Model (DPM)")
+    )
+  ),
   mainPanel(
-    img(src = "GBADs.png", align = "left", width = 200, height = 200),
     fileInput("file", "Choose YAML file", multiple = TRUE),
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
@@ -145,3 +152,7 @@ server <- function(input, output, session) {
 
 # Run the Shiny app
 shinyApp(ui, server)
+
+
+
+
