@@ -89,7 +89,7 @@ ui <- fluidPage(
     )
   ),
   mainPanel(
-    fileInput("file", "Choose YAML file", multiple = TRUE),
+    fileInput("file", "Choose YAML file", multiple = TRUE, accept = ".yaml"),
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
     actionButton("readButton", "Read parameters"),
@@ -116,13 +116,17 @@ server <- function(input, output, session) {
   
   observeEvent(input$readButton, {
     file_paths <- input$file$datapath
+    file_names <- input$file$name
     
     # Set seed if provided
     if (input$useRandomSeed && !is.null(input$seed)) {
       set.seed(as.numeric(input$seed))
     }
     
-    all_tables <- lapply(file_paths, function(file_path) {
+    all_tables <- lapply(seq_along(file_paths), function(i) {
+      file_path <- file_paths[i]
+      file_name <- file_names[i]
+      
       params$data <- read_params(file_path)
       
       # Round numeric values to 3 decimal places
@@ -132,7 +136,7 @@ server <- function(input, output, session) {
       shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x) else x)
       shortened_data <- t(shortened_data)
       
-      datatable(shortened_data)
+      datatable(shortened_data, caption = paste0("DPM data and parameters for ", file_name))
     })
     
     # Display multiple tables
@@ -148,11 +152,8 @@ server <- function(input, output, session) {
       HTML("<b>Note 2</b>: Values in each table have been rounded to 3 decimal places of precision.")
     })
   })
+  
 }
 
 # Run the Shiny app
 shinyApp(ui, server)
-
-
-
-
