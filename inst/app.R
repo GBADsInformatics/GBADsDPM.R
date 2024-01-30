@@ -4,21 +4,23 @@ library(yaml)
 library(DT)
 library(mc2d)
 library(truncnorm)
+library(tools)
 
-# Define the read_params function
+# Define functions
+
 read_params <- function(file_path, file_type = "yaml") {
   # Error handling for incorrect file type
   if (!file.exists(file_path)) {
     stop("File not found: ", file_path)
   }
-  
+
   if (file_type != "yaml") {
     stop("Invalid file type. Supported file type: YAML")
   }
-  
+
   # Read in YAML file
   params_data <- read_yaml(file_path)
-  
+
   # Recursively evaluate R expressions within a list
   evaluate_r_expressions <- function(data, exclude_eval = character()) {
     if (is.list(data)) {
@@ -41,15 +43,15 @@ read_params <- function(file_path, file_type = "yaml") {
     }
     return(data)
   }
-  
+
   # Define strings that should not be evaluated
   exclude_evaluation <- c("cattle",
                           "small ruminants",
                           "poultry")
-  
+
   # Evaluate R expressions within the parameters data
   params_data <- evaluate_r_expressions(params_data, exclude_evaluation)
-  
+
   # Return the parameters
   return(params_data)
 }
@@ -62,18 +64,18 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
   if (x_range == 0) {
     return(rep(x_min, n))
   }
-  
+
   mu <- (x_min + x_max + lambda * x_mode) / (lambda + 2)
-  
+
   # special case if mu == mode
-  
+
   if (mu == x_mode) {
     v <- (lambda / 2) + 1
   } else {
     v <- ((mu - x_min) * (2 * x_mode - x_min - x_max)) /
       ((x_mode - mu) * (x_max - x_min))
   }
-  
+
   w <- (v * (x_max - mu)) / (mu - x_min)
   return (rbeta(n, v, w) * x_range + x_min)
 }
@@ -136,7 +138,7 @@ server <- function(input, output, session) {
       shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x) else x)
       shortened_data <- t(shortened_data)
       
-      datatable(shortened_data, caption = paste0("DPM data and parameters for ", file_name))
+      datatable(shortened_data, caption = paste0("DPM data and parameters for ", file_path_sans_ext(file_name), " scenario"))
     })
     
     # Display multiple tables
