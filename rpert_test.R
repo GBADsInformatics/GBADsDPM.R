@@ -1,6 +1,6 @@
 library(mc2d) # for rpert()
 
-rpert1 <- function(n, x_min, x_max, x_mode, lambda = 4) {
+rpert_gemma <- function(n, x_min, x_max, x_mode, lambda = 4) {
   if (x_min > x_max || x_mode > x_max || x_mode < x_min) {
     stop("invalid parameters")
   }
@@ -30,7 +30,7 @@ rpert1 <- function(n, x_min, x_max, x_mode, lambda = 4) {
 
 fun <- function(seed_value) {
   set.seed(seed_value)
-  f <- rpert1(n = 5, x_min = 1, x_max = 5, x_mode = 2)
+  f <- rpert_gemma(n = 5, x_min = 1, x_max = 5, x_mode = 2)
   g <- rpert(n = 5, min = 1, mode = 2, max = 5) # from mc2d
   
   return(list("Gemma" = f,
