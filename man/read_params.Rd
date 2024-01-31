@@ -2,15 +2,15 @@
 % Please edit documentation in R/read_params.R
 \name{read_params}
 \alias{read_params}
-\title{Import AHLE parameter file}
+\title{Import DPM/AHLE parameter file}
 \usage{
 read_params(file_path, file_type = "yaml")
 }
 \arguments{
 \item{file_path}{Relative or absolute path to file}
 
-\item{file_type}{File type (One of: YAML (default), JSON, or CSV)}
+\item{file_type}{File type (Currently only YAML is supported)}
 }
 \description{
-Read in AHLE parameter file in YAML, JSON, or CSV format.
+Read in DPM/AHLE parameter file in YAML format
 }

@@ -2,11 +2,11 @@
 % Please edit documentation in R/run_compartmental_model.R
 \name{run_compartmental_model}
 \alias{run_compartmental_model}
-\title{Run the AHLE compartmental simulation model}
+\title{Run the DPM/AHLE compartmental simulation model}
 \usage{
 run_compartmental_model(seed_value = NULL)
 }
 \description{
-Runs simulations for scenarios using parameters imported via \code{read_params(file_path)}. 
+Runs DPM/AHLE simulations for scenarios using parameters imported via \code{read_params(file_path)}. 
 If desired, users can set a random seed to ensure reproducibility
 }
