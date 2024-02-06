@@ -26,7 +26,8 @@ rpert_gemma <- function(n, x_min, x_max, x_mode, lambda = 4) {
 }
 
 
-# Function to compare output
+# Function to compare output - tests for exact equality
+# Since a seed was set the results should be the same
 
 fun <- function(seed_value) {
   set.seed(seed_value)
@@ -41,3 +42,4 @@ fun <- function(seed_value) {
 
 seed_value <- 0673227 # set random seed for reproducibility - can be an integer of any length
 fun(seed_value = seed_value)
+
