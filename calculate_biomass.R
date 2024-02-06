@@ -11,7 +11,7 @@ calculate_biomass <- function() {
   res <- list("Neonatal Females" = NF,
               "Neonatal Males" = NM,
               "Juvenile Females" = JF,
-              "Juvenile Males" = JF,
+              "Juvenile Males" = JM,
               "Adult Males" = AF,
               "Adult Males" = AM)
   return(res)
