@@ -73,7 +73,7 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
     v <- (lambda / 2) + 1
   } else {
     v <- ((mu - x_min) * (2 * x_mode - x_min - x_max)) /
-      ((x_mode - mu) * (x_max - x_min))
+      ((x_mode - mu) * x_range)
   }
 
   w <- (v * (x_max - mu)) / (mu - x_min)
@@ -106,7 +106,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   # Reactive values to store parameters
   params <- reactiveValues(data = NULL)
-  
+
   # Render seed input based on checkbox
   output$seedInput <- renderUI({
     if (input$useRandomSeed) {
@@ -115,37 +115,37 @@ server <- function(input, output, session) {
       NULL
     }
   })
-  
+
   observeEvent(input$readButton, {
     file_paths <- input$file$datapath
     file_names <- input$file$name
-    
+
     # Set seed if provided
     if (input$useRandomSeed && !is.null(input$seed)) {
       set.seed(as.numeric(input$seed))
     }
-    
+
     all_tables <- lapply(seq_along(file_paths), function(i) {
       file_path <- file_paths[i]
       file_name <- file_names[i]
-      
+
       params$data <- read_params(file_path)
-      
+
       # Round numeric values to 3 decimal places
       rounded_data <- lapply(params$data, function(x) if (is.numeric(x)) round(x, 3) else x)
-      
+
       # Display only the first 6 values of each vector
       shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x) else x)
       shortened_data <- t(shortened_data)
-      
+
       datatable(shortened_data, caption = paste0("DPM data and parameters for ", file_path_sans_ext(file_name), " scenario"))
     })
-    
+
     # Display multiple tables
     output$tables <- renderUI({
       do.call(tagList, all_tables)
     })
-    
+
     # Display notes
     output$valuesNote <- renderUI({
       HTML("<b>Note 1</b>: Only the first six values are displayed in each table above.")
@@ -154,8 +154,9 @@ server <- function(input, output, session) {
       HTML("<b>Note 2</b>: Values in each table have been rounded to 3 decimal places of precision.")
     })
   })
-  
+
 }
 
 # Run the Shiny app
 shinyApp(ui, server)
+
