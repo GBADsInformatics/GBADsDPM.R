@@ -11,25 +11,25 @@
 #' # Read_parameters_from_file(file_path = "path/to/params.yaml", file_type = "yaml")
 
 read_params <- function(file_path, file_type = "yaml") {
-  # Error handling for incorrect file type
   if (!file.exists(file_path)) {
     stop("File not found: ", file_path)
   }
   
   if (file_type != "yaml") {
-    stop("Invalid file type. Supported file type: 'yaml'")
+    stop("Invalid file type. Supported file type: YAML")
   }
   
-  # Read in YAML file
   params_data <- read_yaml(file_path)
   
-  # Recursively evaluate R expressions within a list
-  evaluate_r_expressions <- function(data) {
+  evaluate_r_expressions <- function(data, exclude_eval = character()) {
     if (is.list(data)) {
       for (key in names(data)) {
-        data[[key]] <- evaluate_r_expressions(data[[key]])
+        data[[key]] <- evaluate_r_expressions(data[[key]], exclude_eval)
       }
     } else if (is.character(data)) {
+      if (data %in% exclude_eval) {
+        return(data)
+      }
       if (grepl("^r\\w*\\(", data)) {
         data <- eval(parse(text = data))
       } else if (identical(gsub("\\s+", "", data), as.character(parse(text = data)))) {
@@ -41,14 +41,15 @@ read_params <- function(file_path, file_type = "yaml") {
     return(data)
   }
   
-  # Evaluate R expressions within the parameters data
-  params_data <- evaluate_r_expressions(params_data)
+  exclude_evaluation <- c("cattle", 
+                          "small ruminants", 
+                          "poultry")
   
-  # Loop through the names and values and set the parameters accordingly
+  params_data <- evaluate_r_expressions(params_data, exclude_evaluation)
+  
   for (parameter in names(params_data)) {
     value <- params_data[[parameter]]
     
-    # Set the parameter value using assign()
     assign(parameter, value, envir = parent.frame())
   }
 }
