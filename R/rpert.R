@@ -33,8 +33,6 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
   
   mu <- (x_min + x_max + lambda * x_mode) / (lambda + 2)
   
-  # special case if mu == mode
-  
   if (mu == x_mode) {
     v <- (lambda / 2) + 1
   }
