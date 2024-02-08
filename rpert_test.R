@@ -11,8 +11,6 @@ rpert_gemma <- function(n, x_min, x_max, x_mode, lambda = 4) {
   
   mu <- (x_min + x_max + lambda * x_mode) / (lambda + 2)
   
-  # special case if mu == mode
-  
   if (mu == x_mode) {
     v <- (lambda / 2) + 1
   }
@@ -25,10 +23,6 @@ rpert_gemma <- function(n, x_min, x_max, x_mode, lambda = 4) {
   return (rbeta(n, v, w) * x_range + x_min)
 }
 
-
-# Function to compare output - tests for exact equality
-# Since a seed was set the results should be the same
-
 fun <- function(seed_value) {
   set.seed(seed_value)
   f <- rpert_gemma(n = 5, x_min = 1, x_max = 5, x_mode = 2)
@@ -40,6 +34,6 @@ fun <- function(seed_value) {
 }
 
 
-seed_value <- 0673227 # set random seed for reproducibility - can be an integer of any length
+seed_value <- 0673227 
 fun(seed_value = seed_value)
 
