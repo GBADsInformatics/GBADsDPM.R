@@ -6,6 +6,7 @@ library(DT)
 library(mc2d)
 library(truncnorm)
 library(tools)
+library(shinyjs)
 
 read_params <- function(file_path, file_type = "yaml") {
   if (!file.exists(file_path)) {
@@ -72,9 +73,10 @@ rpert <- function(n, x_min, x_max, x_mode, lambda = 4) {
 source("Functions/run_compartmental_model.R")
 
 ui <- fluidPage(
+  useShinyjs(),
   fluidRow(
     column(2,
-           img(src = "GBADs.png", width = 150, height = 150)
+           img(src = "GBADs.png", width = 150, height = 150, onclick = "openWebsite()")
     ),
     column(10,
            titlePanel("The Dynamic Population Model (DPM)")
@@ -85,12 +87,13 @@ ui <- fluidPage(
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
     actionButton("readButton", "Read parameters"),
-    actionButton("runCompartmentalModelButton", "Run model"),
+    actionButton("runCompartmentalModelButton", "Run model"),  # Button to trigger compartmental model simulation
     tags$br(),  # Add vertical whitespace
     tags$br(),
     uiOutput("tables"),  # Display parameters in DataTables
     uiOutput("valuesNote"),  # Display rounding note
-    uiOutput("roundingNote")  # Display rounding note
+    uiOutput("roundingNote"),  # Display rounding note
+    DTOutput("modelResultsTable")  # Display table for model results
   )
 )
 
@@ -150,6 +153,13 @@ server <- function(input, output, session) {
       "Compartmental model simulation has been completed."
     ))
   })
+  
+  # Define JavaScript function to open website
+  runjs("
+    openWebsite = function() {
+      window.open('https://www.gbadske.org', '_blank');
+    }
+  ")
 
 }
 
