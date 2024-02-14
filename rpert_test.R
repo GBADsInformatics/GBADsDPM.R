@@ -23,17 +23,20 @@ rpert_gemma <- function(n, x_min, x_max, x_mode, lambda = 4) {
   return (rbeta(n, v, w) * x_range + x_min)
 }
 
-fun <- function(seed_value) {
+fun <- function(n, seed_value) {
   set.seed(seed_value)
-  f <- rpert_gemma(n = 5, x_min = 1, x_max = 5, x_mode = 2)
-  g <- rpert(n = 5, min = 1, mode = 2, max = 5) # from mc2d
+  f <- rpert_gemma(n = n, x_min = 1, x_max = 5, x_mode = 2)
+  g <- rpert(n = n, min = 1, mode = 2, max = 5) # from mc2d
   
-  return(list("Gemma" = f,
-              "mc2d" = g,
+  return(list("Gemma rpert" = f,
+              "mc2d rpert" = g,
               "identical" = identical(f, g)))
 }
 
 
+# Test
+
+n <- 5
 seed_value <- 0673227 
-fun(seed_value = seed_value)
+fun(n = n, seed_value = seed_value)
 
