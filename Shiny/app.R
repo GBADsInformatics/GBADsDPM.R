@@ -16,6 +16,7 @@ ui <- fluidPage(
   mainPanel(
     fileInput("file", "Choose YAML file", multiple = TRUE, accept = ".yaml"),
     selectInput("selectedFiles", "Select File(s):", choices = NULL, multiple = TRUE),
+    checkboxInput("displayTables", "Display Tables", value = FALSE),
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
     actionButton("readButton", "Read parameters"),
@@ -83,9 +84,12 @@ server <- function(input, output, session) {
   
   # Add an action button to reset fileInput, selectInput, and displayed tables
   observeEvent(input$resetButton, {
-    updateSelectInput(session, "selectedFiles", choices = NULL, selected = NULL)
     output$tables <- renderUI(NULL)
+    output$valuesNote <- renderUI(NULL)  # Clear the values note
+    output$roundingNote <- renderUI(NULL)  # Clear the rounding note
   })
+  
+  
   
   # Add an action button to trigger compartmental model simulation
   observeEvent(input$runCompartmentalModelButton, {
