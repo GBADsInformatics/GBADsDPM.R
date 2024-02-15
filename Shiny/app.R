@@ -15,9 +15,11 @@ ui <- fluidPage(
   ),
   mainPanel(
     fileInput("file", "Choose YAML file", multiple = TRUE, accept = ".yaml"),
+    selectInput("selectedFiles", "Select File(s):", choices = NULL, multiple = TRUE),
     checkboxInput("useRandomSeed", "Use random seed for reproducibility", FALSE),
     uiOutput("seedInput"),
     actionButton("readButton", "Read parameters"),
+    actionButton("resetButton", "Reset"),  # Reset button
     actionButton("runCompartmentalModelButton", "Run model"),  # Button to trigger compartmental model simulation
     tags$br(),  # Add vertical whitespace
     tags$br(),
@@ -28,9 +30,10 @@ ui <- fluidPage(
   )
 )
 
+
 server <- function(input, output, session) {
   params <- reactiveValues(data = NULL)
-
+  
   output$seedInput <- renderUI({
     if (input$useRandomSeed) {
       numericInput("seed", label = "Set seed value (can be an integer of any length)", value = NULL)
@@ -38,39 +41,50 @@ server <- function(input, output, session) {
       NULL
     }
   })
-
+  
+  observeEvent(input$file, {
+    updateSelectInput(session, "selectedFiles", choices = input$file$name)
+  })
+  
   observeEvent(input$readButton, {
     file_paths <- input$file$datapath
     file_names <- input$file$name
-
+    updateSelectInput(session, "selectedFiles", choices = file_names, selected = NULL)
+    
     if (input$useRandomSeed && !is.null(input$seed)) {
       set.seed(as.numeric(input$seed))
     }
-
+    
     all_tables <- lapply(seq_along(file_paths), function(i) {
       file_path <- file_paths[i]
       file_name <- file_names[i]
-
+      
       params$data <- read_params(file_path)
-
+      
       rounded_data <- lapply(params$data, function(x) if (is.numeric(x)) round(x, 3) else x)
-
+      
       shortened_data <- lapply(rounded_data, function(x) if(is.vector(x)) head(x) else x)
       shortened_data <- t(shortened_data)
-
+      
       datatable(shortened_data, caption = paste0("DPM data and parameters for ", file_path_sans_ext(file_name), " scenario"))
     })
-
+    
     output$tables <- renderUI({
       do.call(tagList, all_tables)
     })
-
+    
     output$valuesNote <- renderUI({
       HTML("<b>Note 1</b>: Only the first six values are displayed in each table above.")
     })
     output$roundingNote <- renderUI({
       HTML("<b>Note 2</b>: Values in each table have been rounded to 3 decimal places of precision.")
     })
+  })
+  
+  # Add an action button to reset fileInput, selectInput, and displayed tables
+  observeEvent(input$resetButton, {
+    updateSelectInput(session, "selectedFiles", choices = NULL, selected = NULL)
+    output$tables <- renderUI(NULL)
   })
   
   # Add an action button to trigger compartmental model simulation
@@ -91,8 +105,10 @@ server <- function(input, output, session) {
       window.open('https://www.gbadske.org', '_blank');
     }
   ")
-
+  
 }
 
-shinyApp(ui, server)
 
+
+
+shinyApp(ui, server)
