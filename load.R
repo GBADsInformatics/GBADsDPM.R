@@ -23,5 +23,5 @@ seed_value <- NULL # set random seed for reproducibility - can be an integer of 
 
 read_params(file_path = file_path, file_type = file_type)
 
-# system.time(run_compartmental_model()) # measure CPU time
+run_compartmental_model() # measure CPU time
 
