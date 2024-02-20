@@ -21,11 +21,11 @@ file_path <- file.choose() # this will open a file explorer to select the file
 
 file_type <- "yaml" # this will always be the case 
 
-seed_value <- NULL # set random seed for reproducibility - can be an integer of any length
+seed_value <- 0673227 # set random seed for reproducibility - can be an integer of any length
 
 read_params(file_path = file_path, file_type = file_type)
 
-run_compartmental_model(seed_value = 0673227)
+run_compartmental_model(seed_value = seed_value)
 
 
   
