@@ -10,12 +10,12 @@ library(yaml)
 
 source("rpert.R")
 source("read_params.R")
-source("run_model.R")
+source("run_compartmental_model.R")
 
-file_path <- "/Users/jarrettphillips/desktop/GBADs Postdoc/Ethiopia AHLE/YAML Parameter Files/params_cattle.yaml"
+file_path <- file.choose()
 file_type <- "yaml"
 
 seed_value <- NULL # set random seed for reproducibility
 read_params(file_path = file_path, file_type = file_type)
 
-
+run_compartmental_model()
