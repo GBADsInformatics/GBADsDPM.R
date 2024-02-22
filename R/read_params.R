@@ -43,13 +43,14 @@ read_params <- function(file_path, file_type = "yaml") {
   
   exclude_evaluation <- c("cattle", 
                           "small ruminants", 
-                          "poultry")
+                          "poultry",
+                          "swine")
   
   params_data <- evaluate_r_expressions(params_data, exclude_evaluation)
   
   for (parameter in names(params_data)) {
     value <- params_data[[parameter]]
     
-    assign(parameter, value, envir = parent.frame())
+    assign(parameter, value, envir = .GlobalEnv)
   }
 }
