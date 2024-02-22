@@ -7,10 +7,9 @@ Author: Jarrett D. Phillips
 Maintainer: Jarrett D. Phillips <jphill01@uoguelph.ca>
 Description: Runs the Animal Health Loss Envelope (AHLE)
 License: GPL (>= 2)
-Imports: Rcpp (>= 1.0.10),
-         mc2d (>= 0.1-22),
+Imports: mc2d (>= 0.1-22),
          truncnorm (>= 1.0-9),
          yaml (>= 2.3.7)
-LinkingTo: Rcpp
+         rstudioapi (>= 0.15.0)
 RoxygenNote: 7.2.3
 Encoding: UTF-8
