@@ -35,14 +35,19 @@ The GBADs R package comprises three main functions:
 1.    ```read_params(file_path, file_type)``` reads in a DPM/AHLE model parameter file in YAML format into a user's R workspace based on a specied ```file_path``` telling R where files are located on a user's system.
 2.    ```rpert(n, min, mode, max, lambda = 4)``` generates ```n``` random variates within a given range from the PERT distribution based on specified minimum, maximum, and modal values, where ```x_min``` $<$ ```x_mode``` $<$ ```x_max```. Setting ```lambda = 4``` controls the shape (*i.e.*, flatness) of the distribution, effectively placing more or less weight on certain values. Note, you should not have to alter the value of `lambda`.
 3.   ```run_compartmental_model()``` runs a simulation of the DPM/AHLE for a scenario of interest using parameters found in the YAML file. Outputs a CSV file of summary statistcs fr quantities of interest (minimum, 1st quartile, median, mean, third quartile, maximum, and standard deviation) to the user's working directory. ReTurned values correspond to month 12 over 10000 simulations by default. These can then be used to compute the AHLE.
+4.  ```setup(seed_alue)``` loads DPM/AHLE parameters and runs the compartmental model all at once. The user need only point to the required folders and files interactively through a pop-up window.
 
 ## How to Run
 
 1. Download the code from GitHub.
-2. Run the `load.R` script. This installs and loads required packages and sources necessary functions. The packages may need to be installed first. You will need to change the working directory to correspond to your system. Additionally, you can set the `seed_value` to an integer of any length to ensure code reproducibility. This is useful if you don't plan on doing everything in one sitting. 
-3. Call `run_compartmental_model()`. This will create a CSV file with summary statistics for DPM/AHLE variables of interest and save the results to the user's working directory.
 
+# Version 1
 
+2. Run the `load.R` script. This installs and loads required packages and sources necessary functions and then runs the model. The packages may need to be installed first. You will need to change the working directory to correspond to your system. Additionally, you can set the `seed_value` to an integer of any length to ensure code reproducibility. This is useful if you don't plan on doing everything in one sitting. 
+
+# Version 2
+
+2. Run the ```setup()``` function with a random seed (if desired).
 
 ## References
 
