@@ -49,6 +49,10 @@ The GBADs R package comprises three main functions:
 
 2. Run the ```setup()``` function with a random seed (if desired).
 
+# Note
+
+The package should be run in RStudio,
+
 ## References
 
 Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J. Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the Animal Health-Loss Envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099.
