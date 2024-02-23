@@ -51,7 +51,7 @@ The GBADs R package comprises three main functions:
 
 # Note
 
-The package should be run in RStudio,
+The package should be run in RStudio.
 
 ## References
 
