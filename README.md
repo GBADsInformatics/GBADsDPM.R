@@ -49,7 +49,7 @@ The GBADs R package comprises three main functions:
 
 2. Run the ```setup()``` function with a random seed (if desired).
 
-## Note
+### Note
 
 The package should be run in RStudio.
 
