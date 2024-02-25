@@ -1,5 +1,5 @@
 #' @title
-#' Setup and run DPM/AHLE scenarios
+#' Set up and run DPM/AHLE scenarios
 
 #' @description
 #' Read in a DPM/AHLE parameter file in YAML format and run compartmental model. 
@@ -11,10 +11,11 @@
 #' # setup(seed_value = NULL)
 
 setup <- function(seed_value = NULL) {
-  setwd(selectDirectory()) 
+  setwd(selectDirectory(caption = "Select a directory to save results")) 
   
   file_path <- selectFile(caption = "Select a YAML file", filter = "*.yaml") 
   file_type <- "yaml"
+  
   read_params(file_path = file_path, file_type = file_type)
   run_compartmental_model(seed_value = seed_value)
 }
