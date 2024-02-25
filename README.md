@@ -41,15 +41,15 @@ The GBADs R package comprises three main functions:
 
 1. Download the code from GitHub.
 
-# Version 1
+### Version 1
 
 2. Run the `load.R` script. This installs and loads required packages and sources necessary functions and then runs the model. The packages may need to be installed first. You will need to change the working directory to correspond to your system. Additionally, you can set the `seed_value` to an integer of any length to ensure code reproducibility. This is useful if you don't plan on doing everything in one sitting. 
 
-# Version 2
+### Version 2
 
 2. Run the ```setup()``` function with a random seed (if desired).
 
-# Note
+## Note
 
 The package should be run in RStudio.
 
