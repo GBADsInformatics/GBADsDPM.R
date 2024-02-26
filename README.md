@@ -35,7 +35,7 @@ The GBADs R package comprises three main functions:
 1.    ```read_params(file_path, file_type)``` reads in a DPM/AHLE model parameter file in YAML format into a user's R workspace based on a specied ```file_path``` telling R where files are located on a user's system.
 2.    ```rpert(n, min, mode, max, lambda = 4)``` generates ```n``` random variates within a given range from the PERT distribution based on specified minimum, maximum, and modal values, where ```x_min``` $<$ ```x_mode``` $<$ ```x_max```. Setting ```lambda = 4``` controls the shape (*i.e.*, flatness) of the distribution, effectively placing more or less weight on certain values. Note, you should not have to alter the value of `lambda`.
 3.   ```run_compartmental_model()``` runs a simulation of the DPM/AHLE for a scenario of interest using parameters found in the YAML file. Outputs a CSV file of summary statistcs fr quantities of interest (minimum, 1st quartile, median, mean, third quartile, maximum, and standard deviation) to the user's working directory. ReTurned values correspond to month 12 over 10000 simulations by default. These can then be used to compute the AHLE.
-4.  ```setup(seed_alue)``` loads DPM/AHLE parameters and runs the compartmental model all at once. The user need only point to the required folders and files interactively through a pop-up window.
+4.  ```setup(seed_alue)``` is a wrapper that loads DPM/AHLE parameters and runs the compartmental model all at once. The user need only point to the required folders and files interactively through a pop-up window.
 
 ## How to Run
 
