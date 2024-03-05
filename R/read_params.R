@@ -11,8 +11,8 @@
 #' # Read_parameters_from_file(file_path = "path/to/params.yaml", file_type = "yaml")
 
 read_params <- function(file_path, file_type = "yaml") {
-  if (!file.exists(file_path) || !dir.exists(file_path)) {
-    stop("File or directory not found: ", file_path)
+  if (!file.exists(file_path)) {
+    stop("File not found: ", file_path)
   }
   
   if (file_type != "yaml") {
