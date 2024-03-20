@@ -1510,10 +1510,9 @@ run_compartmental_model <- function(seed_value = NULL) {
   
   # Reorder the columns as needed (optional)
   df <- df[, c("Variable", "Min.", "1st Qu.", "Median", "Mean", "SD", "3rd Qu.", "Max.")]
+  df
 
   # Write the data frame to a CSV file
-  write.csv(df, file = paste(species,"_AHLE.csv"), row.names = FALSE)
-  
-  
+  # write.csv(df, file = paste(species,"_AHLE.csv"), row.names = FALSE)
 } # end function
 
