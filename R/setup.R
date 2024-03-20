@@ -3,13 +3,12 @@
 
 #' @description
 #' Read in a DPM/AHLE parameter file in YAML format and run compartmental model. 
-#' Users are prompted to select a directory in which to save results, and a file to be read.
 #' 
 #' @param file_path A path to a directory containing YAML files to be analyzed
 #' @param seed_value An integer value of any length for reproducibility
 #' 
 #' @example
-#' # setup(seed_value = NULL)
+#' # setup(file_path = file_path, seed_value = NULL)
 
 setup <- function(file_path, seed_value = NULL) {
   file_names <- list.files(file_path, pattern = "*.yaml", full.names = TRUE)
