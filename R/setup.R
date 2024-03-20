@@ -34,7 +34,7 @@ setup <- function(file_path, seed_value = NULL) {
   # }
 }
 
-ptm <- proc.time()
+
 setup(file_path = file_path)
-proc.time() - ptm
+
 
