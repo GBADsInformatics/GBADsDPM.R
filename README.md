@@ -47,7 +47,7 @@ The GBADs R package comprises three main functions:
 
 ### Version 2
 
-2. Run the ```setup()``` function with a random seed (if desired).
+2. Run the ```setup(file_path = file_path, seed_value = seed_value)``` function with a random seed, `seed_value` (if desired). A filepath, `file_path`, pointing to a folder contsining the YAML parameter files to be analyzed should also be specified.
 
 ### Note
 
