@@ -1477,7 +1477,7 @@ run_compartmental_model <- function(seed_value = NULL) {
   Gross_margin_N <- res_mat$Gross_margin_NF + res_mat$Gross_margin_NM
   Gross_margin_J <- res_mat$Gross_margin_JF + res_mat$Gross_margin_JM
   
-  if (species == "cattlese") {
+  if (species == "cattle") {
     Total_number_change_O <- res_mat$Num_Offtake_O + res_mat$Pop_growth_O
     Total_number_change <- res_mat$Total_number_change + res_mat$Total_number_change_O
     Value_Hides_O <- res_mat$Quant_Hides_AM * sample(hides_value, 1)
@@ -1512,7 +1512,5 @@ run_compartmental_model <- function(seed_value = NULL) {
   df <- df[, c("Variable", "Min.", "1st Qu.", "Median", "Mean", "SD", "3rd Qu.", "Max.")]
   df
 
-  # Write the data frame to a CSV file
-  # write.csv(df, file = paste(species,"_AHLE.csv"), row.names = FALSE)
 } # end function
 
