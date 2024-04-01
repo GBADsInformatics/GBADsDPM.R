@@ -39,7 +39,7 @@ The GBADs R package comprises three main functions:
 
 ## How to Run
 
-Currently, there are two different ways to run the DPM, depending on which version is used. The most recent version is recommended.
+Currently, there are two different ways to run the DPM, depending on which version is used. The most recent version (Version 2) is recommended.
 
 1. Download the code from GitHub.
 
