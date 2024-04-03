@@ -24,6 +24,7 @@ setup <- function(file_path, seed_value = NULL) {
     write.csv(df, file = output_file, row.names = FALSE)
   }
   
+  # Parallelization
   
   # foreach (file_name = 1:length(file_names), .packages = packages) %dopar% {
   #   params <- read_params(file_path = file_name, file_type = file_type)
@@ -33,8 +34,4 @@ setup <- function(file_path, seed_value = NULL) {
   #   write.csv(df, file = output_file, row.names = FALSE)
   # }
 }
-
-
-setup(file_path = file_path)
-
 
