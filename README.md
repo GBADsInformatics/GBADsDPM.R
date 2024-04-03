@@ -1,7 +1,6 @@
 # GBADsDPM.R
 
-![alt text](https://github.com/GBADsInformatics/GBADsDPM.R/blob/main/Shiny/www/GBADs.png)
-
+<img src= "https://github.com/GBADsInformatics/GBADsDPM.R/blob/main/Shiny/www/GBADs.png" width="48">
 
 Welcome is the GBADsDPM (Global Burden of Animal Diseases Dynamic Population Model) R package repository!
 
