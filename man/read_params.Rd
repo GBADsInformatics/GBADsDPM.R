@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_params.R
 \name{read_params}
 \alias{read_params}
-\title{Import DPM/AHLE parameter file}
+\title{Import AHLE parameter file}
 \usage{
 read_params(file_path, file_type = "yaml")
 }
@@ -12,5 +12,5 @@ read_params(file_path, file_type = "yaml")
 \item{file_type}{File type (Currently only YAML is supported)}
 }
 \description{
-Read in DPM/AHLE parameter file in YAML format
+Read in AHLE parameter file in YAML format
 }

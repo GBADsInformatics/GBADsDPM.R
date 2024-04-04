@@ -4,12 +4,13 @@
 \alias{setup}
 \title{Set up and run DPM/AHLE scenarios}
 \usage{
-setup(seed_value = NULL)
+setup(file_path, seed_value = NULL)
 }
 \arguments{
+\item{file_path}{A path to a directory containing YAML files to be analyzed}
+
 \item{seed_value}{An integer value of any length for reproducibility}
 }
 \description{
-Read in a DPM/AHLE parameter file in YAML format and run compartmental model. 
-Users are prompted to select a directory in which to save results, and a file to be read.
+Read in a DPM/AHLE parameter file in YAML format and run compartmental model.
 }
