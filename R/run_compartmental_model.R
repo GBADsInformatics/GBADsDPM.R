@@ -14,57 +14,61 @@ run_compartmental_model <- function(seed_value = NULL) {
   # set seed for reproducibility
   set.seed(seed_value)
   
-  if (species == "cattle" || species == "small ruminants") {
-    calculate_mu <- function(part, prolif) {
-      return((sample(part, size = nruns, replace = TRUE) * sample(prolif, size = nruns, replace = TRUE)) / 12)
-    }
-    # Calculate mu
-    Mu <- calculate_mu(part, prolif)
+  calculate_mu <- function(part, prolif) {
+    return ((sample(part, size = nruns, replace = TRUE) * sample(prolif, size = nruns, replace = TRUE)) / 12)
   }
-
-  # Calculate dry matter requirements
-  calculate_dry_matter_requirements <- function(lw, prpn, dm_req_prpn) {
-    return(dm_req_prpn * lw * prpn)
-  }
-  
+    
   # Calculate purchased feed
   calculate_purchased_feed <- function(kg_dm_req, lskeepers_purch_feed, feed_paid_for, dm_in_feed) {
-    return(kg_dm_req * lskeepers_purch_feed * feed_paid_for / dm_in_feed)
+    return (kg_dm_req * lskeepers_purch_feed * feed_paid_for / dm_in_feed)
   }
   
   # Calculate expenditure on feed
   calculate_expenditure_on_feed <- function(kg_feed_purchased, feed_cost_kg) {
     return (kg_feed_purchased * feed_cost_kg)
   }
+  
+  # Calculate dry matter requirements
+  calculate_dry_matter_requirements <- function(lw, prpn, dm_req_prpn) {
+    return (dm_req_prpn * lw * prpn)
+  }
 
-  kg_DM_req_JF <- calculate_dry_matter_requirements(lwJF, prpn_lskeepers_purch_feed, DM_req_prpn_JF)
-  kg_DM_req_JM <- calculate_dry_matter_requirements(lwJM, prpn_lskeepers_purch_feed, DM_req_prpn_JM)
-  kg_DM_req_SubAF <- calculate_dry_matter_requirements(lwSubAF, prpn_lskeepers_purch_feed, DM_req_prpn_SubAF)
-  kg_DM_req_SubAM <- calculate_dry_matter_requirements(lwSubAM, prpn_lskeepers_purch_feed, DM_req_prpn_SubAM)
-  kg_DM_req_AF <- calculate_dry_matter_requirements(lwAF, prpn_lskeepers_purch_feed, DM_req_prpn_AF)
-  kg_DM_req_AM <- calculate_dry_matter_requirements(lwAM, prpn_lskeepers_purch_feed, DM_req_prpn_AM)
+  
+  if (species == "cattle" || species == "small ruminants") {
     
-  DM_purch_JF <- calculate_purchased_feed(kg_DM_req_JF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
-  DM_purch_JM <- calculate_purchased_feed(kg_DM_req_JM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
-  DM_purch_SubAF <- calculate_purchased_feed(kg_DM_req_SubAF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
-  DM_purch_SubAM <- calculate_purchased_feed(kg_DM_req_SubAM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
-  DM_purch_AF <- calculate_purchased_feed(kg_DM_req_AF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
-  DM_purch_AM <- calculate_purchased_feed(kg_DM_req_AM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
+    # Calculate mu
+    Mu <- calculate_mu(part, prolif)
+    
+    kg_DM_req_JF <- calculate_dry_matter_requirements(lwJF, prpn_lskeepers_purch_feed, DM_req_prpn_JF)
+    kg_DM_req_JM <- calculate_dry_matter_requirements(lwJM, prpn_lskeepers_purch_feed, DM_req_prpn_JM)
+    kg_DM_req_SubAF <- calculate_dry_matter_requirements(lwSubAF, prpn_lskeepers_purch_feed, DM_req_prpn_SubAF)
+    kg_DM_req_SubAM <- calculate_dry_matter_requirements(lwSubAM, prpn_lskeepers_purch_feed, DM_req_prpn_SubAM)
+    kg_DM_req_AF <- calculate_dry_matter_requirements(lwAF, prpn_lskeepers_purch_feed, DM_req_prpn_AF)
+    kg_DM_req_AM <- calculate_dry_matter_requirements(lwAM, prpn_lskeepers_purch_feed, DM_req_prpn_AM)
   
-  # Calculate KG Feed purchased
-  KG_Feed_purchased_JF <- DM_purch_JF / DM_in_feed
-  KG_Feed_purchased_JM <- DM_purch_JM / DM_in_feed
-  KG_Feed_purchased_SubAF <- DM_purch_SubAF / DM_in_feed
-  KG_Feed_purchased_SubAM <- DM_purch_SubAM / DM_in_feed
-  KG_Feed_purchased_AF <- DM_purch_AF / DM_in_feed
-  KG_Feed_purchased_AM <- DM_purch_AM / DM_in_feed
+    DM_purch_JF <- calculate_purchased_feed(kg_DM_req_JF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
+    DM_purch_JM <- calculate_purchased_feed(kg_DM_req_JM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
+    DM_purch_SubAF <- calculate_purchased_feed(kg_DM_req_SubAF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
+    DM_purch_SubAM <- calculate_purchased_feed(kg_DM_req_SubAM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
+    DM_purch_AF <- calculate_purchased_feed(kg_DM_req_AF, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
+    DM_purch_AM <- calculate_purchased_feed(kg_DM_req_AM, prpn_lskeepers_purch_feed, prpn_feed_paid_for, DM_in_feed)
   
-  Expenditure_on_feed_JF <- calculate_expenditure_on_feed(KG_Feed_purchased_JF, Feed_cost_kg)
-  Expenditure_on_feed_JM <- calculate_expenditure_on_feed(KG_Feed_purchased_JM, Feed_cost_kg)
-  Expenditure_on_feed_SubAF <- calculate_expenditure_on_feed(KG_Feed_purchased_SubAF, Feed_cost_kg)
-  Expenditure_on_feed_SubAM <- calculate_expenditure_on_feed(KG_Feed_purchased_SubAM, Feed_cost_kg)
-  Expenditure_on_feed_AF <- calculate_expenditure_on_feed(KG_Feed_purchased_AF, Feed_cost_kg)
-  Expenditure_on_feed_AM <- calculate_expenditure_on_feed(KG_Feed_purchased_AM, Feed_cost_kg)
+    # Calculate KG Feed purchased
+    KG_Feed_purchased_JF <- DM_purch_JF / DM_in_feed
+    KG_Feed_purchased_JM <- DM_purch_JM / DM_in_feed
+    KG_Feed_purchased_SubAF <- DM_purch_SubAF / DM_in_feed
+    KG_Feed_purchased_SubAM <- DM_purch_SubAM / DM_in_feed
+    KG_Feed_purchased_AF <- DM_purch_AF / DM_in_feed
+    KG_Feed_purchased_AM <- DM_purch_AM / DM_in_feed
+  
+    Expenditure_on_feed_JF <- calculate_expenditure_on_feed(KG_Feed_purchased_JF, Feed_cost_kg)
+    Expenditure_on_feed_JM <- calculate_expenditure_on_feed(KG_Feed_purchased_JM, Feed_cost_kg)
+    Expenditure_on_feed_SubAF <- calculate_expenditure_on_feed(KG_Feed_purchased_SubAF, Feed_cost_kg)
+    Expenditure_on_feed_SubAM <- calculate_expenditure_on_feed(KG_Feed_purchased_SubAM, Feed_cost_kg)
+    Expenditure_on_feed_AF <- calculate_expenditure_on_feed(KG_Feed_purchased_AF, Feed_cost_kg)
+    Expenditure_on_feed_AM <- calculate_expenditure_on_feed(KG_Feed_purchased_AM, Feed_cost_kg)
+  
+  }
   
   if (species == "cattle") {
     kg_DM_req_Ox <- calculate_dry_matter_requirements(lwOx, prpn_lskeepers_purch_feed, DM_req_prpn_Ox)
@@ -75,13 +79,13 @@ run_compartmental_model <- function(seed_value = NULL) {
   
   # List of variable categories'
   vector_categories <- c(
-    "NumJF",
-    "NumJM",
-    "NumSubAF",
-    "NumSubAM",
-    "NumAF",
-    "NumAM",
-    "NumN",
+    "Num_JF",
+    "Num_JM",
+    "Num_SubAF",
+    "Num_SubAM",
+    "Num_AF",
+    "Num_AM",
+    "Num_N",
     
     "Births", 
     
@@ -290,10 +294,28 @@ run_compartmental_model <- function(seed_value = NULL) {
     # vector_categories <- append(vector_categories, "Quant_Wool")
   } else {
     # poultry
-    vector_categories <- append(vector_categories, c("Quant_Eggs_sold",
+    vector_categories <- append(vector_categories, c(
+                          "Feed_requirement",
+                          "Feed_requirement_JF",
+                          "Feed_requirement_JM",
+                          "Feed_requirement_SubAF",
+                          "Feed_requirement_SubAM",
+                          "Feed_requirement_AF",
+                          "Feed_requirement_AM",
+                          
+                          "Feed_purchased",
+                          "Feed_purchased_JF",
+                          "Feed_purchased_JM",
+                          "Feed_purchased_SubAF",
+                          "Feed_purchased_SubAM",
+                          "Feed_purchased_AF",
+                          "Feed_purchased_AM",
+                         
+                         "Quant_Meat_kg",
+                         "Quant_Eggs_sold",
                          "Quant_Eggs_consumed",
                          "Value_Eggs_sold",
-                         "Value_Eggs_consumed",
+                         "Value_Eggs_consumed"
                          ))
   }
   
@@ -305,15 +327,16 @@ run_compartmental_model <- function(seed_value = NULL) {
     res_vec[[vec]] <- rep(0, Num_months)
   }
   
-  matrix_categories <- c("NumJF",
-                         "NumJM",
-                         "NumSubAF",
-                         "NumSubAM",
-                         "NumAF",
-                         "NumAM",
-                         "NumN",
+  matrix_categories <- c("Num_JF",
+                         "Num_JM",
+                         "Num_SubAF",
+                         "Num_SubAM",
+                         "Num_AF",
+                         "Num_AM",
+                         "Num_N",
                          
                          "Monthly_mortality", 
+                         
                          "Total_Mortality",
                          "Total_Mortality_JF", 
                          "Total_Mortality_JM", 
@@ -396,6 +419,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                          "Value_Hides_AM", 
                          
                          "Quant_Milk",
+                         
                          "Value_Milk",
                          
                          "Cumulative_Dry_Matter", 
@@ -520,8 +544,26 @@ run_compartmental_model <- function(seed_value = NULL) {
     # poultry
     matrix_categories <- append(matrix_categories, c("Quant_Eggs_consumed",
                                                      "Quant_Eggs_sold",
+                                                     
                                                      "Value_Eggs_consumed",
-                                                     "Value_Eggs_sold"))
+                                                     "Value_Eggs_sold",
+                                                     
+                                                     "Feed_requirement",
+                                                     "Feed_requirement_JF",
+                                                     "Feed_requirement_JM",
+                                                     "Feed_requirement_SubAF",
+                                                     "Feed_requirement_SubAM",
+                                                     "Feed_requirement_AF",
+                                                     "Feed_requirement_AM",
+                                                     
+                                                     "Feed_purchased",
+                                                     "Feed_purchased_JF",
+                                                     "Feed_purchased_JM",
+                                                     "Feed_purchased_SubAF",
+                                                     "Feed_purchased_SubAM",
+                                                     "Feed_purchased_AF",
+                                                     "Feed_purchased_AM"
+    ))
   }
 
   # Initialize a list to store the matrices
@@ -582,6 +624,8 @@ run_compartmental_model <- function(seed_value = NULL) {
     Monthly_pop_growth <- 0
     Value_Offt <- 0
     Value_herd_inc <- 0
+    Eggs_sold <- 0
+    Eggs_consumed <- 0
     Feed <- 0
     Labour <- 0
     Health <- 0
@@ -610,8 +654,10 @@ run_compartmental_model <- function(seed_value = NULL) {
     
     for (month in 1:Num_months) {
       
-      res_vec$Births[month] <- sample(Mu, 1) * AF
-
+      if (species == "cattle" || species == "small ruminants") {
+        res_vec$Births[month] <- sample(Mu, 1) * AF
+      }
+      
       res_vec$Deaths_JF[month] <- sample(AlphaJ, 1) * JF
       res_vec$Deaths_SubAF[month] <- sample(AlphaSubA, 1) * SubAF
       res_vec$Deaths_AF[month] <- sample(AlphaF, 1) * AF
@@ -622,7 +668,7 @@ run_compartmental_model <- function(seed_value = NULL) {
 
       res_vec$Offtake_JF[month] <- sample(GammaJF, 1) * JF
       res_vec$Offtake_JM[month] <- sample(GammaJM, 1) * JM
-
+      
       res_vec$Offtake_SubAF[month] <- sample(GammaSubAF, 1) * SubAF
       res_vec$Offtake_AF[month] <- sample(GammaAF, 1) * AF
       res_vec$Offtake_SubAM[month] <- sample(GammaSubAM, 1) * SubAM
@@ -636,20 +682,20 @@ run_compartmental_model <- function(seed_value = NULL) {
       res_vec$Culls_AF[month] <- sample(CullF, 1) * AF
       res_vec$Culls_AM[month] <- sample(CullM, 1) * AM
       
-      res_vec$NumJF[month] <- JF + res_vec$Births[month] * 0.5 - res_vec$Deaths_JF[month] - res_vec$Growth_JF[month] - res_vec$Offtake_JF[month]
-      res_vec$NumSubAF[month] <- SubAF + res_vec$Growth_JF[month] - res_vec$Growth_SubAF[month] - res_vec$Offtake_SubAF[month] - res_vec$Deaths_SubAF[month]
-      res_vec$NumAF[month] <- AF + res_vec$Growth_SubAF[month] - res_vec$Offtake_AF[month] - res_vec$Deaths_AF[month] - res_vec$Culls_AF[month]
+      res_vec$Num_JF[month] <- JF + res_vec$Births[month] * 0.5 - res_vec$Deaths_JF[month] - res_vec$Growth_JF[month] - res_vec$Offtake_JF[month]
+      res_vec$Num_SubAF[month] <- SubAF + res_vec$Growth_JF[month] - res_vec$Growth_SubAF[month] - res_vec$Offtake_SubAF[month] - res_vec$Deaths_SubAF[month]
+      res_vec$Num_AF[month] <- AF + res_vec$Growth_SubAF[month] - res_vec$Offtake_AF[month] - res_vec$Deaths_AF[month] - res_vec$Culls_AF[month]
 
-      res_vec$NumJM[month] <- JM + res_vec$Births[month] * 0.5 - res_vec$Growth_JM[month] - res_vec$Deaths_JM[month] - res_vec$Offtake_JM[month]
-      res_vec$NumSubAM[month] <- SubAM + res_vec$Growth_JM[month] - res_vec$Growth_SubAM[month] - res_vec$Offtake_SubAM[month] - res_vec$Deaths_SubAM[month]
-      res_vec$NumAM[month] <- AM + res_vec$Growth_SubAM[month] - res_vec$Offtake_AM[month] - res_vec$Deaths_AM[month] - res_vec$Culls_AM[month]
+      res_vec$Num_JM[month] <- JM + res_vec$Births[month] * 0.5 - res_vec$Growth_JM[month] - res_vec$Deaths_JM[month] - res_vec$Offtake_JM[month]
+      res_vec$Num_SubAM[month] <- SubAM + res_vec$Growth_JM[month] - res_vec$Growth_SubAM[month] - res_vec$Offtake_SubAM[month] - res_vec$Deaths_SubAM[month]
+      res_vec$Num_AM[month] <- AM + res_vec$Growth_SubAM[month] - res_vec$Offtake_AM[month] - res_vec$Deaths_AM[month] - res_vec$Culls_AM[month]
       
-      res_vec$NumN[month] = sum(res_vec$NumJF[month],
-                                res_vec$NumSubAF[month],
-                                res_vec$NumAF[month],
-                                res_vec$NumJM[month],
-                                res_vec$NumSubAM[month],
-                                res_vec$NumAM[month])
+      res_vec$Num_N[month] <- sum(res_vec$Num_JF[month],
+                                res_vec$Num_SubAF[month],
+                                res_vec$Num_AF[month],
+                                res_vec$Num_JM[month],
+                                res_vec$Num_SubAM[month],
+                                res_vec$Num_AM[month])
       
       if (species == "cattle") {
         res_vec$Deaths_Ox[month] <- sample(AlphaOx, 1) * Ox
@@ -657,17 +703,17 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Culls_Ox[month] <- sample(CullOx, 1) * Ox
         res_vec$Oxen_A[month] <- sample(castration_rate, 1) * AM
         res_vec$NumOx[month] <- Ox + res_vec$Oxen_A[month] - res_vec$Offtake_Ox[month] - res_vec$Deaths_Ox[month] - res_vec$Culls_Ox[month]
-        res_vec$NumAM[month] <- res_vec$NumAM[month] - res_vec$Oxen_A[month]
-        res_vec$NumN[month] <- res_vec$NumN[month] + res_vec$NumOx[month]
+        res_vec$Num_AM[month] <- res_vec$Num_AM[month] - res_vec$Oxen_A[month]
+        res_vec$Num_N[month] <- res_vec$Num_N[month] + res_vec$NumOx[month]
       }
 
-      JF <- res_vec$NumJF[month]
-      SubAF <- res_vec$NumSubAF[month]
-      AF <- res_vec$NumAF[month]
-      JM <- res_vec$NumJM[month]
-      SubAM <- res_vec$NumSubAM[month]
-      AM <- res_vec$NumAM[month]
-      N <- res_vec$NumN[month]
+      JF <- res_vec$Num_JF[month]
+      SubAF <- res_vec$Num_SubAF[month]
+      AF <- res_vec$Num_AF[month]
+      JM <- res_vec$Num_JM[month]
+      SubAM <- res_vec$Num_SubAM[month]
+      AM <- res_vec$Num_AM[month]
+      N <- res_vec$Num_N[month]
       
       res_vec$Total_Mortality_JF[month] <- Num_dead_JF + res_vec$Deaths_JF[month]
       Num_dead_JF <- res_vec$Total_Mortality_JF[month]
@@ -751,7 +797,7 @@ run_compartmental_model <- function(seed_value = NULL) {
       res_vec$Num_Offtake_AF[month] <- Offtake_AF + res_vec$Offtake_AF[month]
       res_vec$Num_Offtake_AM[month] <- Offtake_AM + res_vec$Offtake_AM[month] + res_vec$Culls_AM[month]
       
-      if (species == "cattle"){
+      if (species == "cattle") {
         res_vec$Quant_Liveweight_kg_Ox[month] <- Ox * sample(lwOx, 1)
         res_vec$Quant_Liveweight_kg[month] <- res_vec$Quant_Liveweight_kg[month] + res_vec$Quant_Liveweight_kg_Ox[month]
         res_vec$Num_Offtake_Ox[month] <- Offtake_Ox + res_vec$Offtake_Ox[month] + res_vec$Culls_Ox[month]
@@ -789,22 +835,11 @@ run_compartmental_model <- function(seed_value = NULL) {
                                               res_vec$Offtake_Liveweight_kg_AM[month])
 
       
-      res_vec$Quant_Meat_kg[month] = Meat_kg + sum(res_vec$Offtake_Liveweight_kg_SubAF[month], 
+      res_vec$Quant_Meat_kg[month] <- Meat_kg + sum(res_vec$Offtake_Liveweight_kg_SubAF[month], 
                                                   res_vec$Offtake_Liveweight_kg_SubAM[month],
                                                   res_vec$Offtake_Liveweight_kg_AF[month],
                                                   res_vec$Offtake_Liveweight_kg_AM[month]) * ccy
       
-      if (species == "poultry") {
-        res_vec$Quant_Eggs_sold[month] = Eggs_sold + AF * sample(prop_females_laying, 1) * sample(lay_rate, 1) * sample(egg_sale_rate,1) 
-        res_vec$Quant_Eggs_consumed[month] = Eggs_consumed + AF * sample(prop_females_laying, 1) * sample(lay_rate, 1) * sample(egg_consumption_rate, 1)
-        
-        Eggs_sold = res_vec$Quant_Eggs_sold[month]
-        Eggs_consumed = res_vec$Quant_Eggs_consumed[month]
-        
-        res_vec$Value_Eggs_sold[month] <- res_vec$Quant_Eggs_sold[month] * sample(egg_price, 1) 
-        res_vec$Value_Eggs_consumed[month] <- res_vec$Quant_Eggs_consumed[month] * sample(egg_price, 1) 
-        
-      }
  
       if (species == "cattle") { 
         res_vec$Offtake_Liveweight_kg_Ox[month] <- sample(lwOx, 1) * Offtake_Ox
@@ -814,90 +849,98 @@ run_compartmental_model <- function(seed_value = NULL) {
       
       Meat_kg <- res_vec$Quant_Meat_kg[month]
       
-      res_vec$Cumulative_draught_income[month] <- Draught_income + Ox * sample(draught_rate, 1) * draught_day_value * 30
-      Draught_income <-  res_vec$Cumulative_draught_income[month]
-      
-      res_vec$Quant_Hides_SubAF[month] <- Hides_SubAF +  res_vec$Deaths_SubAF[month] * hides_rate_mor
-      res_vec$Quant_Hides_SubAM[month] <- Hides_SubAM + res_vec$Deaths_SubAM[month] * hides_rate_mor
-      res_vec$Quant_Hides_AF[month] <- Hides_AF + res_vec$Deaths_AF[month] * hides_rate_mor
-      res_vec$Quant_Hides_AM[month] <- Hides_AM + res_vec$Deaths_AM[month] * hides_rate_mor
-      
-      Hides_SubAF <- res_vec$Quant_Hides_SubAF[month]
-      Hides_SubAM <- res_vec$Quant_Hides_SubAM[month]
-      Hides_AF <- res_vec$Quant_Hides_AF[month]
-      Hides_AM <- res_vec$Quant_Hides_AM[month]
-      
-      res_vec$Quant_Hides[month] <- sum(res_vec$Quant_Hides_SubAF[month],
-                                       res_vec$Quant_Hides_SubAM[month],
-                                       res_vec$Quant_Hides_AF[month],
-                                       res_vec$Quant_Hides_AM[month])
-      
       if (species == "cattle") {
-        res_vec$Quant_Hides_Ox[month] = Hides_Ox + res_vec$Deaths_Ox[month] * hides_rate_mor 
-        Hides_Ox <- res_vec$Quant_Hides_Ox[month]
-        res_vec$Quant_Hides[month] <- res_vec$Quant_Hides[month] + res_vec$Quant_Hides_Ox[month]
+        res_vec$Cumulative_draught_income[month] <- Draught_income + Ox * sample(draught_rate, 1) * draught_day_value * 30
+        Draught_income <- res_vec$Cumulative_draught_income[month]
       }
       
-      Hides <- res_vec$Quant_Hides[month]
       
-      res_vec$Quant_Milk[month] <- Milk + AF * sample(part, 1)/12 * prop_F_milked * sample(lac_duration, 1) * sample(avg_daily_yield_ltr, 1) 
+      IF (species == "cattle" || species == "small ruminants") {
+        res_vec$Quant_Hides_SubAF[month] <- Hides_SubAF +  res_vec$Deaths_SubAF[month] * hides_rate_mor
+        res_vec$Quant_Hides_SubAM[month] <- Hides_SubAM + res_vec$Deaths_SubAM[month] * hides_rate_mor
+        res_vec$Quant_Hides_AF[month] <- Hides_AF + res_vec$Deaths_AF[month] * hides_rate_mor
+        res_vec$Quant_Hides_AM[month] <- Hides_AM + res_vec$Deaths_AM[month] * hides_rate_mor
+        
+        Hides_SubAF <- res_vec$Quant_Hides_SubAF[month]
+        Hides_SubAM <- res_vec$Quant_Hides_SubAM[month]
+        Hides_AF <- res_vec$Quant_Hides_AF[month]
+        Hides_AM <- res_vec$Quant_Hides_AM[month]
+        
+        res_vec$Quant_Hides[month] <- sum(res_vec$Quant_Hides_SubAF[month],
+                                          res_vec$Quant_Hides_SubAM[month],
+                                          res_vec$Quant_Hides_AF[month],
+                                          res_vec$Quant_Hides_AM[month])
+        
+        Hides <- res_vec$Quant_Hides[month]
+        
+        res_vec$Quant_Milk[month] <- Milk + AF * sample(part, 1)/12 * prop_F_milked * sample(lac_duration, 1) * sample(avg_daily_yield_ltr, 1) 
+        
+        Milk <- res_vec$Quant_Milk[month]
+        
+        res_vec$Quant_Manure_JF[month] <- Manure_kg_JF + JF * sample(Man_J, 1) * 30  
+        res_vec$Quant_Manure_JM[month] <- Manure_kg_JM + JM * sample(Man_J, 1) * 30 
+        res_vec$Quant_Manure_SubAF[month] <- Manure_kg_SubAF + SubAF * sample(Man_SubA, 1) * 30
+        res_vec$Quant_Manure_SubAM[month] <- Manure_kg_SubAM + SubAM * sample(Man_SubA, 1) * 30 
+        res_vec$Quant_Manure_AF[month] <- Manure_kg_AF + AF * sample(Man_A, 1) * 30
+        res_vec$Quant_Manure_AM[month] <- Manure_kg_AM + AM * sample(Man_A, 1) * 30
+        
+        Manure_kg_JF <- res_vec$Quant_Manure_JF[month]
+        Manure_kg_JM <- res_vec$Quant_Manure_JM[month]
+        Manure_kg_SubAF <- res_vec$Quant_Manure_SubAF[month]
+        Manure_kg_SubAM <- res_vec$Quant_Manure_SubAM[month]
+        Manure_kg_AF <- res_vec$Quant_Manure_AF[month]
+        Manure_kg_AM <- res_vec$Quant_Manure_AM[month]
+        
+        res_vec$Quant_Manure[month] <- sum(res_vec$Quant_Manure_JF[month],
+                                           res_vec$Quant_Manure_JM[month],
+                                           res_vec$Quant_Manure_SubAF[month],
+                                           res_vec$Quant_Manure_SubAM[month],
+                                           res_vec$Quant_Manure_AF[month],
+                                           res_vec$Quant_Manure_AM[month])
+        
+      }
       
-      Milk <- res_vec$Quant_Milk[month]
-
-      res_vec$Quant_Manure_JF[month] <- Manure_kg_JF + JF * sample(Man_J, 1) * 30  
-      res_vec$Quant_Manure_JM[month] <- Manure_kg_JM + JM * sample(Man_J, 1) * 30 
-      res_vec$Quant_Manure_SubAF[month] <- Manure_kg_SubAF + SubAF * sample(Man_SubA, 1) * 30
-      res_vec$Quant_Manure_SubAM[month] <- Manure_kg_SubAM + SubAM * sample(Man_SubA, 1) * 30 
-      res_vec$Quant_Manure_AF[month] <- Manure_kg_AF + AF * sample(Man_A, 1) * 30
-      res_vec$Quant_Manure_AM[month] <- Manure_kg_AM + AM * sample(Man_A, 1) * 30
-      
-      Manure_kg_JF <-  res_vec$Quant_Manure_JF[month]
-      Manure_kg_JM <-  res_vec$Quant_Manure_JM[month]
-      Manure_kg_SubAF <-  res_vec$Quant_Manure_SubAF[month]
-      Manure_kg_SubAM <-  res_vec$Quant_Manure_SubAM[month]
-      Manure_kg_AF <-  res_vec$Quant_Manure_AF[month]
-      Manure_kg_AM <-  res_vec$Quant_Manure_AM[month]
-      
-      res_vec$Quant_Manure[month] <- sum(res_vec$Quant_Manure_JF[month],
-                                         res_vec$Quant_Manure_JM[month],
-                                         res_vec$Quant_Manure_SubAF[month],
-                                         res_vec$Quant_Manure_SubAM[month],
-                                         res_vec$Quant_Manure_AF[month],
-                                         res_vec$Quant_Manure_AM[month])
       
       if (species == "cattle") {
+        res_vec$Quant_Hides_Ox[month] <- Hides_Ox + res_vec$Deaths_Ox[month] * hides_rate_mor 
+        Hides_Ox <- res_vec$Quant_Hides_Ox[month]
+        res_vec$Quant_Hides[month] <- res_vec$Quant_Hides[month] + res_vec$Quant_Hides_Ox[month]
+
         res_vec$Quant_Manure_Ox[month] <- Manure_kg_Ox + Ox * sample(Man_A, 1) * 30 
-        Manure_kg_Ox <-  res_vec$Quant_Manure_Ox[month]
+        Manure_kg_Ox <- res_vec$Quant_Manure_Ox[month]
         res_vec$Quant_Manure[month] <- res_vec$Quant_Manure[month] + res_vec$Quant_Manure_Ox[month]
       }
       
-      Manure_kg <- res_vec$Quant_Manure[month]
-      
-      res_vec$Cumulative_Dry_Matter_JF[month] <- Cumulative_DM_JF + JF * sample(kg_DM_req_JF, 1) * 30 
-      res_vec$Cumulative_Dry_Matter_JM[month] <- Cumulative_DM_JM + JM * sample(kg_DM_req_JM, 1) * 30
-      res_vec$Cumulative_Dry_Matter_SubAF[month] <- Cumulative_DM_SubAF + SubAF * sample(kg_DM_req_SubAF, 1) * 30 
-      res_vec$Cumulative_Dry_Matter_SubAM[month] <- Cumulative_DM_SubAM + SubAM * sample(kg_DM_req_SubAM, 1) * 30 
-      res_vec$Cumulative_Dry_Matter_AF[month] <- Cumulative_DM_AF + AF * sample(kg_DM_req_AF, 1) * 30
-      res_vec$Cumulative_Dry_Matter_AM[month] <- Cumulative_DM_AM + AM * sample(kg_DM_req_AM, 1) * 30
-      
-      Cumulative_DM_JF <- res_vec$Cumulative_Dry_Matter_JF[month]
-      Cumulative_DM_JM <- res_vec$Cumulative_Dry_Matter_JM[month]
-      Cumulative_DM_SubAF <- res_vec$Cumulative_Dry_Matter_SubAF[month]
-      Cumulative_DM_SubAM <- res_vec$Cumulative_Dry_Matter_SubAM[month]
-      Cumulative_DM_AF <- res_vec$Cumulative_Dry_Matter_AF[month]
-      Cumulative_DM_AM <- res_vec$Cumulative_Dry_Matter_AM[month]
-      
-      res_vec$Cumulative_Dry_Matter[month] <- sum(res_vec$Cumulative_Dry_Matter_JF[month],
-                                                  res_vec$Cumulative_Dry_Matter_JM[month],
-                                                  res_vec$Cumulative_Dry_Matter_SubAF[month],
-                                                  res_vec$Cumulative_Dry_Matter_SubAM[month],
-                                                  res_vec$Cumulative_Dry_Matter_AF[month],
-                                                  res_vec$Cumulative_Dry_Matter_AM[month])
+      if (species == "cattle" || species == "small ruminants") {
+        Manure_kg <- res_vec$Quant_Manure[month]
+        
+        res_vec$Cumulative_Dry_Matter_JF[month] <- Cumulative_DM_JF + JF * sample(kg_DM_req_JF, 1) * 30 
+        res_vec$Cumulative_Dry_Matter_JM[month] <- Cumulative_DM_JM + JM * sample(kg_DM_req_JM, 1) * 30
+        res_vec$Cumulative_Dry_Matter_SubAF[month] <- Cumulative_DM_SubAF + SubAF * sample(kg_DM_req_SubAF, 1) * 30 
+        res_vec$Cumulative_Dry_Matter_SubAM[month] <- Cumulative_DM_SubAM + SubAM * sample(kg_DM_req_SubAM, 1) * 30 
+        res_vec$Cumulative_Dry_Matter_AF[month] <- Cumulative_DM_AF + AF * sample(kg_DM_req_AF, 1) * 30
+        res_vec$Cumulative_Dry_Matter_AM[month] <- Cumulative_DM_AM + AM * sample(kg_DM_req_AM, 1) * 30
+        
+        Cumulative_DM_JF <- res_vec$Cumulative_Dry_Matter_JF[month]
+        Cumulative_DM_JM <- res_vec$Cumulative_Dry_Matter_JM[month]
+        Cumulative_DM_SubAF <- res_vec$Cumulative_Dry_Matter_SubAF[month]
+        Cumulative_DM_SubAM <- res_vec$Cumulative_Dry_Matter_SubAM[month]
+        Cumulative_DM_AF <- res_vec$Cumulative_Dry_Matter_AF[month]
+        Cumulative_DM_AM <- res_vec$Cumulative_Dry_Matter_AM[month]
+        
+        res_vec$Cumulative_Dry_Matter[month] <- sum(res_vec$Cumulative_Dry_Matter_JF[month],
+                                                    res_vec$Cumulative_Dry_Matter_JM[month],
+                                                    res_vec$Cumulative_Dry_Matter_SubAF[month],
+                                                    res_vec$Cumulative_Dry_Matter_SubAM[month],
+                                                    res_vec$Cumulative_Dry_Matter_AF[month],
+                                                    res_vec$Cumulative_Dry_Matter_AM[month])
+        
+      }
       
       if (species == "cattle") {
         res_vec$Cumulative_Dry_Matter_Ox[month] <- Cumulative_DM_Ox + Ox * sample(kg_DM_req_Ox, 1) * 30
         Cumulative_DM_Ox <- res_vec$Cumulative_Dry_Matter_Ox[month]
-        res_vec$Cumulative_Dry_Matter[month] <-  res_vec$Cumulative_Dry_Matter[month] +  res_vec$Cumulative_Dry_Matter_Ox[month]
+        res_vec$Cumulative_Dry_Matter[month] <- res_vec$Cumulative_Dry_Matter[month] +  res_vec$Cumulative_Dry_Matter_Ox[month]
       }
       
       Cumulative_DM <- res_vec$Cumulative_Dry_Matter[month]
@@ -914,9 +957,9 @@ run_compartmental_model <- function(seed_value = NULL) {
       Value_offt_AF <- res_vec$Value_Offtake_AF[month]
       
       res_vec$Value_Offtake_AM[month] <- sample(fvAM, 1) * Offtake_AM  
-      Value_offt_AM <-  res_vec$Value_Offtake_AM[month]
+      Value_offt_AM <- res_vec$Value_Offtake_AM[month]
       
-      res_vec$Value_Offtake[month] = sum(res_vec$Value_Offtake_SubAF[month],
+      res_vec$Value_Offtake[month] <- sum(res_vec$Value_Offtake_SubAF[month],
                                          res_vec$Value_Offtake_SubAM[month],
                                          res_vec$Value_Offtake_AF[month],
                                          res_vec$Value_Offtake_AM[month])
@@ -979,35 +1022,42 @@ run_compartmental_model <- function(seed_value = NULL) {
         
       }
       
-      ### Feed cost ### 
+      if (species == "cattle" || species == "small ruminants") {
+        ### Feed cost ### 
+        
+        res_vec$Feed_cost_JF[month] <- Feed_JF + JF * sample(Expenditure_on_feed_JF, 1) * 30 
+        Feed_JF <- res_vec$Feed_cost_JF[month]
+        res_vec$Feed_cost_JM[month] <- Feed_JM + JM * sample(Expenditure_on_feed_JM, 1) * 30 
+        Feed_JM <- res_vec$Feed_cost_JM[month]
+        res_vec$Feed_cost_SubAF[month] <- Feed_SubAF + SubAF * sample(Expenditure_on_feed_SubAF, 1) * 30
+        Feed_SubAF <- res_vec$Feed_cost_SubAF[month]
+        res_vec$Feed_cost_SubAM[month] <- Feed_SubAM + SubAM * sample(Expenditure_on_feed_SubAM, 1) * 30
+        Feed_SubAM <- res_vec$Feed_cost_SubAM[month]
+        res_vec$Feed_cost_AF[month] <- Feed_AF + AF * sample(Expenditure_on_feed_AF, 1) * 30
+        Feed_AF <- res_vec$Feed_cost_AF[month]
+        res_vec$Feed_cost_AM[month] <- Feed_AM + AM * sample(Expenditure_on_feed_AM, 1) * 30 
+        Feed_AM <- res_vec$Feed_cost_AM[month]
+        
+        res_vec$Feed_cost[month] <- sum(res_vec$Feed_cost_JF[month],
+                                        res_vec$Feed_cost_JM[month],
+                                        res_vec$Feed_cost_SubAF[month],
+                                        res_vec$Feed_cost_SubAM[month],
+                                        res_vec$Feed_cost_AF[month],
+                                        res_vec$Feed_cost_AM[month])
+        
+        Feed <- res_vec$Feed_cost[month]
+        
+      }
       
-      res_vec$Feed_cost_JF[month] <- Feed_JF + JF * sample(Expenditure_on_feed_JF, 1) * 30 
-      Feed_JF <- res_vec$Feed_cost_JF[month]
-      res_vec$Feed_cost_JM[month] <- Feed_JM + JM * sample(Expenditure_on_feed_JM, 1) * 30 
-      Feed_JM <- res_vec$Feed_cost_JM[month]
-      res_vec$Feed_cost_SubAF[month] <- Feed_SubAF + SubAF * sample(Expenditure_on_feed_SubAF, 1) * 30
-      Feed_SubAF <- res_vec$Feed_cost_SubAF[month]
-      res_vec$Feed_cost_SubAM[month] <- Feed_SubAM + SubAM * sample(Expenditure_on_feed_SubAM, 1) * 30
-      Feed_SubAM <- res_vec$Feed_cost_SubAM[month]
-      res_vec$Feed_cost_AF[month] <- Feed_AF + AF * sample(Expenditure_on_feed_AF, 1) * 30
-      Feed_AF <- res_vec$Feed_cost_AF[month]
-      res_vec$Feed_cost_AM[month] <- Feed_AM + AM * sample(Expenditure_on_feed_AM, 1) * 30 
-      Feed_AM <- res_vec$Feed_cost_AM[month]
-     
-      res_vec$Feed_cost[month] <- sum(res_vec$Feed_cost_JF[month],
-                                      res_vec$Feed_cost_JM[month],
-                                      res_vec$Feed_cost_SubAF[month],
-                                      res_vec$Feed_cost_SubAM[month],
-                                      res_vec$Feed_cost_AF[month],
-                                      res_vec$Feed_cost_AM[month])
       
       if (species == "cattle") {
         res_vec$Feed_cost_Ox[month] <- Feed_Ox + Ox * sample(Expenditure_on_feed_Ox, 1) * 30
         Feed_Ox <- res_vec$Feed_cost_Ox[month]
         res_vec$Feed_cost[month] <- res_vec$Feed_cost[month] + res_vec$Feed_cost_Ox[month]
+        Feed <- res_vec$Feed_cost[month]
       }
       
-      Feed <- res_vec$Feed_cost[month]
+  
       
       ### Labour cost ###
       
@@ -1074,22 +1124,22 @@ run_compartmental_model <- function(seed_value = NULL) {
      
       ### Capital cost ###
      
-     res_vec$Capital_cost_JF[month] <- res_vec$NumJF[1] * sample(fvJF, 1) * Interest_rate 
+     res_vec$Capital_cost_JF[month] <- res_vec$Num_JF[1] * sample(fvJF, 1) * Interest_rate 
      Capital_JF <- res_vec$Capital_cost_JF[month]
      
-     res_vec$Capital_cost_JM[month] <- res_vec$NumJM[1] * sample(fvJM, 1) * Interest_rate  
+     res_vec$Capital_cost_JM[month] <- res_vec$Num_JM[1] * sample(fvJM, 1) * Interest_rate  
      Capital_JM <- res_vec$Capital_cost_JM[month]
      
-     res_vec$Capital_cost_SubAF[month] <-res_vec$NumSubAF[1] * sample(fvSubAF, 1) * Interest_rate  
+     res_vec$Capital_cost_SubAF[month] <-res_vec$Num_SubAF[1] * sample(fvSubAF, 1) * Interest_rate  
      Capital_SubAF = res_vec$Capital_cost_SubAF[month]
      
-     res_vec$Capital_cost_SubAM[month] <- res_vec$NumSubAM[1] * sample(fvSubAM, 1) * Interest_rate  
+     res_vec$Capital_cost_SubAM[month] <- res_vec$Num_SubAM[1] * sample(fvSubAM, 1) * Interest_rate  
      Capital_SubAM <- res_vec$Capital_cost_SubAM[month]
      
-     res_vec$Capital_cost_AF[month] <- res_vec$NumAF[1] * sample(fvAF, 1) * Interest_rate  
+     res_vec$Capital_cost_AF[month] <- res_vec$Num_AF[1] * sample(fvAF, 1) * Interest_rate  
      Capital_AF <- res_vec$Capital_cost_AF[month]
      
-     res_vec$Capital_cost_AM[month] <- res_vec$NumAM[1] * sample(fvAM, 1) * Interest_rate  
+     res_vec$Capital_cost_AM[month] <- res_vec$Num_AM[1] * sample(fvAM, 1) * Interest_rate  
      Capital_AM <- res_vec$Capital_cost_AM[month]
      
      res_vec$Capital_cost[month] <- sum(res_vec$Capital_cost_JF[month],
@@ -1130,30 +1180,80 @@ run_compartmental_model <- function(seed_value = NULL) {
      
      # Total expenditure ###
      
-     res_vec$Total_expenditure[month] =  res_vec$Feed_cost[month] + Health + Labour + Capital + res_vec$Infrastructure_cost[month]
+     res_vec$Total_expenditure[month] <- res_vec$Feed_cost[month] + Health + Labour + Capital + res_vec$Infrastructure_cost[month]
      
-     res_vec$Total_expenditure_JF[month] =  Feed_JF + Health_JF + Labour_JF + Capital_JF + res_vec$Infrastructure_cost_JF[month]
-     res_vec$Total_expenditure_JM[month] =  Feed_JM + Health_JM + Labour_JM + Capital_JM + res_vec$Infrastructure_cost_JM[month]
-     res_vec$Total_expenditure_SubAF[month] =  Feed_SubAF + Health_SubAF + Labour_SubAF + Capital_SubAF + res_vec$Infrastructure_cost_SubAF[month]
-     res_vec$Total_expenditure_SubAM[month] =  Feed_SubAM + Health_SubAM + Labour_SubAM + Capital_SubAM + res_vec$Infrastructure_cost_SubAM[month]
-     res_vec$Total_expenditure_AF[month] =  Feed_AF + Health_AF + Labour_AF + Capital_AF + res_vec$Infrastructure_cost_AF[month]
-     res_vec$Total_expenditure_AM[month] =  Feed_AM + Health_AM + Labour_AM + Capital_AM + res_vec$Infrastructure_cost_AM[month]
+     res_vec$Total_expenditure_JF[month] <- Feed_JF + Health_JF + Labour_JF + Capital_JF + res_vec$Infrastructure_cost_JF[month]
+     res_vec$Total_expenditure_JM[month] <-  Feed_JM + Health_JM + Labour_JM + Capital_JM + res_vec$Infrastructure_cost_JM[month]
+     res_vec$Total_expenditure_SubAF[month] <- Feed_SubAF + Health_SubAF + Labour_SubAF + Capital_SubAF + res_vec$Infrastructure_cost_SubAF[month]
+     res_vec$Total_expenditure_SubAM[month] <-  Feed_SubAM + Health_SubAM + Labour_SubAM + Capital_SubAM + res_vec$Infrastructure_cost_SubAM[month]
+     res_vec$Total_expenditure_AF[month] <-  Feed_AF + Health_AF + Labour_AF + Capital_AF + res_vec$Infrastructure_cost_AF[month]
+     res_vec$Total_expenditure_AM[month] <- Feed_AM + Health_AM + Labour_AM + Capital_AM + res_vec$Infrastructure_cost_AM[month]
      
      if (species == "cattle"){
-       res_vec$Total_expenditure_Ox[month] =  Feed_Ox + Health_Ox + Labour_Ox + Capital_Ox + res_vec$Infrastructure_cost_Ox[month]
+       res_vec$Total_expenditure_Ox[month] <- Feed_Ox + Health_Ox + Labour_Ox + Capital_Ox + res_vec$Infrastructure_cost_Ox[month]
+     }
+     
+     if (species == "poultry") {
+       res_vec$Quant_Eggs_sold[month] <- Eggs_sold + AF * sample(prop_females_laying, 1) * sample(lay_rate, 1) * sample(egg_sale_rate,1) 
+       res_vec$Quant_Eggs_consumed[month] <- Eggs_consumed + AF * sample(prop_females_laying, 1) * sample(lay_rate, 1) * sample(egg_consumption_rate, 1)
+       
+       Eggs_sold <- res_vec$Quant_Eggs_sold[month]
+       Eggs_consumed <- res_vec$Quant_Eggs_consumed[month]
+       
+       res_vec$Value_Eggs_sold[month] <- res_vec$Quant_Eggs_sold[month] * sample(egg_price, 1) 
+       res_vec$Value_Eggs_consumed[month] <- res_vec$Quant_Eggs_consumed[month] * sample(egg_price, 1) 
+       
+       res_vec$Feed_requirement_JF[month] <- Feed_JF + JF * sample(feed_req_prpn_JF, 1)
+       res_vec$Feed_requirement_JM[month] <- Feed_JM + JM * sample(feed_req_prpn_JM, 1) 
+       res_vec$Feed_requirement_SubAF[month] <- Feed_SubAF + SubAF * sample(feed_req_prpn_SubAF, 1)
+       res_vec$Feed_requirement_SubAMM[month] <- Feed_SubAM + SubAM * sample(feed_req_prpn_SubAM, 1)
+       res_vec$Feed_requirement_AF[month] <- Feed_AF + AF * sample(feed_req_prpn_AF, 1)
+       res_vec$Feed_requirement_AM[month] <- Feed_AM + AM * sample(feed_req_prpn_AM, 1)
+       
+       Feed_JF <- res_vec$Feed_requirement_JF[month]
+       Feed_JM <- res_vec$Feed_requirement_JM[month]
+       Feed_SubAF <- res_vec$Feed_requirement_SubAF[month]
+       Feed_SubAM <- res_vec$Feed_requirement_SubAM[month]
+       Feed_AF <- res_vec$Feed_requirement_AF[month]
+       Feed_AM <- res_vec$Feed_requirement_AM[month]
+       
+       res_vec$Feed_requirement[month] <- sum(res_vec$Feed_requirement_JF[month],
+                                              res_vec$Feed_requirement_JM[month],
+                                              res_vec$Feed_requirement_SubAF[month][month],
+                                              res_vec$Feed_requirement_SubAM[month],
+                                              res_vec$Feed_requirement_AF[month],
+                                              res_vec$Feed_requirement_AM[month])
+       
+       Feed <- res_vec$Feed_requirement[month]
+       
+       res_vec$Feed_purchased_NF[month] <- res_vec$Feed_requirement_NF[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
+       res_vec$Feed_purchased_NM[month] <- res_vec$Feed_requirement_NM[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
+       res_vec$Feed_purchased_JF[month] <- res_vec$Feed_requirement_JF[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
+       res_vec$Feed_purchased_JM[month] <- res_vec$Feed_requirement_JM[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
+       res_vec$Feed_purchased_AF[month] <- res_vec$Feed_requirement_AF[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
+       res_vec$Feed_purchased_AM[month] <- res_vec$Feed_requirement_AM[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
+       
+       res_vec$Feed_purchased <- sum(res_vec$Feed_purchased_NF[month],
+                                     res_vec$Feed_purchased_NM[month],
+                                     res_vec$Feed_purchased_JF[month],
+                                     res_vec$Feed_purchased_JM[month],
+                                     res_vec$Feed_purchased_AF[month],
+                                     res_vec$Feed_purchased_AM[month])
+       
+       
      }
 
     } # end Num_months loop
     
     ### Fill matrices ###
     
-    res_mat$NumJF[i, ] <- res_vec$NumJF
-    res_mat$NumSubAF[i, ] <- res_vec$NumSubAF
-    res_mat$NumAF[i, ] <- res_vec$NumAF
-    res_mat$NumJM[i, ] <- res_vec$NumJM
-    res_mat$NumSubAM[i, ] <- res_vec$NumSubAM
-    res_mat$NumAM[i, ] <- res_vec$NumAM
-    res_mat$NumN[i, ] <- res_vec$NumN
+    res_mat$Num_JF[i, ] <- res_vec$Num_JF
+    res_mat$Num_SubAF[i, ] <- res_vec$Num_SubAF
+    res_mat$Num_AF[i, ] <- res_vec$Num_AF
+    res_mat$Num_JM[i, ] <- res_vec$Num_JM
+    res_mat$Num_SubAM[i, ] <- res_vec$Num_SubAM
+    res_mat$Num_AM[i, ] <- res_vec$Num_AM
+    res_mat$Num_N[i, ] <- res_vec$Num_N
     
     res_mat$Monthly_mortality[i, ] <- res_vec$Monthly_mortality
     res_mat$Total_Mortality[i, ] <- res_vec$Total_Mortality
@@ -1187,15 +1287,6 @@ run_compartmental_model <- function(seed_value = NULL) {
 
     res_mat$Quant_Meat_kg[i, ] <- res_vec$Quant_Meat_kg
     
-    if (species == "poultry") {
-      res_mat$Quant_Eggs_consumed[i, ] <- res_vec$Quant_Eggs_consumed
-      res_mat$Quant_Eggs_sold[i, ] <- res_vec$Quant_Eggs_sold
-      
-      res_mat$Value_Eggs_consumed[i, ] <- res_vec$Value_Eggs_consumed
-      res_mat$Value_Eggs_sold[i, ] <- res_vec$Value_Eggs_sold
-      
-    }
-
     res_mat$Num_Offtake[i, ] <- res_vec$Num_Offtake
     
     res_mat$Num_Offtake_SubAF[i, ] <- res_vec$Num_Offtake_SubAF
@@ -1354,6 +1445,15 @@ run_compartmental_model <- function(seed_value = NULL) {
       res_mat$Capital_cost_Ox[i, ] <- res_vec$Capital_cost_Ox
       res_mat$Infrastructure_cost_Ox[i, ] <- res_vec$Infrastructure_cost_Ox
       res_mat$Total_expenditure_Ox[i, ] <- res_vec$Total_expenditure_Ox
+    }
+    
+    if (species == "poultry") {
+      res_mat$Quant_Eggs_consumed[i, ] <- res_vec$Quant_Eggs_consumed
+      res_mat$Quant_Eggs_sold[i, ] <- res_vec$Quant_Eggs_sold
+      res_mat$Value_Eggs_consumed[i, ] <- res_vec$Value_Eggs_consumed
+      res_mat$Value_Eggs_sold[i, ] <- res_vec$Value_Eggs_sold
+      
+      res_mat$Feed_requirement[i, ] <- res_vec$Feed_requirement
     }
     
   } # end nruns loop
