@@ -34,10 +34,7 @@ run_compartmental_model <- function(seed_value = NULL) {
   }
 
   
-  if (species == "cattle" || species == "small ruminants") {
-    
-    # Calculate mu
-    Mu <- calculate_mu(part, prolif)
+  if (species == "cattle") {
     
     kg_DM_req_JF <- calculate_dry_matter_requirements(lwJF, prpn_lskeepers_purch_feed, DM_req_prpn_JF)
     kg_DM_req_JM <- calculate_dry_matter_requirements(lwJM, prpn_lskeepers_purch_feed, DM_req_prpn_JM)
@@ -290,7 +287,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                          "Capital_cost_Ox",
                          "Infrastructure_cost_Ox", 
                          "Total_expenditure_Ox"))
-  } else if (species == "small ruminants") {
+  } else if (species == "smallruminants") {
     # vector_categories <- append(vector_categories, "Quant_Wool")
   } else {
     # poultry
@@ -537,7 +534,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                      "Capital_cost_Ox", 
                                                      "Infrastructure_cost_Ox", 
                                                      "Total_expenditure_Ox"))
-  } else if (species == "small ruminants") {
+  } else if (species == "smallruminants") {
     # wool not implemented yet by Gemma
     # matrix_categories <- append(matrix_categories, "Quant_Wool")
   } else {
@@ -654,7 +651,10 @@ run_compartmental_model <- function(seed_value = NULL) {
     
     for (month in 1:Num_months) {
       
-      if (species == "cattle" || species == "small ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
+        # Calculate mu
+        Mu <- calculate_mu(part, prolif)
+        
         res_vec$Births[month] <- sample(Mu, 1) * AF
       }
       
@@ -855,7 +855,7 @@ run_compartmental_model <- function(seed_value = NULL) {
       }
       
       
-      IF (species == "cattle" || species == "small ruminants") {
+      if (species == "cattle") {
         res_vec$Quant_Hides_SubAF[month] <- Hides_SubAF +  res_vec$Deaths_SubAF[month] * hides_rate_mor
         res_vec$Quant_Hides_SubAM[month] <- Hides_SubAM + res_vec$Deaths_SubAM[month] * hides_rate_mor
         res_vec$Quant_Hides_AF[month] <- Hides_AF + res_vec$Deaths_AF[month] * hides_rate_mor
@@ -911,7 +911,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Quant_Manure[month] <- res_vec$Quant_Manure[month] + res_vec$Quant_Manure_Ox[month]
       }
       
-      if (species == "cattle" || species == "small ruminants") {
+      if (species == "cattle") {
         Manure_kg <- res_vec$Quant_Manure[month]
         
         res_vec$Cumulative_Dry_Matter_JF[month] <- Cumulative_DM_JF + JF * sample(kg_DM_req_JF, 1) * 30 
@@ -1022,7 +1022,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         
       }
       
-      if (species == "cattle" || species == "small ruminants") {
+      if (species == "cattle") {
         ### Feed cost ### 
         
         res_vec$Feed_cost_JF[month] <- Feed_JF + JF * sample(Expenditure_on_feed_JF, 1) * 30 
