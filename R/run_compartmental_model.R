@@ -1247,12 +1247,12 @@ run_compartmental_model <- function(seed_value = NULL) {
        
        Feed <- res_vec$Feed_requirement[month]
        
-       res_vec$Feed_purchased_NF[month] <- res_vec$Feed_requirement_NF[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
-       res_vec$Feed_purchased_NM[month] <- res_vec$Feed_requirement_NM[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
-       res_vec$Feed_purchased_JF[month] <- res_vec$Feed_requirement_JF[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
-       res_vec$Feed_purchased_JM[month] <- res_vec$Feed_requirement_JM[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
-       res_vec$Feed_purchased_AF[month] <- res_vec$Feed_requirement_AF[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
-       res_vec$Feed_purchased_AM[month] <- res_vec$Feed_requirement_AM[month] * (sample(prpn_lskeepers_purch_feed, 1)) * (sample(prpn_feed_paid_for, 1))
+       res_vec$Feed_purchased_JF[month] <- res_vec$Feed_requirement_JF[month] * sample(prpn_lskeepers_purch_feed, 1) * sample(prpn_feed_paid_for, 1)
+       res_vec$Feed_purchased_JM[month] <- res_vec$Feed_requirement_JM[month] * sample(prpn_lskeepers_purch_feed, 1) * sample(prpn_feed_paid_for, 1)
+       res_vec$Feed_purchased_SubAF[month] <- res_vec$Feed_requirement_SubAF[month] * sample(prpn_lskeepers_purch_feed, 1) * sample(prpn_feed_paid_for, 1)
+       res_vec$Feed_purchased_SubAM[month] <- res_vec$Feed_requirement_SubAM[month] * sample(prpn_lskeepers_purch_feed, 1) * sample(prpn_feed_paid_for, 1)
+       res_vec$Feed_purchased_AF[month] <- res_vec$Feed_requirement_AF[month] * sample(prpn_lskeepers_purch_feed, 1) * sample(prpn_feed_paid_for, 1)
+       res_vec$Feed_purchased_AM[month] <- res_vec$Feed_requirement_AM[month] * sample(prpn_lskeepers_purch_feed, 1) * sample(prpn_feed_paid_for, 1)
        
        res_vec$Feed_purchased <- sum(res_vec$Feed_purchased_NF[month],
                                      res_vec$Feed_purchased_NM[month],
