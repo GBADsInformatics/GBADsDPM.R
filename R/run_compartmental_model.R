@@ -31,7 +31,7 @@ run_compartmental_model <- function(seed_value = NULL) {
     return (dm_req_prpn * lw * prpn)
   }
 
-  if (species == "cattle" || species == "small_ruminants") {
+  if (species == "cattle" || species == "smallruminants") {
     
     kg_DM_req_JF <- calculate_dry_matter_requirements(lwJF, prpn_lskeepers_purch_feed, DM_req_prpn_JF)
     kg_DM_req_JM <- calculate_dry_matter_requirements(lwJM, prpn_lskeepers_purch_feed, DM_req_prpn_JM)
@@ -285,7 +285,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                          "Capital_cost_Ox",
                          "Infrastructure_cost_Ox", 
                          "Total_expenditure_Ox"))
-  } else if (species == "small_ruminants") {
+  } else if (species == "smallruminants") {
     # vector_categories <- append(vector_categories, "Quantity_Wool")
   } else {
     # poultry
@@ -531,7 +531,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                      "Capital_cost_Ox", 
                                                      "Infrastructure_cost_Ox", 
                                                      "Total_expenditure_Ox"))
-  } else if (species == "small_ruminants") {
+  } else if (species == "smallruminants") {
     # wool not implemented yet by Gemma
     # matrix_categories <- append(matrix_categories, "Quantity_Wool")
   } else {
@@ -645,13 +645,13 @@ run_compartmental_model <- function(seed_value = NULL) {
     
     for (month in 1:Num_months) {
       
-      if (species == "cattle" || species == "small_ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
         Mu <- calculate_mu(part, prolif)
         
         res_vec$Births[month] <- sample(Mu, 1) * AF
       }
       
-      if (species == "cattle" || species == "small_ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
         res_vec$Deaths_JF[month] <- sample(AlphaJ, 1) * JF
         res_vec$Deaths_SubAF[month] <- sample(AlphaSubA, 1) * SubAF
         res_vec$Deaths_AF[month] <- sample(AlphaF, 1) * AF
@@ -667,7 +667,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Offtake_AF[month] <- sample(GammaAF, 1) * AF
         res_vec$Offtake_SubAM[month] <- sample(GammaSubAM, 1) * SubAM
         res_vec$Offtake_AM[month] <- sample(GammaAM, 1) * AM
-      } else if (species == "small_ruminants") {
+      } else if (species == "smallruminants") {
         res_vec$Offtake_SubAF[month] <- sample(GammaF, 1) * SubAF
         res_vec$offtake_AF[month] <- sample(GammaF, 1) * AF
         res_vec$Offtake_SubAM[month] <- sample(GammaM, 1) * SubAM
@@ -686,12 +686,12 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Growth_SubAM[month] <- sample(Beta, 1) * SubAM
       }
 
-      if (species == "cattle" || species == "small_ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
         res_vec$Culls_AF[month] <- sample(CullF, 1) * AF
         res_vec$Culls_AM[month] <- sample(CullM, 1) * AM
       }
       
-      if (species == "cattle" || species == "small_ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
         res_vec$Num_JF[month] <- JF + res_vec$Births[month] * 0.5 - res_vec$Deaths_JF[month] - res_vec$Growth_JF[month] - res_vec$Offtake_JF[month]
         res_vec$Num_SubAF[month] <- SubAF + res_vec$Growth_JF[month] - res_vec$Growth_SubAF[month] - res_vec$Offtake_SubAF[month] - res_vec$Deaths_SubAF[month]
         res_vec$Num_AF[month] <- AF + res_vec$Growth_SubAF[month] - res_vec$Offtake_AF[month] - res_vec$Deaths_AF[month] - res_vec$Culls_AF[month]
@@ -789,7 +789,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Pop_growth_Ox[month] <- Ox - N_Ox_t0
       }
       
-      if (species == "cattle" || species == "small_ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
         res_vec$Quantity_liveweight_kg_JF[month] <- JF * sample(lwJF, 1)
         res_vec$Quantity_liveweight_kg_JM[month] <- JM * sample(lwJM, 1)
         res_vec$Quantity_liveweight_kg_SubAF[month] <- SubAF * sample(lwSubAF, 1)
@@ -851,7 +851,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                                               res_vec$Offtake_liveweight_kg_AF[month],
                                               res_vec$Offtake_liveweight_kg_AM[month])
 
-      if (species == "cattle" || species == "small_ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
         res_vec$Quantity_meat_kg[month] <- Meat_kg + sum(res_vec$Offtake_liveweight_kg_SubAF[month], 
                                                       res_vec$Offtake_liveweight_kg_SubAM[month],
                                                       res_vec$Offtake_liveweight_kg_AF[month],
@@ -874,7 +874,7 @@ run_compartmental_model <- function(seed_value = NULL) {
       }
       
       
-      if (species == "cattle" || species == "small_ruminants") {
+      if (species == "cattle" || species == "smallruminants") {
         res_vec$Quantity_hides_SubAF[month] <- Hides_SubAF +  res_vec$Deaths_SubAF[month] * hides_rate_mor
         res_vec$Quantity_hides_SubAM[month] <- Hides_SubAM + res_vec$Deaths_SubAM[month] * hides_rate_mor
         res_vec$Quantity_hides_AF[month] <- Hides_AF + res_vec$Deaths_AF[month] * hides_rate_mor
@@ -1104,13 +1104,22 @@ run_compartmental_model <- function(seed_value = NULL) {
       
       ### Health cost ###
       
-      res_vec$Health_cost_JF[month] <- Health_JF + JF * sample(Health_exp_prev, 1) + JF * sample(Health_exp_treatment, 1) 
-      res_vec$Health_cost_JM[month] <- Health_JM + JM * sample(Health_exp_prev, 1) + JM * sample(Health_exp_treatment, 1) 
-      res_vec$Health_cost_SubAF[month] <- Health_SubAF + SubAF * sample(Health_exp_prev, 1) + SubAF * sample(Health_exp_treatment, 1)
-      res_vec$Health_cost_SubAM[month] <- Health_SubAM + SubAM * sample(Health_exp_prev, 1) + SubAM * sample(Health_exp_treatment, 1)
-      res_vec$Health_cost_AF[month] <- Health_AF + AF * sample(Health_exp_prev, 1) + AF * sample(Health_exp_treatment, 1)
-      res_vec$Health_cost_AM[month] <- Health_AM + AM * sample(Health_exp_prev, 1) + AM * sample(Health_exp_treatment, 1)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+      if (species == "cattle") {
+        res_vec$Health_cost_JF[month] <- Health_JF + JF * sample(Health_exp_prev, 1) + JF * sample(Health_exp_treatment, 1) 
+        res_vec$Health_cost_JM[month] <- Health_JM + JM * sample(Health_exp_prev, 1) + JM * sample(Health_exp_treatment, 1) 
+        res_vec$Health_cost_SubAF[month] <- Health_SubAF + SubAF * sample(Health_exp_prev, 1) + SubAF * sample(Health_exp_treatment, 1)
+        res_vec$Health_cost_SubAM[month] <- Health_SubAM + SubAM * sample(Health_exp_prev, 1) + SubAM * sample(Health_exp_treatment, 1)
+        res_vec$Health_cost_AF[month] <- Health_AF + AF * sample(Health_exp_prev, 1) + AF * sample(Health_exp_treatment, 1)
+        res_vec$Health_cost_AM[month] <- Health_AM + AM * sample(Health_exp_prev, 1) + AM * sample(Health_exp_treatment, 1)
+      } else if (species == "smallruminants") {
+        res_vec$Health_cost_JF[month] = Health_JF + JF * sample(Health_exp, 1)
+        res_vec$Health_cost_JM[month] = Health_JM + JM * sample(Health_exp, 1)
+        res_vec$Health_cost_SubAF[month] = Health_SubAF + SubAF * sample(Health_exp, 1) 
+        res_vec$Health_cost_SubAMM[month] = Health_SubAM + SubAM * sample(Health_exp, 1)
+        res_vec$Health_cost_AF[month] = Health_AF + AF * sample(Health_exp, 1) 
+        res_vec$Health_cost_AM[month] = Health_AM + AM * sample(Health_exp, 1) 
+      }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
       Health_JF <- res_vec$Health_cost_JF[month]
       Health_JM <- res_vec$Health_cost_JM[month]
       Health_SubAF <- res_vec$Health_cost_SubAF[month]
@@ -1124,7 +1133,6 @@ run_compartmental_model <- function(seed_value = NULL) {
                                         res_vec$Health_cost_SubAM[month],
                                         res_vec$Health_cost_AF[month],
                                         res_vec$Health_cost_AM[month])
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
      Health = res_vec$Health_cost[month]
@@ -1257,8 +1265,6 @@ run_compartmental_model <- function(seed_value = NULL) {
      }
 
     } # end Num_months loop
-    
-    ### Fill matrices ###
     
     res_mat$Num_JF[i, ] <- res_vec$Num_JF
     res_mat$Num_SubAF[i, ] <- res_vec$Num_SubAF
