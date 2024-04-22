@@ -260,8 +260,9 @@ run_compartmental_model <- function(seed_value = NULL) {
     "Total_expenditure_AM"
   )
   
-  if (species == "cattle") {
-    vector_categories <- append(vector_categories, c("NumOx",
+  if (species == "cattle") { # oxen
+    vector_categories <- append(vector_categories, c(
+                         "NumOx",
                          "Oxen_J", 
                          "Oxen_A",
                          "Deaths_Ox", 
@@ -508,7 +509,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                          
   )
   
-  if (species == "cattle") {
+  if (species == "cattle") { # oxen
     matrix_categories <- append(matrix_categories, c("NumOx",
                                                      "Total_mortality_Ox", 
                                                      "Value_of_total_mortality_Ox",
@@ -649,9 +650,15 @@ run_compartmental_model <- function(seed_value = NULL) {
         Mu <- calculate_mu(part, prolif)
         
         res_vec$Births[month] <- sample(Mu, 1) * AF
+      } else {
+        # poultry
+        res_vec$Births[month] <- AF * sample(prop_females_laying, 1) * 
+                                             sample(lay_rate, 1) * 
+                                             sample(egg_brood_rate, 1) * 
+                                             sample(hatch_rate, 1)
       }
       
-      if (species == "cattle" || species == "smallruminants") {
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
         res_vec$Deaths_JF[month] <- sample(AlphaJ, 1) * JF
         res_vec$Deaths_SubAF[month] <- sample(AlphaSubA, 1) * SubAF
         res_vec$Deaths_AF[month] <- sample(AlphaF, 1) * AF
@@ -660,7 +667,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Deaths_AM[month] <- sample(AlphaM, 1) * AM
       } 
       
-      if (species == "cattle") {
+      if (species == "cattle" || species == "poultry") {
         res_vec$Offtake_JF[month] <- sample(GammaJF, 1) * JF
         res_vec$Offtake_JM[month] <- sample(GammaJM, 1) * JM
         res_vec$Offtake_SubAF[month] <- sample(GammaSubAF, 1) * SubAF
@@ -674,7 +681,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Offtake_AM[month] <- sample(GammaM, 1) * AM
       }
       
-      if (species == "cattle") {
+      if (species == "cattle" || species == "poultry") {
         res_vec$Growth_JF[month] <- sample(Beta_J, 1) * JF
         res_vec$Growth_SubAF[month] <- sample(Beta_SubA, 1) * SubAF
         res_vec$Growth_JM[month] <- sample(Beta_J, 1) * JM
@@ -686,12 +693,14 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Growth_SubAM[month] <- sample(Beta, 1) * SubAM
       }
 
-      if (species == "cattle" || species == "smallruminants") {
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        
         res_vec$Culls_AF[month] <- sample(CullF, 1) * AF
         res_vec$Culls_AM[month] <- sample(CullM, 1) * AM
       }
       
-      if (species == "cattle" || species == "smallruminants") {
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        
         res_vec$Num_JF[month] <- JF + res_vec$Births[month] * 0.5 - res_vec$Deaths_JF[month] - res_vec$Growth_JF[month] - res_vec$Offtake_JF[month]
         res_vec$Num_SubAF[month] <- SubAF + res_vec$Growth_JF[month] - res_vec$Growth_SubAF[month] - res_vec$Offtake_SubAF[month] - res_vec$Deaths_SubAF[month]
         res_vec$Num_AF[month] <- AF + res_vec$Growth_SubAF[month] - res_vec$Offtake_AF[month] - res_vec$Deaths_AF[month] - res_vec$Culls_AF[month]
@@ -719,34 +728,36 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Num_AM[month] <- res_vec$Num_AM[month] - res_vec$Oxen_A[month]
         res_vec$Num_N[month] <- res_vec$Num_N[month] + res_vec$NumOx[month]
       }
-
-      JF <- res_vec$Num_JF[month]
-      SubAF <- res_vec$Num_SubAF[month]
-      AF <- res_vec$Num_AF[month]
-      JM <- res_vec$Num_JM[month]
-      SubAM <- res_vec$Num_SubAM[month]
-      AM <- res_vec$Num_AM[month]
-      N <- res_vec$Num_N[month]
       
-      res_vec$Total_mortality_JF[month] <- Num_dead_JF + res_vec$Deaths_JF[month]
-      Num_dead_JF <- res_vec$Total_mortality_JF[month]
-      res_vec$Total_mortality_JM[month] <- Num_dead_JM + res_vec$Deaths_JM[month]
-      Num_dead_JM <- res_vec$Total_mortality_JM[month]
-      res_vec$Total_mortality_SubAF[month] <- Num_dead_SubAF + res_vec$Deaths_SubAF[month]
-      Num_dead_SubAF <- res_vec$Total_mortality_SubAF[month]
-      res_vec$Total_mortality_SubAM[month] <- Num_dead_SubAM + res_vec$Deaths_SubAM[month]
-      Num_dead_SubAM <- res_vec$Total_mortality_SubAM[month]
-      res_vec$Total_mortality_AF[month] <- Num_dead_AF + res_vec$Deaths_AF[month]
-      Num_dead_AF <- res_vec$Total_mortality_AF[month]
-      res_vec$Total_mortality_AM[month] <- Num_dead_AM + res_vec$Deaths_AM[month]
-      Num_dead_AM <- res_vec$Total_mortality_AM[month]
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        JF <- res_vec$Num_JF[month]
+        SubAF <- res_vec$Num_SubAF[month]
+        AF <- res_vec$Num_AF[month]
+        JM <- res_vec$Num_JM[month]
+        SubAM <- res_vec$Num_SubAM[month]
+        AM <- res_vec$Num_AM[month]
+        N <- res_vec$Num_N[month]
       
-      res_vec$Total_mortality[month] <- sum(res_vec$Total_mortality_JF[month],
-                                            res_vec$Total_mortality_JM[month], 
-                                            res_vec$Total_mortality_SubAF[month],
-                                            res_vec$Total_mortality_SubAM[month], 
-                                            res_vec$Total_mortality_AF[month],
-                                            res_vec$Total_mortality_AM[month]) 
+        res_vec$Total_mortality_JF[month] <- Num_dead_JF + res_vec$Deaths_JF[month]
+        Num_dead_JF <- res_vec$Total_mortality_JF[month]
+        res_vec$Total_mortality_JM[month] <- Num_dead_JM + res_vec$Deaths_JM[month]
+        Num_dead_JM <- res_vec$Total_mortality_JM[month]
+        res_vec$Total_mortality_SubAF[month] <- Num_dead_SubAF + res_vec$Deaths_SubAF[month]
+        Num_dead_SubAF <- res_vec$Total_mortality_SubAF[month]
+        res_vec$Total_mortality_SubAM[month] <- Num_dead_SubAM + res_vec$Deaths_SubAM[month]
+        Num_dead_SubAM <- res_vec$Total_mortality_SubAM[month]
+        res_vec$Total_mortality_AF[month] <- Num_dead_AF + res_vec$Deaths_AF[month]
+        Num_dead_AF <- res_vec$Total_mortality_AF[month]
+        res_vec$Total_mortality_AM[month] <- Num_dead_AM + res_vec$Deaths_AM[month]
+        Num_dead_AM <- res_vec$Total_mortality_AM[month]
+      
+        res_vec$Total_mortality[month] <- sum(res_vec$Total_mortality_JF[month],
+                                              res_vec$Total_mortality_JM[month], 
+                                              res_vec$Total_mortality_SubAF[month],
+                                              res_vec$Total_mortality_SubAM[month], 
+                                              res_vec$Total_mortality_AF[month],
+                                              res_vec$Total_mortality_AM[month]) 
+      }
       
       if (species == "cattle") {
         Ox <- res_vec$NumOx[month]
@@ -757,19 +768,22 @@ run_compartmental_model <- function(seed_value = NULL) {
       
       # Value of Total Mortality
       
-      res_vec$Value_of_total_mortality_JF[month] <- res_vec$Total_mortality_JF[month] * sample(fvJF, 1)
-      res_vec$Value_of_total_mortality_JM[month] <- res_vec$Total_mortality_JM[month] * sample(fvJM, 1)
-      res_vec$Value_of_total_mortality_SubAF[month] <- res_vec$Total_mortality_SubAF[month] * sample(fvSubAF, 1)
-      res_vec$Value_of_total_mortality_SubAM[month] <- res_vec$Total_mortality_SubAM[month] * sample(fvSubAM, 1)
-      res_vec$Value_of_total_mortality_AF[month] <- res_vec$Total_mortality_AF[month] * sample(fvAF, 1)
-      res_vec$Value_of_total_mortality_AM[month] <- res_vec$Total_mortality_AM[month] * sample(fvAM, 1)
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        res_vec$Value_of_total_mortality_JF[month] <- res_vec$Total_mortality_JF[month] * sample(fvJF, 1)
+        res_vec$Value_of_total_mortality_JM[month] <- res_vec$Total_mortality_JM[month] * sample(fvJM, 1)
+        res_vec$Value_of_total_mortality_SubAF[month] <- res_vec$Total_mortality_SubAF[month] * sample(fvSubAF, 1)
+        res_vec$Value_of_total_mortality_SubAM[month] <- res_vec$Total_mortality_SubAM[month] * sample(fvSubAM, 1)
+        res_vec$Value_of_total_mortality_AF[month] <- res_vec$Total_mortality_AF[month] * sample(fvAF, 1)
+        res_vec$Value_of_total_mortality_AM[month] <- res_vec$Total_mortality_AM[month] * sample(fvAM, 1)
 
-      res_vec$Value_of_total_mortality[month] <- sum(res_vec$Value_of_total_mortality_JF[month],
-                                                 res_vec$Value_of_total_mortality_JM[month],
-                                                 res_vec$Value_of_total_mortality_SubAF[month],
-                                                 res_vec$Value_of_total_mortality_SubAM[month],
-                                                 res_vec$Value_of_total_mortality_AF[month],
-                                                 res_vec$Value_of_total_mortality_AM[month])
+        res_vec$Value_of_total_mortality[month] <- sum(res_vec$Value_of_total_mortality_JF[month],
+                                                       res_vec$Value_of_total_mortality_JM[month],
+                                                       res_vec$Value_of_total_mortality_SubAF[month],
+                                                       res_vec$Value_of_total_mortality_SubAM[month],
+                                                       res_vec$Value_of_total_mortality_AF[month],
+                                                       res_vec$Value_of_total_mortality_AM[month])
+        
+      }
 
 
       if (species == "cattle") {
@@ -777,13 +791,15 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Value_of_total_mortality[month] <- res_vec$Value_of_total_mortality[month] + res_vec$Value_of_total_mortality_Ox[month]
       }
       
-      res_vec$Pop_growth[month] <- N - Nt0
-      res_vec$Pop_growth_SubAF[month] <- JF - N_JF_t0
-      res_vec$Pop_growth_SubAM[month] <- JM - N_JM_t0
-      res_vec$Pop_growth_SubAF[month] <- SubAF - N_SubAF_t0
-      res_vec$Pop_growth_SubAM[month] <- SubAM - N_SubAM_t0
-      res_vec$Pop_growth_AF[month] <- AF - N_AF_t0
-      res_vec$Pop_growth_AM[month] <- AM - N_AM_t0
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        res_vec$Pop_growth[month] <- N - Nt0
+        res_vec$Pop_growth_SubAF[month] <- JF - N_JF_t0
+        res_vec$Pop_growth_SubAM[month] <- JM - N_JM_t0
+        res_vec$Pop_growth_SubAF[month] <- SubAF - N_SubAF_t0
+        res_vec$Pop_growth_SubAM[month] <- SubAM - N_SubAM_t0
+        res_vec$Pop_growth_AF[month] <- AF - N_AF_t0
+        res_vec$Pop_growth_AM[month] <- AM - N_AM_t0
+      }
       
       if (species == "cattle") {
         res_vec$Pop_growth_Ox[month] <- Ox - N_Ox_t0
@@ -796,6 +812,7 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Quantity_liveweight_kg_SubAM[month] <- SubAM * sample(lwSubAM, 1)
         res_vec$Quantity_liveweight_kg_AF[month] <- AF * sample(lwAF, 1)
         res_vec$Quantity_liveweight_kg_AM[month] <- AM * sample(lwAM, 1)
+      }
         
         res_vec$Quantity_liveweight_kg[month] <- sum(res_vec$Quantity_liveweight_kg_JF[month],
                                                   res_vec$Quantity_liveweight_kg_JM[month],
@@ -813,12 +830,13 @@ run_compartmental_model <- function(seed_value = NULL) {
         
       }
       
-      
       if (species == "cattle") {
         res_vec$Quantity_liveweight_kg_Ox[month] <- Ox * sample(lwOx, 1)
         res_vec$Quantity_liveweight_kg[month] <- res_vec$Quantity_liveweight_kg[month] + res_vec$Quantity_liveweight_kg_Ox[month]
         res_vec$Num_offtake_Ox[month] <- Offtake_Ox + res_vec$Offtake_Ox[month] + res_vec$Culls_Ox[month]
       }
+    
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
       
       Offtake_JF <- res_vec$Num_offtake_SubAF[month]
       Offtake_JM <- res_vec$Num_offtake_SubAM[month]
@@ -833,29 +851,31 @@ run_compartmental_model <- function(seed_value = NULL) {
                                     res_vec$Num_offtake_SubAM[month],
                                     res_vec$Num_offtake_AF[month],
                                     res_vec$Num_offtake_AM[month])
+      }
       
       if (species == "cattle") {
         Offtake_Ox <- res_vec$Num_offtake_Ox[month]
         res_vec$Num_offtake[month] <- res_vec$Num_offtake[month] + res_vec$Num_offtake_Ox[month]
       }
+    
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        Offtake <- res_vec$Num_offtake[month]
+        res_vec$Offtake_liveweight_kg_SubAF[month] <- sample(lwSubAF, 1) * Offtake_SubAF
+        res_vec$Offtake_liveweight_kg_SubAM[month] <- sample(lwSubAM, 1) * Offtake_SubAM
+        res_vec$Offtake_liveweight_kg_AF[month] <- sample(lwAF, 1) * Offtake_AF
+        res_vec$Offtake_liveweight_kg_AM[month] <- sample(lwAM, 1) * Offtake_AM
       
-      Offtake <- res_vec$Num_offtake[month]
+        res_vec$Offtake_liveweight_kg[month] <- sum(res_vec$Offtake_liveweight_kg_SubAF[month],
+                                                    res_vec$Offtake_liveweight_kg_SubAM[month],
+                                                    res_vec$Offtake_liveweight_kg_AF[month],
+                                                    res_vec$Offtake_liveweight_kg_AM[month])
+      }
 
-      res_vec$Offtake_liveweight_kg_SubAF[month] <- sample(lwSubAF, 1) * Offtake_SubAF
-      res_vec$Offtake_liveweight_kg_SubAM[month] <- sample(lwSubAM, 1) * Offtake_SubAM
-      res_vec$Offtake_liveweight_kg_AF[month] <- sample(lwAF, 1) * Offtake_AF
-      res_vec$Offtake_liveweight_kg_AM[month] <- sample(lwAM, 1) * Offtake_AM
-      
-      res_vec$Offtake_liveweight_kg[month] <- sum(res_vec$Offtake_liveweight_kg_SubAF[month],
-                                              res_vec$Offtake_liveweight_kg_SubAM[month],
-                                              res_vec$Offtake_liveweight_kg_AF[month],
-                                              res_vec$Offtake_liveweight_kg_AM[month])
-
-      if (species == "cattle" || species == "smallruminants") {
-        res_vec$Quantity_meat_kg[month] <- Meat_kg + sum(res_vec$Offtake_liveweight_kg_SubAF[month], 
-                                                      res_vec$Offtake_liveweight_kg_SubAM[month],
-                                                      res_vec$Offtake_liveweight_kg_AF[month],
-                                                      res_vec$Offtake_liveweight_kg_AM[month]) * ccy
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        res_vec$Quantity_meat_kg[month] <- sum(res_vec$Offtake_liveweight_kg_SubAF[month], 
+                                               res_vec$Offtake_liveweight_kg_SubAM[month],
+                                               res_vec$Offtake_liveweight_kg_AF[month],
+                                               res_vec$Offtake_liveweight_kg_AM[month]) * ccy
         
       }
       
@@ -866,13 +886,14 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Quantity_meat_kg[month] <- res_vec$Quantity_meat_kg[month] + res_vec$Offtake_liveweight_kg_Ox[month] * ccy
       }
       
-      Meat_kg <- res_vec$Quantity_meat_kg[month]
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        Meat_kg <- res_vec$Quantity_meat_kg[month]
+      }
       
       if (species == "cattle") {
         res_vec$Cumulative_draught_income[month] <- Draught_income + Ox * sample(draught_rate, 1) * draught_day_value * 30
         Draught_income <- res_vec$Cumulative_draught_income[month]
       }
-      
       
       if (species == "cattle" || species == "smallruminants") {
         res_vec$Quantity_hides_SubAF[month] <- Hides_SubAF +  res_vec$Deaths_SubAF[month] * hides_rate_mor
@@ -919,17 +940,16 @@ run_compartmental_model <- function(seed_value = NULL) {
         
       }
       
+      
       if (species == "cattle") {
         res_vec$Quantity_hides_Ox[month] <- Hides_Ox + res_vec$Deaths_Ox[month] * hides_rate_mor 
         Hides_Ox <- res_vec$Quantity_hides_Ox[month]
         res_vec$Quantity_hides[month] <- res_vec$Quantity_hides[month] + res_vec$Quantity_hides_Ox[month]
-
+        
         res_vec$Quantity_manure_Ox[month] <- Manure_kg_Ox + Ox * sample(Man_A, 1) * 30 
         Manure_kg_Ox <- res_vec$Quantity_manure_Ox[month]
         res_vec$Quantity_manure[month] <- res_vec$Quantity_manure[month] + res_vec$Quantity_manure_Ox[month]
-      }
-      
-      if (species == "cattle") {
+        
         Manure_kg <- res_vec$Quantity_manure[month]
         
         res_vec$Cumulative_dry_matter_JF[month] <- Cumulative_DM_JF + JF * sample(kg_DM_req_JF, 1) * 30 
@@ -953,17 +973,17 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                     res_vec$Cumulative_dry_matter_AF[month],
                                                     res_vec$Cumulative_dry_matter_AM[month])
         
-      }
-      
-      if (species == "cattle") {
         res_vec$Cumulative_dry_matter_Ox[month] <- Cumulative_DM_Ox + Ox * sample(kg_DM_req_Ox, 1) * 30
         Cumulative_DM_Ox <- res_vec$Cumulative_dry_matter_Ox[month]
         res_vec$Cumulative_dry_matter[month] <- res_vec$Cumulative_dry_matter[month] +  res_vec$Cumulative_dry_matter_Ox[month]
+        
       }
       
+    if (species == "cattle" || species == "smallruminants") {
       Cumulative_DM <- res_vec$Cumulative_dry_matter[month]
-      
-      ### Offtake value ###
+    }
+    
+    if (species == "cattle" || species == "smallruminants" || species == "poultry") {
       
       res_vec$Value_offtake_SubAF[month] <- sample(fvSubAF, 1) * Offtake_SubAF 
       Value_offtake_SubAF <- res_vec$Value_offtake_SubAF[month]
@@ -981,16 +1001,17 @@ run_compartmental_model <- function(seed_value = NULL) {
                                          res_vec$Value_offtake_SubAM[month],
                                          res_vec$Value_offtake_AF[month],
                                          res_vec$Value_offtake_AM[month])
+    }
      
        if (species == "cattle") {
          res_vec$Value_offtake_Ox[month] <- sample(fvOx, 1) * Offtake_Ox
          Value_offtake_Ox <- res_vec$Value_offtake_Ox[month]
          res_vec$Value_offtake[month] <- res_vec$Value_offtake[month] + res_vec$Value_offtake_Ox[month]
        }
+    
+    if (species == "cattle" || species == "smallruminants" || species == "poultry") {
       
       Value_offtake <- res_vec$Value_offtake[month] 
-      
-      ### Herd increase value ###
       
       res_vec$Value_herd_increase_JF[month] <- (JF - N_JF_t0) * sample(fvJF, 1)
       Value_herd_inc_JF <- res_vec$Value_herd_increase_JF[month]
@@ -1017,15 +1038,17 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                 res_vec$Value_herd_increase_AF[month],
                                                 res_vec$Value_herd_increase_AM[month])
       
+    }
+      
       if (species == "cattle") {
         res_vec$Value_herd_increase_Ox[month] <- (Ox - N_Ox_t0) * (sample(fvOx, 1))
         Value_herd_inc_Ox <- res_vec$Value_herd_increase_Ox[month]
         res_vec$Value_herd_increase[month] <- res_vec$Value_herd_increase[month] + res_vec$Value_herd_increase_Ox[month]
       }
+    
+    if (species == "cattle" || species == "smallruminants" || species == "poultry") {
       
       Value_herd_inc <- res_vec$Value_herd_increase[month]
-      
-      ### Total value increase ###
       
       res_vec$Total_value_increase[month] <- Value_herd_inc + Value_offtake
       res_vec$Total_value_increase_JF[month] <- Value_herd_inc_JF 
@@ -1035,12 +1058,11 @@ run_compartmental_model <- function(seed_value = NULL) {
       res_vec$Total_value_increase_AF[month] <- Value_herd_inc_AF + Value_offtake_AF
       res_vec$Total_value_increase_AM[month] <- Value_herd_inc_AM + Value_offtake_AM
       
+    }
+      
       if (species == "cattle") {
         res_vec$Total_value_increase_Ox[month] <- Value_herd_inc_Ox + Value_offtake_Ox
         
-      }
-      
-      if (species == "cattle") {
         ### Feed cost ### 
         
         res_vec$Feed_cost_JF[month] <- Feed_JF + JF * sample(Expenditure_on_feed_JF, 1) * 30 
@@ -1065,53 +1087,64 @@ run_compartmental_model <- function(seed_value = NULL) {
         
         Feed <- res_vec$Feed_cost[month]
         
-        ### Labour cost ###
+        if (species == "cattle" || species == "smallruminants") {
+          res_vec$Labour_cost_JF[month] <- Labour_JF + JF * sample(Labour_cattle, 1) * lab_non_health 
+          res_vec$Labour_cost_JM[month] <- Labour_JM + JM * sample(Labour_cattle, 1) * lab_non_health  
+          res_vec$Labour_cost_SubAF[month] <- Labour_SubAF + SubAF * sample(Labour_cattle, 1) * lab_non_health  
+          res_vec$Labour_cost_SubAM[month] <- Labour_SubAM + SubAM * sample(Labour_cattle, 1) * lab_non_health  
+          res_vec$Labour_cost_AF[month] <- Labour_AF + AF * sample(Labour_cattle, 1) * lab_non_health + AF * prop_F_milked * sample(Labour_dairy, 1)  
+          res_vec$Labour_cost_AM[month] <- Labour_AM + AM * sample(Labour_cattle, 1) * lab_non_health 
+        } else {
+          # poultry
+          res_vec$Labour_cost_JF[month] = Labour_JF + JF * sample(Labour_poultry, 1) * lab_non_health 
+          res_vec$Labour_cost_JM[month] = Labour_JM +JM * (sample(Labour_poultry, 1)) * lab_non_health  
+          res_vec$Labour_cost_SubAFF[month] = Labour_SubAF + SubAF * sample(Labour_poultry, 1) * lab_non_health  
+          res_vec$Labour_cost_SubAM[month] = Labour_SubAM + SubAM * sample(Labour_poultry, 1) * lab_non_health  
+          res_vec$Labour_cost_AF[month] = Labour_AF + AF * sample(Labour_poultry, 1) * lab_non_health   
+          res_vec$Labour_cost_AM[month] = Labour_AM + AM * sample(Labour_poultry, 1) * lab_non_health  
+        }
         
-        res_vec$Labour_cost_JF[month] <- Labour_JF + JF * sample(Labour_cattle, 1) * lab_non_health 
-        res_vec$Labour_cost_JM[month] <- Labour_JM + JM * sample(Labour_cattle, 1) * lab_non_health  
-        res_vec$Labour_cost_SubAF[month] <- Labour_SubAF + SubAF * sample(Labour_cattle, 1) * lab_non_health  
-        res_vec$Labour_cost_SubAM[month] <- Labour_SubAM + SubAM * sample(Labour_cattle, 1) * lab_non_health  
-        res_vec$Labour_cost_AF[month] <- Labour_AF + AF * sample(Labour_cattle, 1) * lab_non_health + AF * prop_F_milked * sample(Labour_dairy, 1)  
-        res_vec$Labour_cost_AM[month] <- Labour_AM + AM * sample(Labour_cattle, 1) * lab_non_health 
+        if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+          Labour_JF <- res_vec$Labour_cost_JF[month]
+          Labour_JM <- res_vec$Labour_cost_JM[month]
+          Labour_SubAF <- res_vec$Labour_cost_SubAF[month]
+          Labour_SubAM <- res_vec$Labour_cost_SubAM[month]
+          Labour_AF <- res_vec$Labour_cost_AF[month]
+          Labour_AM <- res_vec$Labour_cost_AM[month]
         
-        Labour_JF <- res_vec$Labour_cost_JF[month]
-        Labour_JM <- res_vec$Labour_cost_JM[month]
-        Labour_SubAF <- res_vec$Labour_cost_SubAF[month]
-        Labour_SubAM <- res_vec$Labour_cost_SubAM[month]
-        Labour_AF <- res_vec$Labour_cost_AF[month]
-        Labour_AM <- res_vec$Labour_cost_AM[month]
+          res_vec$Labour_cost[month] <- sum(res_vec$Labour_cost_JF[month],
+                                            res_vec$Labour_cost_JM[month],
+                                            res_vec$Labour_cost_SubAF[month],
+                                            res_vec$Labour_cost_SubAM[month],
+                                            res_vec$Labour_cost_AF[month],
+                                            res_vec$Labour_cost_AM[month])
         
-        res_vec$Labour_cost[month] <- sum(res_vec$Labour_cost_JF[month],
-                                          res_vec$Labour_cost_JM[month],
-                                          res_vec$Labour_cost_SubAF[month],
-                                          res_vec$Labour_cost_SubAM[month],
-                                          res_vec$Labour_cost_AF[month],
-                                          res_vec$Labour_cost_AM[month])
-        Labour =  res_vec$Labour_cost[month]
+          Labour =  res_vec$Labour_cost[month]
         
-      }
-      
-      
-      if (species == "cattle") {
-        res_vec$Feed_cost_Ox[month] <- Feed_Ox + Ox * sample(Expenditure_on_feed_Ox, 1) * 30
-        Feed_Ox <- res_vec$Feed_cost_Ox[month]
-        res_vec$Feed_cost[month] <- res_vec$Feed_cost[month] + res_vec$Feed_cost_Ox[month]
-        Feed <- res_vec$Feed_cost[month]
-        res_vec$Labour_cost_Ox[month] <- Labour_Ox + Ox * sample(Labour_cattle, 1) * lab_non_health + Ox * sample(Labour_Oxen, 1)
-        Labour_Ox <- res_vec$Labour_cost_Ox[month]
-        res_vec$Labour_cost[month] <- res_vec$Labour_cost[month] + res_vec$Labour_cost_Ox[month]
-      }
-      
-      ### Health cost ###
-      
-      if (species == "cattle") {
+        }
+        
+        if (species == "cattle") {
+          res_vec$Feed_cost_Ox[month] <- Feed_Ox + Ox * sample(Expenditure_on_feed_Ox, 1) * 30
+          Feed_Ox <- res_vec$Feed_cost_Ox[month]
+          res_vec$Feed_cost[month] <- res_vec$Feed_cost[month] + res_vec$Feed_cost_Ox[month]
+          Feed <- res_vec$Feed_cost[month]
+          res_vec$Labour_cost_Ox[month] <- Labour_Ox + Ox * sample(Labour_cattle, 1) * lab_non_health + Ox * sample(Labour_Oxen, 1)
+          Labour_Ox <- res_vec$Labour_cost_Ox[month]
+          res_vec$Labour_cost[month] <- res_vec$Labour_cost[month] + res_vec$Labour_cost_Ox[month]
+        }
+        
+        if (species == "cattle" || species == "poultry") {
+    
         res_vec$Health_cost_JF[month] <- Health_JF + JF * sample(Health_exp_prev, 1) + JF * sample(Health_exp_treatment, 1) 
         res_vec$Health_cost_JM[month] <- Health_JM + JM * sample(Health_exp_prev, 1) + JM * sample(Health_exp_treatment, 1) 
         res_vec$Health_cost_SubAF[month] <- Health_SubAF + SubAF * sample(Health_exp_prev, 1) + SubAF * sample(Health_exp_treatment, 1)
         res_vec$Health_cost_SubAM[month] <- Health_SubAM + SubAM * sample(Health_exp_prev, 1) + SubAM * sample(Health_exp_treatment, 1)
         res_vec$Health_cost_AF[month] <- Health_AF + AF * sample(Health_exp_prev, 1) + AF * sample(Health_exp_treatment, 1)
         res_vec$Health_cost_AM[month] <- Health_AM + AM * sample(Health_exp_prev, 1) + AM * sample(Health_exp_treatment, 1)
-      } else if (species == "smallruminants") {
+        
+      }
+      
+      if (species == "smallruminants") {
         res_vec$Health_cost_JF[month] = Health_JF + JF * sample(Health_exp, 1)
         res_vec$Health_cost_JM[month] = Health_JM + JM * sample(Health_exp, 1)
         res_vec$Health_cost_SubAF[month] = Health_SubAF + SubAF * sample(Health_exp, 1) 
@@ -1119,15 +1152,17 @@ run_compartmental_model <- function(seed_value = NULL) {
         res_vec$Health_cost_AF[month] = Health_AF + AF * sample(Health_exp, 1) 
         res_vec$Health_cost_AM[month] = Health_AM + AM * sample(Health_exp, 1) 
       }
+        
+        if (species == "cattle" || species == "smallruminants" || species == "poultry") {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-      Health_JF <- res_vec$Health_cost_JF[month]
-      Health_JM <- res_vec$Health_cost_JM[month]
-      Health_SubAF <- res_vec$Health_cost_SubAF[month]
-      Health_SubAM <- res_vec$Health_cost_SubAM[month]
-      Health_AF <- res_vec$Health_cost_AF[month]
-      Health_AM <- res_vec$Health_cost_AM[month]
+        Health_JF <- res_vec$Health_cost_JF[month]
+        Health_JM <- res_vec$Health_cost_JM[month]
+        Health_SubAF <- res_vec$Health_cost_SubAF[month]
+        Health_SubAM <- res_vec$Health_cost_SubAM[month]
+        Health_AF <- res_vec$Health_cost_AF[month]
+        Health_AM <- res_vec$Health_cost_AM[month]
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-      res_vec$Health_cost[month] <- sum(res_vec$Health_cost_JF[month],
+        res_vec$Health_cost[month] <- sum(res_vec$Health_cost_JF[month],
                                         res_vec$Health_cost_JM[month],
                                         res_vec$Health_cost_SubAF[month],
                                         res_vec$Health_cost_SubAM[month],
@@ -1135,50 +1170,54 @@ run_compartmental_model <- function(seed_value = NULL) {
                                         res_vec$Health_cost_AM[month])
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-     Health = res_vec$Health_cost[month]
+        Health = res_vec$Health_cost[month]
+     
+      }
                                                                                                                                                                                                                                                                                                                                                                                                                                                
       if (species == "cattle") {
         res_vec$Health_cost_Ox[month] <- Health_Ox + Ox * sample(Health_exp_prev, 1) + Ox * sample(Health_exp_treatment, 1) 
         Health_Ox <- res_vec$Health_cost_Ox[month]                                                                                
         res_vec$Health_cost[month] <-  res_vec$Health_cost[month] + res_vec$Health_cost_Ox[month]
       } 
+        
+      if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+        res_vec$Capital_cost_JF[month] <- res_vec$Num_JF[1] * sample(fvJF, 1) * Interest_rate 
+        Capital_JF <- res_vec$Capital_cost_JF[month]
      
-      ### Capital cost ###
+        res_vec$Capital_cost_JM[month] <- res_vec$Num_JM[1] * sample(fvJM, 1) * Interest_rate  
+        Capital_JM <- res_vec$Capital_cost_JM[month]
      
-     res_vec$Capital_cost_JF[month] <- res_vec$Num_JF[1] * sample(fvJF, 1) * Interest_rate 
-     Capital_JF <- res_vec$Capital_cost_JF[month]
+        res_vec$Capital_cost_SubAF[month] <-res_vec$Num_SubAF[1] * sample(fvSubAF, 1) * Interest_rate  
+        Capital_SubAF = res_vec$Capital_cost_SubAF[month]
      
-     res_vec$Capital_cost_JM[month] <- res_vec$Num_JM[1] * sample(fvJM, 1) * Interest_rate  
-     Capital_JM <- res_vec$Capital_cost_JM[month]
+        res_vec$Capital_cost_SubAM[month] <- res_vec$Num_SubAM[1] * sample(fvSubAM, 1) * Interest_rate  
+        Capital_SubAM <- res_vec$Capital_cost_SubAM[month]
      
-     res_vec$Capital_cost_SubAF[month] <-res_vec$Num_SubAF[1] * sample(fvSubAF, 1) * Interest_rate  
-     Capital_SubAF = res_vec$Capital_cost_SubAF[month]
+        res_vec$Capital_cost_AF[month] <- res_vec$Num_AF[1] * sample(fvAF, 1) * Interest_rate  
+        Capital_AF <- res_vec$Capital_cost_AF[month]
      
-     res_vec$Capital_cost_SubAM[month] <- res_vec$Num_SubAM[1] * sample(fvSubAM, 1) * Interest_rate  
-     Capital_SubAM <- res_vec$Capital_cost_SubAM[month]
+        res_vec$Capital_cost_AM[month] <- res_vec$Num_AM[1] * sample(fvAM, 1) * Interest_rate  
+        Capital_AM <- res_vec$Capital_cost_AM[month]
      
-     res_vec$Capital_cost_AF[month] <- res_vec$Num_AF[1] * sample(fvAF, 1) * Interest_rate  
-     Capital_AF <- res_vec$Capital_cost_AF[month]
-     
-     res_vec$Capital_cost_AM[month] <- res_vec$Num_AM[1] * sample(fvAM, 1) * Interest_rate  
-     Capital_AM <- res_vec$Capital_cost_AM[month]
-     
-     res_vec$Capital_cost[month] <- sum(res_vec$Capital_cost_JF[month],
+        res_vec$Capital_cost[month] <- sum(res_vec$Capital_cost_JF[month],
                                        res_vec$Capital_cost_JM[month],
                                        res_vec$Capital_cost_SubAF[month],
                                        res_vec$Capital_cost_SubAM[month],
                                        res_vec$Capital_cost_AF[month],
                                        res_vec$Capital_cost_AM[month])
+      }
      
      if (species == "cattle") {
        res_vec$Capital_cost_Ox[month] <- res_vec$NumOx[1] * sample(fvOx, 1) * Interest_rate
        Capital_Ox <- res_vec$Capital_cost_Ox[month]
        res_vec$Capital_cost[month] <- res_vec$Capital_cost[month] + res_vec$Capital_cost_Ox[month]
      }
-     
-     Capital <- res_vec$Capital_cost[month]
-     
-     ### Infrastructure cost ###
+        
+    if (species == "cattle" || species == "smallruminants" || species == "poultry") {
+      Capital <- res_vec$Capital_cost[month]
+    }
+        
+    if (species == "cattle" || species == "smallruminants" || species == "poultry") {
      
      res_vec$Infrastructure_cost_JF[month] <- N_JF_t0 * sample(Infrastructure_per_head, 1)
      res_vec$Infrastructure_cost_JM[month] <- N_JM_t0 * sample(Infrastructure_per_head, 1)
@@ -1193,13 +1232,14 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                res_vec$Infrastructure_cost_SubAM[month],
                                                res_vec$Infrastructure_cost_AF[month],
                                                res_vec$Infrastructure_cost_AM[month])
+    }
      
      if (species == "cattle") {
        res_vec$Infrastructure_cost_Ox[month] <- N_Ox_t0 * sample(Infrastructure_per_head, 1)
        res_vec$Infrastructure_cost[month] <- res_vec$Infrastructure_cost[month] + res_vec$Infrastructure_cost_Ox[month]
      }
-     
-     # Total expenditure ###
+        
+    if (species == "cattle" || species == "smallruminants" || species == "poultry") {
      
      res_vec$Total_expenditure[month] <- res_vec$Feed_cost[month] + Health + Labour + Capital + res_vec$Infrastructure_cost[month]
      
@@ -1210,7 +1250,10 @@ run_compartmental_model <- function(seed_value = NULL) {
      res_vec$Total_expenditure_AF[month] <-  Feed_AF + Health_AF + Labour_AF + Capital_AF + res_vec$Infrastructure_cost_AF[month]
      res_vec$Total_expenditure_AM[month] <- Feed_AM + Health_AM + Labour_AM + Capital_AM + res_vec$Infrastructure_cost_AM[month]
      
-     if (species == "cattle"){
+    }
+     
+     
+     if (species == "cattle") {
        res_vec$Total_expenditure_Ox[month] <- Feed_Ox + Health_Ox + Labour_Ox + Capital_Ox + res_vec$Infrastructure_cost_Ox[month]
      }
      
@@ -1469,6 +1512,7 @@ run_compartmental_model <- function(seed_value = NULL) {
     if (species == "poultry") {
       res_mat$Quantity_eggs_consumed[i, ] <- res_vec$Quantity_eggs_consumed
       res_mat$Quantity_eggs_sold[i, ] <- res_vec$Quantity_eggs_sold
+      
       res_mat$Value_eggs_consumed[i, ] <- res_vec$Value_eggs_consumed
       res_mat$Value_eggs_sold[i, ] <- res_vec$Value_eggs_sold
       
@@ -1490,40 +1534,52 @@ run_compartmental_model <- function(seed_value = NULL) {
                              Total_number_change_SubAM,
                              Total_number_change_AF,
                              Total_number_change_AM)
-
-  Value_Milk <- res_mat$Quantity_milk * milk_value_ltr
   
-  Value_hides_SubAF <- res_mat$Quantity_hides_SubAF * sample(hides_value, 1)
-  Value_hides_SubAM <- res_mat$Quantity_hides_SubAM * sample(hides_value, 1)
-  Value_hides_AF <- res_mat$Quantity_hides_AF * sample(hides_value, 1)
-  Value_hides_AM <- res_mat$Quantity_hides_AM * sample(hides_value, 1)
+  if (species == "cattle" || species == "smallruminants") {
+    
+    Value_hides_SubAF <- res_mat$Quantity_hides_SubAF * sample(hides_value, 1)
+    Value_hides_SubAM <- res_mat$Quantity_hides_SubAM * sample(hides_value, 1)
+    Value_hides_AF <- res_mat$Quantity_hides_AF * sample(hides_value, 1)
+    Value_hides_AM <- res_mat$Quantity_hides_AM * sample(hides_value, 1)
+    
+    Value_hides <- sum(Value_hides_SubAF,
+                       Value_hides_SubAM,
+                       Value_hides_AF,
+                       Value_hides_AM)
+    
+    Quantity_hides_SubA <- res_mat$Quantity_hides_SubAF + res_mat$Quantity_hides_SubAM
+    
+    Value_hides_SubA <- res_mat$Value_hides_SubAF + res_mat$Value_hides_SubAM
+    
+    Value_Manure <- res_mat$Quantity_manure * Man_value
+    Value_Manure_JF <- res_mat$Quantity_manure_JF * Man_value
+    Value_Manure_JM <- res_mat$Quantity_manure_JM * Man_value
+    Value_Manure_SubAF <- res_mat$Quantity_manure_SubAF * Man_value
+    Value_Manure_SubAM <- res_mat$Quantity_manure_SubAM * Man_value
+    Value_Manure_AF <- res_mat$Quantity_manure_AF * Man_value
+    Value_Manure_AM <- res_mat$Quantity_manure_AM * Man_value
+    
+    Production_value_herd_offtake_hide_manure_JF <- res_mat$Total_value_increase_JF + res_mat$Value_Manure_JF
+    Production_value_herd_offtake_hide_manure_JM <- res_mat$Total_value_increase_JM + res_mat$Value_Manure_JM
+    Production_value_herd_offtake_hide_manure_SubAF <- res_mat$Total_value_increase_SubAF + res_mat$Value_Manure_SubAF + res_mat$Value_hides_SubAF
+    Production_value_herd_offtake_hide_manure_SubAM <- res_mat$Total_value_increase_SubAM + res_mat$Value_Manure_SubAM + Value_hides_SubAM
+    Production_value_herd_offtake_hide_manure_AF <- res_mat$Total_value_increase_AF + res_mat$Value_Manure_AF + res_mat$Value_hides_AF + res_mat$Value_Milk
+    Production_value_herd_offtake_hide_manure_AM <- res_mat$Total_value_increase_AM + res_mat$Value_Manure_AM + res_mat$Value_hides_AM
+    
+    Production_value_herd_offtake_hide_manure <- sum(Production_value_herd_offtake_hide_manure_JF,
+                                                     Production_value_herd_offtake_hide_manure_JM, 
+                                                     Production_value_herd_offtake_hide_manure_SubAF,
+                                                     Production_value_herd_offtake_hide_manure_SubAM + 
+                                                     Production_value_herd_offtake_hide_manure_AF,
+                                                     Production_value_herd_offtake_hide_manure_AM)
+    
+  }
   
-  Value_hides <- sum(Value_hides_SubAF,
-                     Value_hides_SubAM,
-                     Value_hides_AF,
-                     Value_hides_AM)
-                     
-  Value_Manure <- res_mat$Quantity_manure * Man_value
-  Value_Manure_JF <- res_mat$Quantity_manure_JF * Man_value
-  Value_Manure_JM <- res_mat$Quantity_manure_JM * Man_value
-  Value_Manure_SubAF <- res_mat$Quantity_manure_SubAF * Man_value
-  Value_Manure_SubAM <- res_mat$Quantity_manure_SubAM * Man_value
-  Value_Manure_AF <- res_mat$Quantity_manure_AF * Man_value
-  Value_Manure_AM <- res_mat$Quantity_manure_AM * Man_value
   
-  Production_value_herd_offtake_hide_manure_JF <- res_mat$Total_value_increase_JF + res_mat$Value_Manure_JF
-  Production_value_herd_offtake_hide_manure_JM <- res_mat$Total_value_increase_JM + res_mat$Value_Manure_JM
-  Production_value_herd_offtake_hide_manure_SubAF <- res_mat$Total_value_increase_SubAF + res_mat$Value_Manure_SubAF + res_mat$Value_hides_SubAF
-  Production_value_herd_offtake_hide_manure_SubAM <- res_mat$Total_value_increase_SubAM + res_mat$Value_Manure_SubAM + Value_hides_SubAM
-  Production_value_herd_offtake_hide_manure_AF <- res_mat$Total_value_increase_AF + res_mat$Value_Manure_AF + res_mat$Value_hides_AF + res_mat$Value_Milk
-  Production_value_herd_offtake_hide_manure_AM <- res_mat$Total_value_increase_AM + res_mat$Value_Manure_AM + res_mat$Value_hides_AM
   
-  Production_value_herd_offtake_hide_manure <- sum(Production_value_herd_offtake_hide_manure_JF,
-                                                 Production_value_herd_offtake_hide_manure_JM, 
-                                                 Production_value_herd_offtake_hide_manure_SubAF,
-                                                 Production_value_herd_offtake_hide_manure_SubAM + 
-                                                 Production_value_herd_offtake_hide_manure_AF,
-                                                 Production_value_herd_offtake_hide_manure_AM)
+  if (species == "poultry") {
+    Production_value_herd_offtake_hide_manure_AF <- res_mat$Total_value_increase_AF + res_mat$Value_eggs_sold + res_mat$Value_eggs_consumed
+  }
   
   Gross_margin <- res_mat$Production_value_herd_offtake_hide_manure - res_mat$Total_expenditure
   Gross_margin_JF <- res_mat$Production_value_herd_offtake_hide_manure_JF - res_mat$Total_expenditure_JF
@@ -1553,8 +1609,6 @@ run_compartmental_model <- function(seed_value = NULL) {
   Quantity_manure_J <- res_mat$Quantity_manure_JF + res_mat$Quantity_manure_JM
   Quantity_manure_SubA <- res_mat$Quantity_manure_SubAF + res_mat$Quantity_manure_SubAM
   
-  Quantity_hides_SubA <- res_mat$Quantity_hides_SubAF + res_mat$Quantity_hides_SubAM
-  
   Cumulative_dry_matter_J <- res_mat$Cumulative_dry_matter_JF + res_mat$Cumulative_dry_matter_JM
   Cumulative_dry_matter_SubA <- res_mat$Cumulative_dry_matter_SubAF + res_mat$Cumulative_dry_matter_SubAM
   
@@ -1570,7 +1624,6 @@ run_compartmental_model <- function(seed_value = NULL) {
   Value_Manure_J <- res_mat$Value_Manure_JF + res_mat$Value_Manure_JM
   Value_Manure_SubA <- res_mat$Value_Manure_SubAF + res_mat$Value_Manure_SubAM
   
-  Value_hides_J <- res_mat$Value_hides_SubAF + res_mat$Value_hides_SubAM
   
   Production_value_herd_offtake_hide_manure_J <- res_mat$Production_value_herd_offtake_hide_manure_JF + res_mat$Production_value_herd_offtake_hide_manure_JM
   Production_value_herd_offtake_hide_manure_SubA <- res_mat$Production_value_herd_offtake_hide_manure_SubAF + res_mat$Production_value_herd_offtake_hide_manure_SubAM
@@ -1596,6 +1649,10 @@ run_compartmental_model <- function(seed_value = NULL) {
   Gross_margin_J <- res_mat$Gross_margin_JF + res_mat$Gross_margin_JM
   Gross_margin_SubA <- res_mat$Gross_margin_SubAF + res_mat$Gross_margin_SubAM
   
+  if (species == "cattle" || species == "smallruminants") {
+    Value_Milk <- res_mat$Quantity_milk * milk_value_ltr
+  }
+  
   if (species == "cattle") {
     Total_number_change_Ox <- res_mat$Num_offtake_Ox + res_mat$Pop_growth_Ox
     Total_number_change <- res_mat$Total_number_change + res_mat$Total_number_change_Ox
@@ -1605,10 +1662,6 @@ run_compartmental_model <- function(seed_value = NULL) {
     Production_value_herd_offtake_hide_manure_Ox <- res_mat$Total_value_increase_Ox + res_mat$Value_Manure_Ox + res_mat$Value_hides_Ox + res_mat$Cumulative_draught_income
     Production_value_herd_offtake_hide_manure <- res_mat$Production_value_herd_offtake_hide_manure + res_mat$Production_value_herd_offtake_hide_manure_Ox
     Gross_margin_Ox <- res_mat$Production_value_herd_offtake_hide_man_Ox - res_mat$Total_expenditure_Ox
-  }
-  
-  if (species == "poultry") {
-    Production_value_herd_offtake_hide_manure_AF <- res_mat$Total_value_increase_AF + res_mat$Value_eggs_sold + res_mat$Value_eggs_consumed
   }
   
   
