@@ -1665,22 +1665,34 @@ run_compartmental_model <- function(seed_value = NULL) {
   }
   
   
-  #@@ output results to a CSV file ###
+  ### output results to a CSV file ###
   
-  apply_summary_last_column <- function(mat) {
-    mat_summary <- summary(mat[, ncol(mat)])
-    mat_sd <- sd(mat[, ncol(mat)])
-    mat_summary <- c(mat_summary, SD = mat_sd)
+  # apply_summary_last_column <- function(mat) {
+  #   mat_summary <- summary(mat[, ncol(mat)])
+  #   mat_sd <- sd(mat[, ncol(mat)])
+  #   mat_summary <- c(mat_summary, SD = mat_sd)
+  # }
+  # 
+  # summary_list <- lapply(res_mat, apply_summary_last_column)
+  # 
+  # df <- as.data.frame(do.call(rbind, summary_list))
+  # 
+  # df$Variable <- rownames(df)
+  # 
+  # df <- df[, c("Variable", "Min.", "1st Qu.", "Median", "Mean", "SD", "3rd Qu.", "Max.")]
+  # df
+  
+  apply_last_column <- function(mat) {
+    mat_last_column <- mat[, ncol(mat), drop = TRUE]  
+    return(mat_last_column)
   }
   
-  summary_list <- lapply(res_mat, apply_summary_last_column)
+  mat_list <- lapply(res_mat, apply_last_column)
   
-  df <- as.data.frame(do.call(rbind, summary_list))
+  df <- as.data.frame(do.call(rbind, mat_list))
   
-  df$Variable <- rownames(df)
+  rownames(df) <- names(mat_list)
   
-  df <- df[, c("Variable", "Min.", "1st Qu.", "Median", "Mean", "SD", "3rd Qu.", "Max.")]
-  df
 
 } # end function
 
