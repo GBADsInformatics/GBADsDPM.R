@@ -1692,7 +1692,7 @@ run_compartmental_model <- function(seed_value = NULL) {
   df <- as.data.frame(do.call(rbind, mat_list))
   
   rownames(df) <- names(mat_list)
-  
+  df
 
 } # end function
 
