@@ -15,7 +15,9 @@ library(tools)
 source("rpert.R")
 source("read_params.R")
 source("run_compartmental_model.R")
-
+source("setup.R")
 
 file_path <- selectDirectory()
+seed_value <- NULL
+
 setup(file_path = file_path, seed_value = seed_value)
