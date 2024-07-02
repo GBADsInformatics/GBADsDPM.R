@@ -1,5 +1,5 @@
 #' @title
-#' Import AHLE parameter file 
+#' Import DPM/AHLE parameter file 
 
 #' @description
 #' Read in AHLE parameter file in YAML format
@@ -42,9 +42,10 @@ read_params <- function(file_path, file_type = "yaml") {
   }
   
   exclude_evaluation <- c("cattle", 
-                          "small ruminants", 
+                          "smallruminants", 
                           "poultry",
-                          "swine")
+                          "swine",
+                          "equids")
   
   params_data <- evaluate_r_expressions(params_data, exclude_evaluation)
   
