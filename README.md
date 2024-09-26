@@ -63,6 +63,8 @@ Currently, there are two different ways to run the DPM, depending on which versi
 
 The package should be run in RStudio.
 
+Old DPM versions can be found in the R/Old subfolder, These should be used at your own risk.
+
 ## More Informatiom
 
 Further useful information on the DPM and the AHLE can be found here: https://gbadske.org/dashboards/ahle-casestudy/. 
