@@ -53,7 +53,7 @@ Currently, there are two different ways to run the DPM, depending on which versi
 
 2. Run the ```setup(file_path = file_path, seed_value = seed_value)``` function with a random seed, `seed_value` (if desired). A filepath, `file_path`, pointing to a folder contsining the YAML parameter files to be analyzed should also be specified.
 
-### Versions 3 and 4
+### Versions 3 and 4 (Current)
 
 1. Create a folder containing the desired YAML files to be processed.
 
