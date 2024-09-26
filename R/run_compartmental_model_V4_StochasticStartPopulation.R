@@ -194,22 +194,22 @@ run_compartmental_model <- function(seed_value = NULL) {
     
  
     
-"Quantity_manure", 
-"Quantity_manure_JF", 
-"Quantity_manure_JM", 
-"Quantity_manure_SubAF", 
-"Quantity_manure_SubAM", 
-"Quantity_manure_AF", 
-"Quantity_manure_AM", 
+    "Quantity_manure", 
+    "Quantity_manure_JF", 
+    "Quantity_manure_JM", 
+    "Quantity_manure_SubAF", 
+    "Quantity_manure_SubAM", 
+    "Quantity_manure_AF", 
+    "Quantity_manure_AM", 
 
-"Value_manure", 
-"Value_manure_JF", 
-"Value_manure_JM", 
-"Value_manure_SubAF", 
-"Value_manure_SubAM", 
-"Value_manure_AF", 
-"Value_manure_AM", 
-    
+    "Value_manure", 
+    "Value_manure_JF", 
+    "Value_manure_JM", 
+    "Value_manure_SubAF", 
+    "Value_manure_SubAM", 
+    "Value_manure_AF", 
+    "Value_manure_AM", 
+       
     "Quantity_hides", 
     "Quantity_hides_SubAF", 
     "Quantity_hides_SubAM", 
@@ -590,13 +590,13 @@ run_compartmental_model <- function(seed_value = NULL) {
                          "Total_expenditure_AF", 
                          "Total_expenditure_AM",
                
-               "Gross_margin",
-               "Gross_margin_JF",
-               "Gross_margin_JM",
-               "Gross_margin_SubAF",
-               "Gross_margin_SubAM",
-               "Gross_margin_AF",
-               "Gross_margin_AM"
+                         "Gross_margin",
+                         "Gross_margin_JF",
+                         "Gross_margin_JM",
+                         "Gross_margin_SubAF",
+                         "Gross_margin_SubAM",
+                         "Gross_margin_AF",
+                         "Gross_margin_AM"
                
   )
   if (species == "cattle") { # oxen
@@ -2351,9 +2351,8 @@ run_compartmental_model <- function(seed_value = NULL) {
   mat_list <- lapply(res_mat, apply_last_column)
   
   df <- as.data.frame(do.call(rbind, mat_list))
-  
   rownames(df) <- names(mat_list)
-  
+  colnames(df) <- paste("Run", 1:ncol(df))
   df
 
 } # end function
