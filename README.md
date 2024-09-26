@@ -45,11 +45,11 @@ Currently, there are two different ways to run the DPM, depending on which versi
 
 1. Download the code from GitHub.
 
-### Version 1
+### Version 1 (Old)
 
 2. Run the `load.R` script. This installs and loads required packages and sources necessary functions and then runs the model. The packages may need to be installed first. You will need to change the working directory to correspond to your system. Additionally, you can set the `seed_value` to an integer of any length to ensure code reproducibility. This is useful if you don't plan on doing everything in one sitting. 
 
-### Version 2
+### Version 2 (Old)
 
 2. Run the ```setup(file_path = file_path, seed_value = seed_value)``` function with a random seed, `seed_value` (if desired). A filepath, `file_path`, pointing to a folder contsining the YAML parameter files to be analyzed should also be specified.
 
