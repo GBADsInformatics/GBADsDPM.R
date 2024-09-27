@@ -59,9 +59,11 @@ Currently, there are two different ways to run the DPM, depending on which versi
 
 2. Run the `load.R` script. This will prompt the user to interactively select the created folder in which model output will be saved. Presently, a single CSV file is outputted displaying simulation results for all runs for each variable of interest.
 
-### Note
+### Notes
 
 The package should be run in RStudio.
+
+Within the `load.R` script, for now, a user will need to set their working directory via `setwd()` yo point to the folder which was downloaded from GitHub.
 
 Old DPM versions can be found in the R/Old subfolder, These should be used at your own risk.
 
