@@ -10,28 +10,35 @@
 #' @example
 #' # setup(file_path = file_path, seed_value = NULL)
 
-setup <- function(file_path, seed_value = NULL) {
+setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
   file_names <- list.files(file_path, pattern = "*.yaml", full.names = TRUE)
   file_type <- "yaml"
   
   set.seed(seed_value)
   
-  for (file_name in file_names) {
-    params <- read_params(file_path = file_name, file_type = file_type)
-    df <- run_compartmental_model(seed_value = seed_value)
-    base_file_name <- file_path_sans_ext(basename(file_name))
-    output_file <- file.path(file_path, paste0(base_file_name, "_final_month.csv"))
-    write.csv(df, file = output_file, row.names = TRUE)
-  }
+  if (parallel == FALSE) { # sequential
+    for (file_name in file_names) {
+      params <- read_params(file_path = file_name, file_type = file_type)
+      df <- run_compartmental_model(seed_value = seed_value)
+      base_file_name <- file_path_sans_ext(basename(file_name))
+      output_file <- file.path(file_path, paste0(base_file_name, "_final_month.csv"))
+      write.csv(df, file = output_file, row.names = TRUE)
+    }
+  } else {
+    
+  cl <- makeCluster(detectCores() - 1)
+  registerDoParallel(cl)
   
   # Parallelization
   
-  # foreach (file_name = 1:length(file_names), .packages = packages) %dopar% {
-  #   params <- read_params(file_path = file_name, file_type = file_type)
-  #   df <- run_compartmental_model(seed_value = seed_value)
-  #   base_file_name <- file_path_sans_ext(basename(file_name))
-  #   output_file <- file.path(file_path, paste0(base_file_name, "_AHLE.csv"))
-  #   write.csv(df, file = output_file, row.names = TRUE)
-  # }
+  foreach (file_name = 1:length(file_names), .packages = c("mc2d", "truncnorm", "yaml", "rstudioapi", "tools")) %dopar% {
+    params <- read_params(file_path = file_name, file_type = file_type)
+    df <- run_compartmental_model(seed_value = seed_value)
+    base_file_name <- file_path_sans_ext(basename(file_name))
+    output_file <- file.path(file_path, paste0(base_file_name, "_AHLE.csv"))
+    write.csv(df, file = output_file, row.names = TRUE)
+  }
+    
+  }
 }
 
