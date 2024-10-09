@@ -20,6 +20,6 @@ source("setup.R")
 
 file_path <- selectDirectory()
 seed_value <- NULL
-parallel <- TRUE
+parallel <- FALSE
 
 setup(file_path = file_path, seed_value = seed_value, parallel = parallel)
