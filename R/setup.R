@@ -6,6 +6,8 @@
 #' 
 #' @param file_path A path to a directory containing YAML files to be analyzed
 #' @param seed_value An integer value of any length for reproducibility
+#' @parallel A logical (TRUE/FALSE) value indicating whether parallelization is 
+#' desired. By default, parallel = FALSE. 
 #' 
 #' @example
 #' # setup(file_path = file_path, seed_value = NULL)
@@ -35,7 +37,7 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
     params <- read_params(file_path = file_name, file_type = file_type)
     df <- run_compartmental_model(seed_value = seed_value)
     base_file_name <- file_path_sans_ext(basename(file_name))
-    output_file <- file.path(file_path, paste0(base_file_name, "_AHLE.csv"))
+    output_file <- file.path(file_path, paste0(base_file_name, "_final_month.csv"))
     write.csv(df, file = output_file, row.names = TRUE)
   }
     
