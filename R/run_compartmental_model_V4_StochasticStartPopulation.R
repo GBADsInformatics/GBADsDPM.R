@@ -402,15 +402,12 @@ run_compartmental_model <- function(seed_value = NULL) {
   
     } else {
     # poultry
-    vector_categories <- append(vector_categories, c(
-                         
-                         "Quantity_meat_kg",
-                         "Quantity_eggs_sold",
-                         "Quantity_eggs_consumed",
-                         
-                         "Value_eggs_sold",
-                         "Value_eggs_consumed"
-                         ))
+    vector_categories <- append(vector_categories, c("Quantity_meat_kg",
+                                                     "Quantity_eggs_sold",
+                                                     "Quantity_eggs_consumed",
+                                                     "Value_eggs_sold",
+                                                     "Value_eggs_consumed"
+                                                    ))
 
   }
   
@@ -596,9 +593,8 @@ run_compartmental_model <- function(seed_value = NULL) {
                          "Gross_margin_SubAF",
                          "Gross_margin_SubAM",
                          "Gross_margin_AF",
-                         "Gross_margin_AM"
-               
-  )
+                         "Gross_margin_AM")
+  
   if (species == "cattle") { # oxen
     matrix_categories <- append(matrix_categories, c("Num_Ox",
                                                      "Total_mortality_Ox", 
@@ -622,10 +618,8 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                      "Infrastructure_cost_Ox", 
                                                      "Total_expenditure_Ox",
                                                      "Gross_margin_Ox"))
-  }  
-  if (species == "equids") {
-    matrix_categories <- append(matrix_categories, c("Labour_cost_Cart_Driver",
-                                
+  }  else if (species == "equids") {
+      matrix_categories <- append(matrix_categories, c("Labour_cost_Cart_Driver",
                                 "Health_cost_vet_JF",
                                 "Health_cost_vet_JM",
                                 "Health_cost_vet_SubAF",
@@ -691,8 +685,7 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                      "Quantity_eggs_sold",
                                                      
                                                      "Value_eggs_consumed",
-                                                     "Value_eggs_sold"
-                              ))
+                                                     "Value_eggs_sold"))
   }
 
   # Initialize a list to store the matrices
@@ -714,7 +707,7 @@ run_compartmental_model <- function(seed_value = NULL) {
 
     for (group in age_sex_groups) {
       var_name <- group  
-      value <- sample(get(paste0("N_", group, "_t0")),1) ### GEMMA EDITED HERE to sample start population size from a distribution 
+      value <- sample(get(paste0("N_", group, "_t0")), 1) ### GEMMA EDITED HERE to sample start population size from a distribution 
       assign(var_name, value)  
       assign(paste0("N_", group, "_t0"), value) ### GEMMA EDITED HERE to ensure N_group_t0 is the same as the group number
     }                                    
@@ -2343,7 +2336,7 @@ run_compartmental_model <- function(seed_value = NULL) {
 
   apply_last_column <- function(mat) {
     mat_last_column <- mat[, ncol(mat), drop = TRUE]  
-    return(mat_last_column)
+    mat_last_column
   }
 
   ## saving results test
