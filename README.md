@@ -57,7 +57,7 @@ Currently, there are two different ways to run the DPM, depending on which versi
 
 1. Create a folder containing the desired YAML files to be processed.
 
-2. Run the `load.R` script. This will prompt the user to interactively select the created folder in which model output will be saved. Presently, a single CSV file is outputted displaying either (1) simulation results for all runs for each variable of interest (using the argument `output = "cumulative total"`, or (2) summary statistics (minimum, 1st quartile, mean, median, 3rd quartile, and maximum) using the argument `output = "summary"`.
+2. Run the `load.R` script. This will prompt the user to interactively select the created folder in which model output will be saved. Presently, a single CSV file is outputted displaying either (1) simulation results for all runs for each variable of interest (using the argument `output = "cumulative total"`, or (2) summary statistics (minimum, 1st quartile, mean, median, 3rd quartile, maximum, and standard deviation) using the argument `output = "summary"`.
 
 ### Notes
 
