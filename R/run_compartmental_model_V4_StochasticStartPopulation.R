@@ -11,7 +11,7 @@
 #' # run_compartmental_model(seed_value = NULL)
 #' 
 
-run_compartmental_model <- function(seed_value = NULL) {
+run_compartmental_model <- function(seed_value = NULL, output = "summary") {
   
   set.seed(seed_value)
   
@@ -192,8 +192,6 @@ run_compartmental_model <- function(seed_value = NULL) {
     "Pop_growth_AF", 
     "Pop_growth_AM", 
     
- 
-    
     "Quantity_manure", 
     "Quantity_manure_JF", 
     "Quantity_manure_JM", 
@@ -361,7 +359,6 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                        "Health_cost_selftx_AF",
                                                        "Health_cost_selftx_AM",
                                                        
-                                                       
                                                        "Health_cost_combined_JF",
                                                        "Health_cost_combined_JM",
                                                        "Health_cost_combined_SubAF",
@@ -393,11 +390,11 @@ run_compartmental_model <- function(seed_value = NULL) {
                                                        "Cumulative_combined_income_AF",
                                                        "Cumulative_combined_income_AM",
                                                        
-                                                       "donkey_power_income",
-                                                       "donkey_power_income_SubAF",
-                                                       "donkey_power_income_SubAM",
-                                                       "donkey_power_income_AF",
-                                                       "donkey_power_income_AM"
+                                                       "Donkey_power_income",
+                                                       "Donkey_power_income_SubAF",
+                                                       "Donkey_power_income_SubAM",
+                                                       "Donkey_power_income_AF",
+                                                       "Donkey_power_income_AM"
                                                       ))  
   
     } else {
@@ -672,11 +669,11 @@ run_compartmental_model <- function(seed_value = NULL) {
                                 "Cumulative_combined_income_AF",
                                 "Cumulative_combined_income_AM",
                                 
-                                "donkey_power_income",
-                                "donkey_power_income_SubAF",
-                                "donkey_power_income_SubAM",
-                                "donkey_power_income_AF",
-                                "donkey_power_income_AM")
+                                "Donkey_power_income",
+                                "Donkey_power_income_SubAF",
+                                "Donkey_power_income_SubAM",
+                                "Donkey_power_income_AF",
+                                "Donkey_power_income_AM")
     )
   
     } else {
@@ -797,7 +794,6 @@ run_compartmental_model <- function(seed_value = NULL) {
         assign(paste(prod_var, group, sep = "_"), 0)
       }
     }
-    
     
     for (month in 1:Num_timesteps) {
       
@@ -1256,21 +1252,21 @@ run_compartmental_model <- function(seed_value = NULL) {
         combined_income <- res_vec$Cumulative_combined_income[month]
         
         #### Total donkey income from different age-sex groups
-        res_vec$donkey_power_income_SubAF[month] <- sum(res_vec$Cumulative_unpaid_income_SubAF[month],
+        res_vec$Donkey_power_income_SubAF[month] <- sum(res_vec$Cumulative_unpaid_income_SubAF[month],
                                                   res_vec$Cumulative_combined_income_SubAF[month]) 
         
-        res_vec$donkey_power_income_SubAM[month] <- sum(res_vec$Cumulative_unpaid_income_SubAM[month],
+        res_vec$Donkey_power_income_SubAM[month] <- sum(res_vec$Cumulative_unpaid_income_SubAM[month],
                                                   res_vec$Cumulative_combined_income_SubAM[month]) 
         
-        res_vec$donkey_power_income_AF[month] <- sum(res_vec$Cumulative_commercial_income_AF[month],
+        res_vec$Donkey_power_income_AF[month] <- sum(res_vec$Cumulative_commercial_income_AF[month],
                                                   res_vec$Cumulative_unpaid_income_AF[month],
                                                   res_vec$Cumulative_combined_income_AF[month]) 
         
-        res_vec$donkey_power_income_AM[month] <- sum(res_vec$Cumulative_commercial_income_AM[month],
+        res_vec$Donkey_power_income_AM[month] <- sum(res_vec$Cumulative_commercial_income_AM[month],
                                                   res_vec$Cumulative_unpaid_income_AM[month],
                                                   res_vec$Cumulative_combined_income_AM[month]) 
         
-        res_vec$donkey_power_income[month] <- sum(res_vec$Cumulative_commercial_income[month],
+        res_vec$Donkey_power_income[month] <- sum(res_vec$Cumulative_commercial_income[month],
                                                   res_vec$Cumulative_unpaid_income[month],
                                                   res_vec$Cumulative_combined_income[month]) 
       
@@ -2205,11 +2201,11 @@ run_compartmental_model <- function(seed_value = NULL) {
       res_mat$Cumulative_combined_income_AF[i, ] <- res_vec$Cumulative_combined_income_AF
       res_mat$Cumulative_combined_income_AM[i, ] <- res_vec$Cumulative_combined_income_AM
       
-      res_mat$donkey_power_income[i, ] <- res_vec$donkey_power_income
-      res_mat$donkey_power_income_SubAF[i, ] <- res_vec$donkey_power_income_SubAF
-      res_mat$donkey_power_income_SubAM[i, ] <- res_vec$donkey_power_income_SubAM
-      res_mat$donkey_power_income_AF[i, ] <- res_vec$donkey_power_income_AF
-      res_mat$donkey_power_income_AM[i, ] <- res_vec$donkey_power_income_AM
+      res_mat$Donkey_power_income[i, ] <- res_vec$Donkey_power_income
+      res_mat$Donkey_power_income_SubAF[i, ] <- res_vec$Donkey_power_income_SubAF
+      res_mat$Donkey_power_income_SubAM[i, ] <- res_vec$Donkey_power_income_SubAM
+      res_mat$Donkey_power_income_AF[i, ] <- res_vec$Donkey_power_income_AF
+      res_mat$Donkey_power_income_AM[i, ] <- res_vec$Donkey_power_income_AM
       
     }
     
@@ -2287,10 +2283,10 @@ run_compartmental_model <- function(seed_value = NULL) {
     }
   
   if (species == "equids"){
-    res_mat$Production_value_herd_offtake_hide_manure_SubAF <- res_mat$Production_value_herd_offtake_hide_manure_SubAF + res_mat$donkey_power_income_SubAF
-    res_mat$Production_value_herd_offtake_hide_manure_SubAM <- res_mat$Production_value_herd_offtake_hide_manure_SubAM + res_mat$donkey_power_income_SubAM
-    res_mat$Production_value_herd_offtake_hide_manure_AF <- res_mat$Production_value_herd_offtake_hide_manure_AF + res_mat$donkey_power_income_AF
-    res_mat$Production_value_herd_offtake_hide_manure_AM <- res_mat$Production_value_herd_offtake_hide_manure_AM + res_mat$donkey_power_income_AM
+    res_mat$Production_value_herd_offtake_hide_manure_SubAF <- res_mat$Production_value_herd_offtake_hide_manure_SubAF + res_mat$Donkey_power_income_SubAF
+    res_mat$Production_value_herd_offtake_hide_manure_SubAM <- res_mat$Production_value_herd_offtake_hide_manure_SubAM + res_mat$Donkey_power_income_SubAM
+    res_mat$Production_value_herd_offtake_hide_manure_AF <- res_mat$Production_value_herd_offtake_hide_manure_AF + res_mat$Donkey_power_income_AF
+    res_mat$Production_value_herd_offtake_hide_manure_AM <- res_mat$Production_value_herd_offtake_hide_manure_AM + res_mat$Donkey_power_income_AM
     
     res_mat$Production_value_herd_offtake_hide_manure  <- (res_mat$Production_value_herd_offtake_hide_manure_JF +
                                                              res_mat$Production_value_herd_offtake_hide_manure_JM +
@@ -2315,38 +2311,45 @@ run_compartmental_model <- function(seed_value = NULL) {
     res_mat$Gross_margin_Ox <- res_mat$Production_value_herd_offtake_hide_manure_Ox - res_mat$Total_expenditure_Ox
   }
   
-
   
   #@@ output results to a CSV file ###
   
-#  apply_summary_last_column <- function(mat) {
-#    mat_summary <- summary(mat[, ncol(mat)])
-#    mat_summary <- c(mat_summary, SD = mat_sd)
-#    mat_sd <- sd(mat[, ncol(mat)])
-#  }
-#  
-#  summary_list <- lapply(res_mat, apply_summary_last_column)
-#  
-#  df <- as.data.frame(do.call(rbind, summary_list))
-#  
-#  df$Variable <- rownames(df)
-#  
-#  df <- df[, c("Variable", "Min.", "1st Qu.", "Median", "Mean", "SD", "3rd Qu.", "Max.")]
-#  df
-
-  apply_last_column <- function(mat) {
-    mat_last_column <- mat[, ncol(mat), drop = TRUE]  
-    mat_last_column
-  }
-
-  ## saving results test
-
-  mat_list <- lapply(res_mat, apply_last_column)
   
-  df <- as.data.frame(do.call(rbind, mat_list))
-  rownames(df) <- names(mat_list)
-  colnames(df) <- paste("Run", 1:ncol(df))
-  df
+  if (output == "summary") {
+    ## Summary statistics ##
+    
+    apply_summary_last_column <- function(mat) {
+      mat_summary <- summary(mat[, ncol(mat)])
+      mat_sd <- sd(mat[, ncol(mat)])
+      mat_summary <- c(mat_summary, SD = mat_sd)
+    }
+    
+    summary_list <- lapply(res_mat, apply_summary_last_column)
+    
+    df <- as.data.frame(do.call(rbind, summary_list))
+    
+    df$Variable <- rownames(df)
+    
+    df <- df[, c("Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max.", "SD")]
+    df # summary statistics across all months
+    
+  } else {
+    ## output from last month (cumulative total) ##
+    
+    apply_last_column <- function(mat) {
+      mat_last_column <- mat[, ncol(mat), drop = TRUE]  
+      mat_last_column
+    }
+    
+    mat_list <- lapply(res_mat, apply_last_column)
+    
+    df <- as.data.frame(do.call(rbind, mat_list))
+    
+    rownames(df) <- names(mat_list)
+    colnames(df) <- paste("Run", 1:ncol(df))
+    df
+  }
+  
 
 } # end function
 

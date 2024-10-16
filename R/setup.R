@@ -21,25 +21,25 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
   if (parallel == FALSE) { # sequential
     for (file_name in file_names) {
       params <- read_params(file_path = file_name, file_type = file_type)
-      df <- run_compartmental_model(seed_value = seed_value)
+      df <- run_compartmental_model(seed_value = seed_value, output = output)
       base_file_name <- file_path_sans_ext(basename(file_name))
-      output_file <- file.path(file_path, paste0(base_file_name, "_final_month.csv"))
+      output_file <- file.path(file_path, paste0(base_file_name, "_output.csv"))
       write.csv(df, file = output_file, row.names = TRUE)
     }
   } else {
     
-  cl <- makeCluster(detectCores() - 1)
-  registerDoParallel(cl)
+    # Parallelization
+    
+    cl <- makeCluster(detectCores() - 1)
+    registerDoParallel(cl)
   
-  # Parallelization
-  
-  foreach (file_name = 1:length(file_names), .packages = c("mc2d", "truncnorm", "yaml", "rstudioapi", "tools")) %dopar% {
-    params <- read_params(file_path = file_name, file_type = file_type)
-    df <- run_compartmental_model(seed_value = seed_value)
-    base_file_name <- file_path_sans_ext(basename(file_name))
-    output_file <- file.path(file_path, paste0(base_file_name, "_final_month.csv"))
-    write.csv(df, file = output_file, row.names = TRUE)
-  }
+    foreach (file_name = 1:length(file_names), .packages = "GBADsDPM") %dopar% {
+      params <- read_params(file_path = file_name, file_type = file_type)
+      df <- run_compartmental_model(seed_value = seed_value, output = output)
+      base_file_name <- file_path_sans_ext(basename(file_name))
+      output_file <- file.path(file_path, paste0(base_file_name, "_output.csv"))
+      write.csv(df, file = output_file, row.names = TRUE)
+    }
     
   }
 }
