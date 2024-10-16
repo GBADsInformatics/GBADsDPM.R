@@ -1,15 +1,18 @@
 Package: GBADsDPM
 Type: Package
-Title: Global Burden of Animal Diseases DynamIC Population Model
+Title: Global Burden of Animal Diseases Dynamic Population Model
 Version: 1.0
 Date: 2024-01-19
 Author: Jarrett D. Phillips
 Maintainer: Jarrett D. Phillips <jphill01@uoguelph.ca>
-Description: Runs the Animal Health Loss Envelope (AHLE)
+Description: Runs scenario simulations of GBADs' Dynamic Population Model (DPM)
 License: GPL (>= 2)
 Imports: mc2d (>= 0.1-22),
          truncnorm (>= 1.0-9),
          yaml (>= 2.3.7),
-         rstudioapi (>= 0.15.0)
+         rstudioapi (>= 0.15.0),
+         tools (>= 4.4.1),
+         foreach (>= 1.5.2),
+         doParallel (>= 1.0.17)
 RoxygenNote: 7.3.1
 Encoding: UTF-8
