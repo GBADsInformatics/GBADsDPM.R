@@ -23,7 +23,7 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
       params <- read_params(file_path = file_name, file_type = file_type)
       df <- run_compartmental_model(seed_value = seed_value, output = output)
       base_file_name <- file_path_sans_ext(basename(file_name))
-      output_file <- file.path(file_path, paste0(base_file_name, "_output.csv"))
+      output_file <- file.path(file_path, paste0(base_file_name, "_", get("output", envir = .GlobalEnv), ".csv"))
       write.csv(df, file = output_file, row.names = TRUE)
     }
   } else {
@@ -33,11 +33,11 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
     cl <- makeCluster(detectCores() - 1)
     registerDoParallel(cl)
   
-    foreach (file_name = 1:length(file_names), .packages = "GBADsDPM") %dopar% {
+    out <- foreach (file_name = 1:length(file_names), .packages = "GBADsDPM", .combine = ) %dopar% {
       params <- read_params(file_path = file_name, file_type = file_type)
       df <- run_compartmental_model(seed_value = seed_value, output = output)
       base_file_name <- file_path_sans_ext(basename(file_name))
-      output_file <- file.path(file_path, paste0(base_file_name, "_output.csv"))
+      output_file <- file.path(file_path, paste0(base_file_name, "_", get("output", envir = .GlobalEnv), ".csv"))
       write.csv(df, file = output_file, row.names = TRUE)
     }
     
