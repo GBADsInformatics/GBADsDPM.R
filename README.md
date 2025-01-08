@@ -75,4 +75,4 @@ In due course, the GBADsDPM package will be submitted to the Comprehensive R Arc
 
 ## References
 
-Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J. Measuring disease cost in farmed animals for the Global Burden of Animal Diseases: a model of the Animal Health-Loss Envelope. URL: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4472099.
+Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J. (2024) Quantifying cost of disease in livestock: A new metric for the Global Burden of Animal Diseases. *Lancet Planet Health*, 8: e309-317.
