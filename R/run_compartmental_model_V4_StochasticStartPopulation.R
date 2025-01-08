@@ -11,9 +11,7 @@
 #' # run_compartmental_model(seed_value = NULL)
 #' 
 
-run_compartmental_model <- function(seed_value = NULL, output = "summary") {
-  
-  set.seed(seed_value)
+run_compartmental_model <- function(output = "summary") {
   
   ### Functions ###
   
@@ -2314,8 +2312,22 @@ run_compartmental_model <- function(seed_value = NULL, output = "summary") {
   
   #@@ output results to a CSV file ###
   
-  
-  if (output == "summary") {
+  if (output == "cumulative total") {
+    ## output from last month (cumulative total) ##
+    
+    apply_last_column <- function(mat) {
+      mat_last_column <- mat[, ncol(mat), drop = TRUE]  
+      mat_last_column
+    }
+    
+    mat_list <- lapply(res_mat, apply_last_column)
+    
+    df <- as.data.frame(do.call(rbind, mat_list))
+    
+    rownames(df) <- names(mat_list)
+    colnames(df) <- paste("Run", 1:ncol(df))
+    df
+  } else {
     ## Summary statistics ##
     
     apply_summary_last_column <- function(mat) {
@@ -2333,22 +2345,7 @@ run_compartmental_model <- function(seed_value = NULL, output = "summary") {
     df <- df[, c("Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max.", "SD")]
     df # summary statistics across all months
     
-  } else {
-    ## output from last month (cumulative total) ##
-    
-    apply_last_column <- function(mat) {
-      mat_last_column <- mat[, ncol(mat), drop = TRUE]  
-      mat_last_column
-    }
-    
-    mat_list <- lapply(res_mat, apply_last_column)
-    
-    df <- as.data.frame(do.call(rbind, mat_list))
-    
-    rownames(df) <- names(mat_list)
-    colnames(df) <- paste("Run", 1:ncol(df))
-    df
-  }
+  } 
   
 
 } # end function
