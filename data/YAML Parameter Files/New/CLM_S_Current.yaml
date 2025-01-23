@@ -1,0 +1,157 @@
+##### CLM_S_Current #####
+
+species: smallruminants
+nruns: 10
+# seed_value: NULL
+Num_timesteps: 12
+timestep_Nof_days: 30
+
+# Initial population
+N_JF_t0: 2070822
+N_JM_t0: 2070822
+N_SubAF_t0: 1915971
+N_SubAM_t0: 1147386
+N_AF_t0: 14049629
+N_AM_t0: 3048715
+
+## Growth rate N -> J and J-> A
+Beta_JF: 6
+Beta_JM: 6
+Beta_SubAF: 6
+Beta_SubAM: 6
+Beta_AF: 108
+Beta_AM: 48
+
+# Fertility
+part: rpert(10000, 0.52, 0.67, 0.60)
+prolif: rtruncnorm(10000, 0, 3, 1.3, 0.15)
+
+# lactation
+prop_F_milked: 0
+lac_duration: 0
+avg_daily_yield_ltr: 0
+milk_value_ltr: 0
+
+# Offtake
+## Currently fixed, but, should this be dependant on new pop size, to keep pop size as it was at t0
+## offtake must = offtake + dif between NNFt0 etc and NJF current
+Gamma_JF: 0
+Gamma_JM: 0
+Gamma_SubAF : 0.04
+Gamma_SubAM : 0.54
+Gamma_AF : 0.04
+Gamma_AM : 0.54
+
+## Mortality ## 
+Alpha_JF: rpert(1000, 0.09 , 0.49 , 0.2 )
+Alpha_JM: rpert(1000, 0.09 , 0.49 , 0.2 )
+Alpha_SubAF: rpert(1000, 0.03 , 0.30 , 0.07 )
+Alpha_SubAM: rpert(1000, 0.03 , 0.30 , 0.07 )
+Alpha_AF: rpert(1000, 0.02 , 0.13 , 0.05 )
+Alpha_AM: rpert(1000, 0.02 , 0.17 , 0.06 )
+
+# Culls
+CullF: 108
+CullM: 48
+
+## Production parameters (kg)
+
+# Liveweight conversion (kg) ## Informed from META analysis
+lwJF  : rtruncnorm(10000, a = 1, b = 15, mean = 11.7, sd = 2.2)
+lwJM  : rtruncnorm(10000, a = 1, b = 15, mean =11.7, sd = 2.2)
+lwSubAF: rnorm(10000, 21.1, sd = 3.8)
+lwSubAM: rnorm(10000, 21.1, sd = 3.8)
+lwAF : rnorm(10000, 28.6, sd = 4.1)
+lwAM :  rnorm(10000, 31.5, sd = 6.8)
+
+# carcase yeild
+ccy : 0.42
+
+## Financial value of live animals
+# Ethiopian Birr
+fvJF : rpert(10000, 839, 1676, 1385)
+fvJM: rpert(10000, 1246, 4300, 2120)
+fvSubAF: rpert(10000, 2400, 4013, 2890)
+fvSubAM: rpert(10000, 839, 1676, 1385)
+fvAF: rpert(10000, 1246, 5949, 2541)
+fvAM: rpert(10000, 2341, 8413, 4036)
+
+
+## skin/hides  
+## parameters can be updated through expert opinion but adding options for flexibility here
+hides_rate: 1
+hides_rate_mor: 0.5
+
+# 1 usd per piece = 51 eth birr
+hides_value: 40
+
+# manure rate (kg produced/animal/day)
+Man_J: 0.1
+Man_SubA: 0.2
+Man_A: 0.3
+
+# 0.0125 USD / kg = 0.65 eth birr per kg 2021 price
+Man_value: 0.5
+
+## dry matter requirements as proportion of liveweight
+DM_req_prpn_JF: 0.026
+DM_req_prpn_JM: 0.026
+DM_req_prpn_SubAF: 0.026
+DM_req_prpn_SubAM: 0.026
+DM_req_prpn_AF: 0.026
+DM_req_prpn_AM: 0.026
+
+## Proportion of livestock keepers that spend any money on feed
+## NOTE Currently the same for all age*sex groups
+prpn_lskeepers_purch_feed: 0.25
+
+## For those spending any money on feed, the proportion of feed that is purchased
+## NOTE Currently the same for all age*sex groups
+prpn_feed_paid_for: 0.5
+
+## Input parameters ## just example distributions for now
+Feed_cost_kg: rpert(10000, 2.5, 6.5, 3.46)
+
+## variable results for the amount of dry matter in wheat and barley and tef in Ethiopia
+## range 30-90%
+## taking 70% as an estimate for this trial
+DM_in_feed: rpert(10000, 0.85, 0.95, 0.9)
+
+## Labour cost
+## Local currency
+
+Labour_cost_head_JF: rpert(10000, (260 ), (649 ), (368 ))
+Labour_cost_head_JM: rpert(10000, (260 ), (649 ), (368 ))
+Labour_cost_head_SubAF: rpert(10000, (260 ), (649 ), (368 ))
+Labour_cost_head_SubAM: rpert(10000, (260 ), (649 ), (368 ))
+Labour_cost_head_AF: rpert(10000, (260 ), (649 ), (368 ))
+Labour_cost_head_AM: rpert(10000, (260 ), (649 ), (368 ))
+Labour_cost_head_dairy: 0
+lab_non_health: 1
+
+## Helath care costs
+## birr/head/month
+## this includes medicines and veterinary care
+## and changing health care costs to select from distribution
+Health_exp_prev_JF: runif(10000, (2.2 ), (2.8 ))
+Health_exp_treatment_JF: 0
+Health_exp_prev_JM: runif(10000, (2.2 ), (2.8 ))
+Health_exp_treatment_JM: 0
+Health_exp_prev_SubAF: runif(10000, (2.2 ), (2.8 ))
+Health_exp_treatment_SubAF: 0
+Health_exp_prev_SubAM: runif(10000, (2.2 ), (2.8 ))
+Health_exp_treatment_SubAM: 0
+Health_exp_prev_AF: runif(10000, (2.2 ), (2.8 ))
+Health_exp_treatment_AF: 0
+Health_exp_prev_AM: runif(10000, (2.2 ), (2.8 ))
+Health_exp_treatment_AM: 0
+
+## Capital costs
+## for this we are using bank of Ethiopia inflation rate
+Interest_rate: 0
+Infrastructure_per_head_JF: 1
+Infrastructure_per_head_JM: 1
+Infrastructure_per_head_SubAF: 1
+Infrastructure_per_head_SubAM: 1
+Infrastructure_per_head_AF: 1
+Infrastructure_per_head_AM: 1

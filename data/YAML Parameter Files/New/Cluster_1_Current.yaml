@@ -1,0 +1,218 @@
+##### Cluster_1_Current #####
+
+species: equids
+nruns: 10
+# seed_value: NULL
+Num_timesteps: 12
+timestep_Nof_days: 30
+
+# Initial population
+N_JF_t0: rpert(10000, 0,1,0)
+N_JM_t0: rpert(10000, 0,1,0)
+N_SubAF_t0: rpert(10000, 0,1,0)
+N_SubAM_t0: rpert(10000, 0,1,0)
+N_AF_t0: rpert(10000, 0, 2, 1)
+N_AM_t0: rpert(10000, 0, 2, 1)
+## Growth rate F -> Y and Y-> A
+Beta_JF: 12
+Beta_JM: 12
+Beta_SubAF: 24
+Beta_SubAM: 24
+Beta_AF: 144
+Beta_AM: 144
+# Fertility
+part: 0.55
+prolif: 1
+
+# lactation Not important for donkeys 
+prop_F_milked: 0
+lac_duration: 0
+avg_daily_yield_ltr: 0
+milk_value_ltr: 0
+
+# draught power
+castration_rate: 0
+draught_rate: 0
+draught_day_value: 0
+
+# Offtake= annual (sales - purchases) / starting population size
+Gamma_JF: -0.005
+Gamma_JM: -0.005
+Gamma_SubAF : 0.0015
+Gamma_SubAM : 0.0015
+Gamma_AF : 0.01
+Gamma_AM : 0.05
+## Mortality ## 
+Alpha_JF: 0
+Alpha_JM: 0
+Alpha_SubAF: 0
+Alpha_SubAM: 0.01
+Alpha_AF: 0.01
+Alpha_AM: 0.08
+# Culls
+CullF: 144
+CullM: 144
+## Production parameters (kg)
+
+# Liveweight conversion (kg) ## Informed from META analysis
+lwJF  : rpert(10000,38.5,42.9,  40.67)
+lwJM  : rpert(10000,38.5,42.9,  40.67)
+lwSubAF: rpert(10000, 90.99, 92.1, 91.53)
+lwSubAM: rpert(10000, 90.99, 92.1, 91.53)
+lwAF : rpert(10000, 139.3,140.71, 140)
+lwAM : rpert(10000, 139.3,140.71, 140)
+# Ethiopian Birr
+fvJF : rpert(10000,1050,1050,1050)
+fvJM: rpert(10000,1050,1050,1050)
+fvSubAF: rpert(10000,3870, 4500, 3870)
+fvSubAM: rpert(10000,3870, 4500, 3870)
+fvAF: rpert(10000,4990, 6300 , 6300)
+fvAM: rpert(10000, 4400 , 7180 , 6450)
+## skin/hides  
+## parameters can be updated through expert opinion but adding options for flexibility here
+hides_rate: 0
+hides_rate_mor: 0
+# 1 usd per piece = 51 eth birr
+hides_value: 0
+# manure rate (kg produced/animal/day)
+Man_J: 0
+Man_SubA: 0
+Man_A: 0
+
+# 0.0125 USD / kg = 0.65 eth birr per kg 2021 price
+Man_value: 0
+
+## dry matter requirements as proportion of liveweight
+DM_req_prpn_JF: 0.025
+DM_req_prpn_JM: 0.025
+DM_req_prpn_SubAF: 0.031
+DM_req_prpn_SubAM: 0.031
+DM_req_prpn_AF: 0.035
+DM_req_prpn_AM: 0.035
+## Proportion of livestock keepers that spend any money on feed
+## NOTE Currently the same for all age*sex groups
+prpn_lskeepers_partial_feed: 0.23
+prpn_lskeepers_all_handfeed: 0.1
+prpn_lskeepers_zero_handfeed: 0.67
+lskeepers_partial_feed_prpn_fd_purch: 0.5
+lskeepers_all_handfeed_prpn_fd_purch: 1
+
+## THE KG of feed purchased per month for each age-sex group for those 1. partially hand feeding and         2. completely hand feeding 
+## NOTE Currently the same for all age*sex groups
+## Input parameters ## just example distributions for now
+Feed_cost_kg: rpert(10000, 2.5, 6.5, 3.46)
+
+## variable results for the amount of dry matter in wheat and barley and tef in Ethiopia
+## range 30-90%
+## taking 70% as an estimate for this trial
+DM_in_feed: rpert(10000, 0.85, 0.95, 0.9)
+## Local currency - Annual Labour cost per head
+
+
+Labour_cost_head_JF: rpert(10000, 132, 658, 329)
+Labour_cost_head_JM: rpert(10000, 132, 658, 329)
+Labour_cost_head_SubAF: rpert(10000, 132, 658, 329)
+Labour_cost_head_SubAM: rpert(10000, 132, 658, 329)
+Labour_cost_head_AF: rpert(10000, 132, 658, 329)
+Labour_cost_head_AM: rpert(10000, 132, 658, 329)
+Labour_cost_head_cd: rpert(10000, 1920,30000,9955)
+lab_non_health: 1
+## proportion of health care
+prop_health_care_vet: 0.02
+prop_health_care_tradhealer: 0
+prop_health_care_selftx: 0.72
+prop_health_care_combined: 0.15
+
+## Health care costs
+## Annual birr per head ## NOTE check code bir/head/year
+## this includes medicines and veterinary care, traditional healrs, self treatment or commbined 
+## and changing health care costs to select from distribution
+Health_exp_vet_JF: rpert(10000, 16.7,400,80)
+Health_exp_trad_JF: 0
+Health_exp_selftx_JF: rpert(10000, 25,200, 50)
+Health_exp_combined_JF: rpert(10000, 66.7,157,157)
+Health_exp_vet_JM: rpert(10000, 16.7,400,80)
+Health_exp_trad_JM: 0
+Health_exp_selftx_JM: rpert(10000, 25,200, 50)
+Health_exp_combined_JM: rpert(10000, 66.7,157,157)
+Health_exp_vet_SubAF: rpert(10000, 16.7,400,80)
+Health_exp_trad_SubAF: 0
+Health_exp_selftx_SubAF: rpert(10000, 25,200, 50)
+Health_exp_combined_SubAF: rpert(10000, 66.7,157,157)
+Health_exp_vet_SubAM: rpert(10000, 16.7,400,80)
+Health_exp_trad_SubAM: 0
+Health_exp_selftx_SubAM: rpert(10000, 25,200, 50)
+Health_exp_combined_SubAM: rpert(10000, 66.7,157,157)
+Health_exp_vet_AF: rpert(10000, 16.7,400,80)
+Health_exp_trad_AF: 0
+Health_exp_selftx_AF: rpert(10000, 25,200, 50)
+Health_exp_combined_AF: rpert(10000, 66.7,157,157)
+Health_exp_vet_AM: rpert(10000, 16.7,400,80)
+Health_exp_trad_AM: 0
+Health_exp_selftx_AM: rpert(10000, 25,200, 50)
+Health_exp_combined_AM: rpert(10000, 66.7,157,157)
+## Accessories cost per head
+Acce_cost_head_JF: rpert(10000, 17.5, 400,150)
+Acce_cost_head_JM: rpert(10000, 17.5, 400,150)
+Acce_cost_head_SubAF: rpert(10000, 17.5, 400,150)
+Acce_cost_head_SubAM: rpert(10000, 17.5, 400,150)
+Acce_cost_head_AF: rpert(10000, 17.5, 400,150)
+Acce_cost_head_AM: rpert(10000, 17.5, 400,150)
+## Capital costs
+## for this we are using bank of Ethiopia inflation rate
+Interest_rate: 0
+# Fixed cost
+Infrastructure_per_head_JF: rpert(10000, 30, 802, 500)
+Infrastructure_per_head_JM: rpert(10000, 30, 802, 500)
+Infrastructure_per_head_SubAF: rpert(10000, 30, 802, 500)
+Infrastructure_per_head_SubAM: rpert(10000, 30, 802, 500)
+Infrastructure_per_head_AF: rpert(10000, 30, 802, 500)
+Infrastructure_per_head_AM: rpert(10000, 30, 802, 500)
+## Proportion of donkey use 
+prop_commercial_AF: 0.14
+prop_commercial_AM: 0.14
+prop_unpaid_AF: 0.68
+prop_unpaid_AM: 0.53
+prop_combined_hhcom_AF: 0.18
+prop_combined_hhcom_AM: 0.4
+prop_unpaid_SubAF: 0.25
+prop_unpaid_SubAM: 0.25
+prop_combined_hhcom_SubAF: 0.58
+prop_combined_hhcom_SubAM: 0.58
+Prop_cart_AF : 0.09
+Prop_cart_AM : 0.2
+## monthly income from equids labour ##
+monthly_income_head_commercial_AF: rpert(10000, 11362.5, 12625,12625)
+monthly_income_head_commercial_AM: rpert(10000, 11362.5, 12625,12625)
+monthly_income_head_unpaid_AF: rpert(10000, 182.8, 9622.1, 731)
+monthly_income_head_unpaid_AM: rpert(10000, 182.8, 5601.9, 707.9)
+monthly_income_head_combined_hhcom_AF: rpert(10000, 183.3,2743.1, 1094.3)
+monthly_income_head_combined_hhcom_AM: rpert(10000, 183.3, 13879, 1094.3)
+monthly_income_head_unpaid_SubAF: rpert(10000, 91.4, 2405.5, 182.7)
+monthly_income_head_unpaid_SubAM: rpert(10000, 91.4, 2405.5, 182.7)
+monthly_income_head_combined_hhcom_SubAF: rpert(10000, 91.6, 1371.6, 547.2)
+monthly_income_head_combined_hhcom_SubAM: rpert(10000, 91.6, 1371.6, 547.2)
+
+## Current working hour in minuts
+WH_commercial_AF_current: rpert(10000, 240,360,270)
+WH_commercial_AM_current: rpert(10000, 240,360,270)
+WH_unpaid_AF_current: rpert(10000, 80,240,240)
+WH_unpaid_AM_current: rpert(10000, 90,240,240)
+WH_combined_hhcom_AF_current: rpert(10000,80,270,150)
+WH_combined_hhcom_AM_current: rpert(10000,80,300,240)
+WH_unpaid_SubAF_current: rpert(10000,30,80,80)
+WH_unpaid_SubAM_current: rpert(10000,30,80,80)
+WH_combined_hhcom_SubAF_current: rpert(10000,25,100,80)
+WH_combined_hhcom_SubAM_current: rpert(10000,25,100,80)
+# Ideal working hour in min
+
+WH_commercial_AF_ideal: rpert(10000, 240,360,270)
+WH_commercial_AM_ideal: rpert(10000, 240,360,270)
+WH_unpaid_AF_ideal: rpert(10000, 90,240,240)
+WH_unpaid_AM_ideal: rpert(10000, 90,240,240)
+WH_combined_hhcom_AF_ideal: rpert(10000,80,270,150)
+WH_combined_hhcom_AM_ideal: rpert(10000,80,300,240)
+WH_unpaid_SubAF_ideal: rpert(10000,30,80,80)
+WH_unpaid_SubAM_ideal: rpert(10000,30,80,80)
+WH_combined_hhcom_SubAF_ideal: rpert(10000,25,100,80)
+WH_combined_hhcom_SubAM_ideal: rpert(10000,25,100,80)

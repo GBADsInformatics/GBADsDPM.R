@@ -1,0 +1,173 @@
+##### cattle_trial_CLM_current #####
+
+species: cattle
+nruns: 10
+# seed_value: NULL
+Num_timesteps: 12
+timestep_Nof_days: 30
+
+# Initial population
+N_JF_t0: 4185804
+N_JM_t0: 4658857
+N_SubAF_t0: 4472291
+N_SubAM_t0: 5481069
+N_AF_t0: 16726643
+N_AM_t0: 2159425
+N_Ox_t0: 17363582
+## Growth rate N -> J and J-> A
+Beta_JF: 12
+Beta_JM: 12
+Beta_SubAF: 24
+Beta_SubAM: 24
+Beta_AF: 108
+Beta_AM: 60
+Beta_Ox: 60
+# Fertility
+part: rpert(10000, 0.49, 0.56, 0.525)
+prolif: rtruncnorm(10000, 0, 1.1, 1, 0.0015)
+
+# lactation
+prop_F_milked: 1
+lac_duration: 210
+avg_daily_yield_ltr: rpert(10000, 1.45, 1.482, 1.47)
+milk_value_ltr: 31
+
+# draught power
+castration_proportion: 0.9
+draught_rate: 0.2191780821917808
+draught_day_value: 136.7
+
+# Offtake
+
+## offtake must = offtake + dif between NNFt0 etc and NJF current
+Gamma_JF: 0
+Gamma_JM: 0
+Gamma_SubAF: 0.0185
+Gamma_SubAM: 0
+Gamma_AF: 0.0706
+Gamma_AM : 0.09
+Gamma_Ox: 0.09
+
+# Mortality ## informed from META analysis
+Alpha_JF: rpert(10000, 0.09, 0.26, 0.12)
+Alpha_JM: rpert(10000, 0.09, 0.26, 0.12)
+Alpha_SubAF: rpert(10000, 0.06, 0.09, 0.075)
+Alpha_SubAM: rpert(10000, 0.06, 0.09, 0.075)
+Alpha_AF: rpert(10000, 0.02, 0.02, 0.02)
+Alpha_AM: rpert(10000, 0.01, 0.01, 0.01)
+Alpha_Ox: rpert(10000, 0.01, 0.01, 0.01)
+
+# Culls
+CullF: 108
+CullM: 60
+CullOx: 60
+## Production parameters (kg)
+
+# Liveweight conversion (kg) ## Informed from META analysis
+lwJF  : rpert(10000, 22, 120, 90)
+lwJM  : rpert(10000, 23, 150, 90)
+lwSubAF: rpert(10000, 90, 280, 160)
+lwSubAM: rpert(10000, 100, 320, 170)
+lwAF : rpert(10000, 150, 340, 240)
+lwAM : rpert(10000, 170, 400, 255)
+lwOx: rpert(10000, 170, 400, 255)
+
+# carcase yeild
+ccy : 0.5
+
+## Financial value of live animals
+# Ethiopian Birr
+fvJF : rpert(10000, 10876, 11616, 11088)
+fvJM: rpert(10000, 9345, 17793, 9556)
+fvSubAF: rpert(10000, 13200, 17793, 16896)
+fvSubAM: rpert(10000, 17160, 20750, 20592)
+fvAF: rpert(10000,  18480,  27825,  23337)
+fvAM: rpert(10000, 15840,  49104, 33475)
+fvOx: rpert(10000, 15840,  49104, 33475)
+
+
+
+
+## skin/hides  
+## parameters can be updated through expert opinion but adding options for flexibility here
+hides_rate: 1
+hides_rate_mor: 0.5
+
+# 1 usd per piece = 51 eth birr
+hides_value: rpert(10000, (2.19*12.5), (9*12.5), (5.4*12.5))
+
+# manure rate (kg produced/animal/day)
+Man_J: rpert(10000, 0.5, 0.8, 0.65)
+Man_SubA: rpert(10000, 0.8,  1.5, 1.15)
+Man_A: rpert(10000,  1.5,2.3, 1.9)
+
+# 0.0125 USD / kg = 0.65 eth birr per kg 2021 price
+Man_value: 0.5
+
+## DAILY dry matter (or feed if dry matter is 100%) requirements per kg
+DM_req_prpn_JF: 0.026
+DM_req_prpn_JM: 0.026
+DM_req_prpn_SubAF: 0.026
+DM_req_prpn_SubAM: 0.026
+DM_req_prpn_AF: 0.026
+DM_req_prpn_AM: 0.026
+DM_req_prpn_Ox: 0.026
+
+## Proportion of livestock keepers that spend any money on feed
+## NOTE Currently the same for all age*sex groups
+prpn_lskeepers_purch_feed: 0.25
+
+## For those spending any money on feed, the proportion of feed that is purchased
+## NOTE Currently the same for all age*sex groups
+prpn_feed_paid_for: 0.5
+
+## Input parameters ## just example distributions for now
+Feed_cost_kg: rpert(10000, 2.5, 6.5, 3.46)
+
+## variable results for the amount of dry matter in wheat and barley and tef in Ethiopia
+## range 30-90%
+## taking 70% as an estimate for this trial
+DM_in_feed: rpert(10000, 0.85, 0.95, 0.9)
+
+## Labour cost
+
+## example code to change labour cost to selecting from distribution
+Labour_cost_head_JF: rpert(10000, (260), (649), (368))
+Labour_cost_head_JM: rpert(10000, (260), (649), (368))
+Labour_cost_head_SubAF: rpert(10000, (260), (649), (368))
+Labour_cost_head_SubAM: rpert(10000, (260), (649), (368))
+Labour_cost_head_AF: rpert(10000, (260), (649), (368))
+Labour_cost_head_AM: rpert(10000, (260), (649), (368))
+lab_non_health: 1
+Labour_cost_head_Oxen: rpert(10000, (260), (649), (368))
+Labour_cost_head_dairy: rpert(10000, (260), (649), (368))
+
+## Helath care costs
+
+## this includes medicines and veterinary care
+## and changing health care costs to select from distribution
+Health_exp_prev_JF: runif(10000, (58), (58))
+Health_exp_treatment_JF: runif(10000, (58), (58))
+Health_exp_prev_JM: runif(10000, (58), (58))
+Health_exp_treatment_JM: runif(10000, (58), (58))
+Health_exp_prev_SubAF: runif(10000, (58), (58))
+Health_exp_treatment_SubAF: runif(10000, (58), (58))
+Health_exp_prev_SubAM: runif(10000, (58), (58))
+Health_exp_treatment_SubAM: runif(10000, (58), (58))
+Health_exp_prev_AF: runif(10000, (58), (58))
+Health_exp_treatment_AF: runif(10000, (58), (58))
+Health_exp_prev_AM: runif(10000, (58), (58))
+Health_exp_treatment_AM: runif(10000, (58), (58))
+Health_exp_prev_Ox: runif(10000, (58), (58))
+Health_exp_treatment_Ox: runif(10000, (58), (58))
+
+## Capital costs
+## for this we are using bank of Ethiopia inflation rate
+Interest_rate: 0
+Infrastructure_per_head_JF: 1
+Infrastructure_per_head_JM: 1
+Infrastructure_per_head_SubAF: 1
+Infrastructure_per_head_SubAM: 1
+Infrastructure_per_head_AF: 1
+Infrastructure_per_head_AM: 1
+Infrastructure_per_head_Ox: 1

@@ -1,0 +1,139 @@
+##### Village_indigenous_current #####
+
+species: poultry
+nruns: 10
+# seed_value: NULL
+Num_timesteps: 52
+timestep_Nof_days: 7
+
+# Initial population
+# Village (89%) or small holder (5.5%) chicken
+# breed breakdown
+N_JF_t0: 6500452
+N_JM_t0: 6500452
+N_SubAF_t0: 4494530
+N_SubAM_t0: 2271004
+N_AF_t0: 15370820
+N_AM_t0: 4431227
+
+## Growth rate N -> J and J-> A
+Beta_JF: 8
+Beta_JM: 8
+Beta_SubAF: 12
+Beta_SubAM: 12
+Beta_AF: 185
+Beta_AM: 185
+
+# Fertility
+prop_females_laying: 0.88
+lay_rate: rpert(10000, (0.17), (0.315), (0.24))
+egg_brood_rate: 0.51
+egg_sale_rate: 0.23
+egg_consumption_rate: 0.2
+hatch_rate: 0.82
+egg_price: rpert(10000, 2.97, 5, 4)
+# Offtake
+#For Adults this is annual offtake percentage: nan
+
+Gamma_JF: 0
+Gamma_JM: 0
+Gamma_SubAF: 0
+Gamma_SubAM: 0
+Gamma_AF: 0.3964
+Gamma_AM : 0.6036
+
+# Mortality ## informed from META analysis
+Alpha_JF: 0.574
+Alpha_JM: 0.574
+Alpha_SubAF: rpert(10000, 0.12, 0.25, 0.185)
+Alpha_SubAM: rpert(10000, 0.12, 0.25, 0.185)
+Alpha_AF: 0.15
+Alpha_AM: rpert(10000, 0.15, 0.22, 0.185)
+
+# Culls
+CullF: 185
+CullM: 185
+## Production parameters (kg)
+
+# Liveweight conversion (kg) ## Informed from META analysis
+lwJF  : rpert(10000, 0.0271, 0.18, 0.09)
+lwJM  : rpert(10000, 0.0271, 0.18, 0.09)
+lwSubAF: rpert(10000, 0.59, 0.8, 0.7)
+lwSubAM: rpert(10000, 0.59, 0.8, 0.7)
+lwAF : rpert(10000, 1.3, 1.6, 1.45)
+lwAM : rpert(10000, 0.987, 1.75, 1.55)
+
+# carcase yeild
+ccy : 0.69
+
+## Financial value of live animals
+# local currency
+fvJF : 32
+fvJM: 32
+fvSubAF: 86.4
+fvSubAM: 86.4
+fvAF: 118.4
+fvAM: 150.4
+
+
+
+## DAILY dry matter required or for poultry DAILY feed used per animal
+DM_req_prpn_JF: 0.039523809523809524
+DM_req_prpn_JM: 0.039523809523809524
+DM_req_prpn_SubAF: 0.08123809523809523
+DM_req_prpn_SubAM: 0.07904761904761906
+DM_req_prpn_AF: 0.1
+DM_req_prpn_AM: 0.125
+
+## Proportion of livestock keepers that spend any money on feed
+## NOTE Currently the same for all age*sex groups
+prpn_lskeepers_purch_feed: 0.94
+
+## For those spending any money on feed, the proportion of feed that is purchased
+## NOTE Currently the same for all age*sex groups
+prpn_feed_paid_for: 0.02
+
+## Input parameters ## just example distributions for now
+Feed_cost_kg: 29.5
+
+## variable results for the amount of dry matter in wheat and barley and tef in Ethiopia
+## range 30-90%
+## taking 70% as an estimate for this trial
+DM_in_feed: 0.95
+
+## Labour cost per head per year
+
+## example code to change labour cost to selecting from distribution
+Labour_cost_head_JF: 0
+Labour_cost_head_JM: 0
+Labour_cost_head_SubAF: 0
+Labour_cost_head_SubAM: 0
+Labour_cost_head_AF: 0
+Labour_cost_head_AM: 0
+lab_non_health: 1
+
+## Helath care costs
+## this includes medicines and veterinary care
+
+Health_exp_prev_JF: 0
+Health_exp_treatment_JF: 0
+Health_exp_prev_JM: 0
+Health_exp_treatment_JM: 0
+Health_exp_prev_SubAF: 0
+Health_exp_treatment_SubAF: 0
+Health_exp_prev_SubAM: 0
+Health_exp_treatment_SubAM: 0
+Health_exp_prev_AF: 0
+Health_exp_treatment_AF: 0
+Health_exp_prev_AM: 0
+Health_exp_treatment_AM: 0
+
+## Capital costs
+## for this we are using bank of Ethiopia inflation rate
+Interest_rate: 0
+Infrastructure_per_head_JF: 0
+Infrastructure_per_head_JM: 0
+Infrastructure_per_head_SubAF: 0
+Infrastructure_per_head_SubAM: 0
+Infrastructure_per_head_AF: 0
+Infrastructure_per_head_AM: 0
