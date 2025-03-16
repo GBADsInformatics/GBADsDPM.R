@@ -13,14 +13,15 @@ library(truncnorm)
 library(yaml)
 library(rstudioapi)
 library(tools)
-library(foreach)
-library(doParallel)
+# library(foreach)
+# library(doParallel)
 
 # library(GBADsDPM)
 
 source("rpert.R")
 source("read_params.R")
-source("run_compartmental_model_V4_StochasticStartPopulation.R")
+# source("run_compartmental_model_V4_StochasticStartPopulation.R")
+source("run_compartmental_model_V7_StochasticStartPop.R")
 source("setup.R")
 
 file_path <- selectDirectory()
