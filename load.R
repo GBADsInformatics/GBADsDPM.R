@@ -21,12 +21,12 @@ library(tools)
 source("rpert.R")
 source("read_params.R")
 # source("run_compartmental_model_V4_StochasticStartPopulation.R")
-source("run_compartmental_model_V7_StochasticStartPop.R")
+source("run_compartmental_model_V7.2_StochasticStartPop.R")
 source("setup.R")
 
 file_path <- selectDirectory()
 seed_value <- NULL
-output <- "cumulative total"
+output <- "summary"
 parallel <- FALSE
 
 ptm <- proc.time()
