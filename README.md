@@ -37,7 +37,6 @@ The DPM requires several packages to run:
 - ```mc2d```
 - ```rtruncnorm```
 - ```yaml```
-- ```rstudioapi```
 - ```tools```
 
 which can be loaded as follows:
@@ -45,15 +44,17 @@ which can be loaded as follows:
 - ```install.packages("mc2d")``` # for 2D Monte Carlo simulations
 - ```install.packages("truncnorm")``` # for truncated Normal distribution
 - ```install.packages("yaml")``` # for importing YAML files
+- ```install.packages("tools")``` # for processing
 
 - ```library(mc2d)```
 - ```library(truncnorm)```
 - ```library(yaml)```
+- ``library(tools)```
 
-In the ```load.R``` file, a user can either specify a file path manually, or navigate to a file from a pop-up window. For the latter option, two additional packages are needed:
+In the ```load.R``` file, a user can either specify a file path manually, or navigate to a file from a pop-up window. For the latter option, an additional package is needed:
 
 - ```install.packages("rstudioapi")```
-- ```install.packages("tools")```
+- ``library(rstudioapi)```
 
 ## Package Functions
 
