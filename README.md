@@ -89,7 +89,7 @@ Currently, there are two different ways to run the DPM, depending on which versi
 
 The package should be run in RStudio.
 
-Within the `load.R` script, for now, a user will need to set their working directory via `setwd()` yo point to the folder which was downloaded from GitHub.
+Within the `load.R` script, for now, a user will need to set their working directory via `setwd()` to point to the folder which was downloaded from GitHub.
 
 Old DPM versions can be found in the R/Old subfolder, These should be used at your own risk.
 
