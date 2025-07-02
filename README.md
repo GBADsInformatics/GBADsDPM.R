@@ -30,6 +30,31 @@ The AHLE is derived via a cost minimization as:
 AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s_{i}({n_i}_t - n_{i}^*)_t - \sum_{j=1}^{J}r_j(y_{ij} - y_{ij}^*)\right)
 ```
 
+## Required R packages
+
+The DPM requires several packages to run:
+
+- ```mc2d```
+- ```rtruncnorm```
+- ```yaml```
+- ```rstudioapi```
+- ```tools```
+
+which can be loaded as follows:
+
+- install.packages("mc2d") # for 2D Monte Carlo simulations
+- install.packages("truncnorm") # for truncated Normal distribution
+- install.packages("yaml") # for importing YAML files
+
+- library(mc2d)
+- library(truncnorm)
+- library(yaml)
+
+In the ```load.R``` file, a user can either specify a file path manually, or navigate to a file from a pop-up window. For the latter option, two additional packages are needed:
+
+- install.packages("rstudioapi")
+- install.packages("tools")
+
 ## Package Functions
 
 The GBADs R package comprises three main functions:
