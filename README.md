@@ -97,7 +97,7 @@ To run, a user needs to only specify four arguments:
 
 1. The file path
 2. The seed value (for reproducibility)
-3. The output format (either ``summary`` or ``cumulative total")
+3. The output format (either ``summary`` or ```cumulative total")
 4. Whether parallelization is desired (currently, only serialization is implemented)
 
 In the Terminal:
