@@ -67,23 +67,43 @@ The GBADs R package comprises three main functions:
 
 ## How to Run
 
-Currently, there are two different ways to run the DPM, depending on which version is used. The most recent version (Version 2) is recommended.
+### Via R/Rstudio
+
+Currently, there are two different ways to run the DPM in R/RStudio, depending on which version is used. The most recent version (Version 2) is recommended.
 
 1. Download the code from GitHub.
 
-### Version 1 (Old)
+#### Version 1 (Old)
 
 2. Run the `load.R` script. This installs and loads required packages and sources necessary functions and then runs the model. The packages may need to be installed first. You will need to change the working directory to correspond to your system. Additionally, you can set the `seed_value` to an integer of any length to ensure code reproducibility. This is useful if you don't plan on doing everything in one sitting. 
 
-### Version 2 (Old)
+#### Version 2 (Old)
 
 2. Run the ```setup(file_path = file_path, seed_value = seed_value)``` function with a random seed, `seed_value` (if desired). A filepath, `file_path`, pointing to a folder contsining the YAML parameter files to be analyzed should also be specified.
 
-### Versions 3, 4, 7 and 7.2 (Current)
+#### Versions 3, 4, 7 and 7.2 (Current)
 
 1. Create a folder containing the desired YAML files to be processed.
 
 2. Run the `load.R` script. This will prompt the user to interactively select the created folder in which model output will be saved. Presently, a single CSV file is outputted displaying either (1) simulation results for all runs for each variable of interest (using the argument `output = "cumulative total"`, or (2) summary statistics (minimum, 1st quartile, mean, median, 3rd quartile, maximum, and standard deviation) using the argument `output = "summary"`.
+
+### Via the Command Line (Terminal)
+
+Users familiar with the command line (*e.g.*) Mac Terminal can run the DPM using the ```DPM_CommandLine.R``` script.
+
+The main advantage of this is that certain parameters required to set up a model run do not need to be explicitly hard-coded beforehand.
+
+To run, a user needs to only specify four arguments:
+
+1. The file path
+2. The seed value (for reproducibility)
+3. The output format (either ``summary`` or ``cumulative total")
+4. Whether parallelization is desired (currently, only serialization is implemented)
+
+In the Terminal:
+
+1. Set the working directory using ```cd``` (change directory)
+2. Run ``` DPM_CommandLine.R "path/to/file" 123 summary FALSE```, replacing ```path/to/file``` with the correct file path pointing to the folder where YANML files are located.
 
 ### Notes
 
