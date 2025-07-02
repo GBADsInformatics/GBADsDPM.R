@@ -49,7 +49,7 @@ which can be loaded as follows:
 - ```library(mc2d)```
 - ```library(truncnorm)```
 - ```library(yaml)```
-- ``library(tools)```
+- ```library(tools)```
 
 In the ```load.R``` file, a user can either specify a file path manually, or navigate to a file from a pop-up window. For the latter option, an additional package is needed:
 
