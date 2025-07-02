@@ -32,19 +32,19 @@ AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s
 
 ## Required R packages
 
-The DPM requires several packages to run:
+The DPM requires several packages to run successfully:
 
-- ```mc2d```
-- ```rtruncnorm```
-- ```yaml```
-- ```tools```
+- ```mc2d``` # for 2D Monte Carlo simulations
+- ```rtruncnorm``` # for truncated Normal distribution
+- ```yaml```  # for importing YAML files
+- ```tools```  # for processing
 
 which can be loaded as follows:
 
-- ```install.packages("mc2d")``` # for 2D Monte Carlo simulations
-- ```install.packages("truncnorm")``` # for truncated Normal distribution
-- ```install.packages("yaml")``` # for importing YAML files
-- ```install.packages("tools")``` # for processing
+- ```install.packages("mc2d")``` 
+- ```install.packages("truncnorm")``` 
+- ```install.packages("yaml")```
+- ```install.packages("tools")```
 
 - ```library(mc2d)```
 - ```library(truncnorm)```
