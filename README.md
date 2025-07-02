@@ -54,7 +54,7 @@ which can be loaded as follows:
 In the ```load.R``` file, a user can either specify a file path manually, or navigate to a file from a pop-up window. For the latter option, an additional package is needed:
 
 - ```install.packages("rstudioapi")```
-- ``library(rstudioapi)```
+- ```library(rstudioapi)```
 
 ## Package Functions
 
