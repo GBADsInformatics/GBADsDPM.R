@@ -103,7 +103,7 @@ To run, a user needs to only specify four arguments:
 In the Terminal:
 
 1. Set the working directory using ```cd``` (change directory)
-2. Run ``` DPM_CommandLine.R "path/to/file" 123 summary FALSE```, replacing ```path/to/file``` with the correct file path pointing to the folder where YANML files are located.
+2. Run ```DPM_CommandLine.R "path/to/file" 123 summary FALSE```, replacing ```path/to/file``` with the correct file path pointing to the folder where YANML files are located, and ```123``` with the desired seed value.
 
 ### Notes
 
