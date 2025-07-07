@@ -41,20 +41,20 @@ The DPM requires several packages to run successfully:
 
 which can be loaded as follows:
 
-- ```install.packages("mc2d")``` 
-- ```install.packages("truncnorm")``` 
-- ```install.packages("yaml")```
-- ```install.packages("tools")```
+    - ```install.packages("mc2d")``` 
+    - ```install.packages("truncnorm")``` 
+    - ```install.packages("yaml")```
+    - ```install.packages("tools")```
 
-- ```library(mc2d)```
-- ```library(truncnorm)```
-- ```library(yaml)```
-- ```library(tools)```
+    - ```library(mc2d)```
+    - ```library(truncnorm)```
+    - ```library(yaml)```
+    - ```library(tools)```
 
 In the ```load.R``` file, a user can either specify a file path manually, or navigate to a file from a pop-up window. For the latter option, an additional package is needed:
 
-- ```install.packages("rstudioapi")```
-- ```library(rstudioapi)```
+    - ```install.packages("rstudioapi")```
+    - ```library(rstudioapi)```
 
 ## Package Functions
 
