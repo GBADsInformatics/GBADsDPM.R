@@ -21,14 +21,16 @@ library(tools)
 source("rpert.R")
 source("read_params.R")
 # source("run_compartmental_model_V4_StochasticStartPopulation.R")
-source("run_compartmental_model_V7.2_StochasticStartPop.R")
+# source("run_compartmental_model_V7.2_StochasticStartPop.R")
+source("run_compartmental_model_V7.2_StochasticStartPop_Girma.R")
 source("setup.R")
 
 file_path <- selectDirectory()
+# file_path <- "/Users/jarrettphillips/Desktop/Test 1"
 seed_value <- NULL
 output <- "summary"
 parallel <- FALSE
 
-ptm <- proc.time()
+# ptm <- proc.time()
 setup(file_path = file_path, seed_value = seed_value, parallel = parallel)
-proc.time() - ptm
+# proc.time() - ptm
