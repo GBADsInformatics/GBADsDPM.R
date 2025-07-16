@@ -8,7 +8,9 @@ Welcome is the GBADsDPM (Global Burden of Animal Diseases Dynamic Population Mod
 
 ### STATUS 
 
-R files needed to run ``load.R`` are in the `\R` folder. Alternatively, `DPM_CommandLine.R` can be run if a Command Line version is desired. 
+R files needed to run ``load.R`` are in the `\R` folder. Everything in ``load.R`` is hard-coded with pop-up windows to prompt the user.
+
+Alternatively, `DPM_CommandLine.R` can be run if a Command Line version is desired. Here, things are not hard-coded and there are no pop-up windows.
 
 ### Background
 
