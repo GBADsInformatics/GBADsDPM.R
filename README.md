@@ -36,7 +36,7 @@ The AHLE is derived via a cost minimization as:
 AHLE = \sum_{i=1}^{I}\left(\sum_{k=1}^{K}p_k(z_{ik} - z_{ik}^*) + q_{i}x_{i} + s_{i}({n_i}_t - n_{i}^*)_t - \sum_{j=1}^{J}r_j(y_{ij} - y_{ij}^*)\right)
 ```
 
-## Required R packages
+### Required R packages
 
 The DPM requires several packages to run successfully:
 
@@ -62,7 +62,7 @@ In the ```load.R``` file, a user can either specify a file path manually, or nav
     install.packages("rstudioapi")
     library(rstudioapi)
 
-## Package Functions
+### Package Functions
 
 The GBADs R package comprises three main functions:
 
@@ -71,29 +71,29 @@ The GBADs R package comprises three main functions:
 3.   ```run_compartmental_model()``` runs a simulation of the DPM/AHLE for a scenario of interest using parameters found in the YAML file and saves results to the user's working directory. Output s generated using 10000 simulations runs by default. These can then be used to compute the AHLE.
 4.  ```setup(file_path, seed_value = NULL, parallel = FALSE)``` is a wrapper that loads DPM/AHLE parameters contained in YAML files and runs the compartmental model all at once. The user need only point to the required folders and files interactively through a pop-up window. In addition, a random seed can be set for reproducibility. By default, no seed is used. Parallelization (parallel = TRUE) can be employed to speed up simulatons.
 
-## How to Run
+### How to Run
 
-### Via R/Rstudio
+#### Via R/Rstudio
 
 Currently, there are two different ways to run the DPM in R/RStudio, depending on which version is used. The most recent version (Version 2) is recommended.
 
 1. Download the code from GitHub.
 
-#### Version 1 (Old)
+##### Version 1 (Old)
 
 2. Run the `load.R` script. This installs and loads required packages and sources necessary functions and then runs the model. The packages may need to be installed first. You will need to change the working directory to correspond to your system. Additionally, you can set the `seed_value` to an integer of any length to ensure code reproducibility. This is useful if you don't plan on doing everything in one sitting. 
 
-#### Version 2 (Old)
+##### Version 2 (Old)
 
 2. Run the ```setup(file_path = file_path, seed_value = seed_value)``` function with a random seed, `seed_value` (if desired). A filepath, `file_path`, pointing to a folder contsining the YAML parameter files to be analyzed should also be specified.
 
-#### Versions 3, 4, 7 and 7.2 (Current)
+##### Versions 3, 4, 7 and 7.2 (Current)
 
 1. Create a folder containing the desired YAML files to be processed.
 
 2. Run the `load.R` script. This will prompt the user to interactively select the created folder in which model output will be saved. Presently, a single CSV file is outputted displaying either (1) simulation results for all runs for each variable of interest (using the argument `output = "cumulative total"`, or (2) summary statistics (minimum, 1st quartile, mean, median, 3rd quartile, maximum, and standard deviation) using the argument `output = "summary"`.
 
-### Via the Command Line (Terminal)
+#### Via the Command Line (Terminal)
 
 Users familiar with the command line (*e.g.*) Mac Terminal can run the DPM using the ```DPM_CommandLine.R``` script.
 
@@ -119,12 +119,12 @@ Within the `load.R` script, for now, a user will need to set their working direc
 
 Old DPM versions can be found in the R/Old subfolder, These should be used at your own risk.
 
-## More Informatiom
+### More Informatiom
 
 Further useful information on the DPM and the AHLE can be found here: https://gbadske.org/dashboards/ahle-casestudy/. 
 
 In due course, the GBADsDPM package will be submitted to the Comprehensive R Archive Network (CRAN) for global uptake.
 
-## References
+### References
 
 Gilbert, W., Marsh, T.L., Jemberu, W.T., Chaters, G., Bruce, M., Steeneveld, W., Alfonso, J.S., Huntington, B. and Rushton, J. (2024) Quantifying cost of disease in livestock: A new metric for the Global Burden of Animal Diseases. *Lancet Planet Health*, 8: e309-317.
