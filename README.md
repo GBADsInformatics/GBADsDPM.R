@@ -8,6 +8,8 @@ Welcome is the GBADsDPM (Global Burden of Animal Diseases Dynamic Population Mod
 
 ### STATUS 
 
+R files needed to run ``load.R`` are in the `\R` folder.
+
 GBADs runs a novel compartmentalized equation-based model called the Dynamic Population Model (DPM) to compute the AHLE (Animal Health Loss Envelope) --- the difference between ideal and current levels -- used to estimate production losses in livestock such as cattle, poultry, and small ruminants within developing countries like Ethiopia. Such losses can include milk/egg production, breeding stock, meat, manure, *etc*. The DPM is structured according to age (juvenile, sub-adult, and adult) and sex (male and female) and simulations are run in monthly (for small ruminnats and cattle) or weekly (for poultry) timesteps up to one year.
 
 The model is expressed mathematically according to a generic livestock production system functioning in both the presence and the absence of disease as follows:
