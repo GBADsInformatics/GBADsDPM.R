@@ -1,3 +1,5 @@
+setwd("./R")
+
 # install.packages("mc2d")
 # install.packages("truncnorm")
 # install.packages("yaml")

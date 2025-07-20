@@ -1,4 +1,4 @@
-setwd("/Users/jarrettphillips/Desktop/GBADs Postdoc/GBADs DPM R Package/R")
+setwd("./R")
 
 # install.packages("mc2d") # for 2D Monte Carlo simulations
 # install.packages("truncnorm") # for truncated Normal distribution

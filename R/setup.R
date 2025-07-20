@@ -21,7 +21,7 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
   if (parallel == FALSE) { # sequential
     for (file_name in file_names) {
       params <- read_params(file_path = file_name, file_type = file_type)
-      df <- run_compartmental_model(seed_value = seed_value, output = output)
+      df <- run_compartmental_model(output = output)
       base_file_name <- file_path_sans_ext(basename(file_name))
       output_file <- file.path(file_path, paste0(base_file_name, "_", get("output", envir = .GlobalEnv), ".csv"))
       write.csv(df, file = output_file, row.names = TRUE)
