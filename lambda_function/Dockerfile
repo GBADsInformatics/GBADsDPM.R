@@ -32,19 +32,15 @@ RUN apt-get update && \
 RUN Rscript -e "install.packages(c('mc2d', 'truncnorm', 'yaml', 'rstudioapi'), repos='https://cloud.r-project.org')"
 
 # Install Python dependencies
-COPY lambda_function/requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install --no-cache-dir boto3
+RUN pip install --no-cache-dir --target $LAMBDA_TASK_ROOT awslambdaric
 
 # Copy all code and scripts into Lambda task root
 COPY . $LAMBDA_TASK_ROOT
-
-# Add AWS Lambda Runtime Interface Emulator for local testing
-# ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/bin/aws-lambda-rie
-# RUN chmod +x /usr/bin/aws-lambda-rie
 
 # Set Python path for Lambda
 ENV PYTHONPATH=$PYTHONPATH:$LAMBDA_TASK_ROOT
 
 # Default Lambda entrypoint
-# CMD ["/usr/bin/aws-lambda-rie", "python3", "-m", "awslambdaric", "lambda_function.lambda_handler.lambda_handler"]
+ENTRYPOINT ["/usr/local/bin/python", "-m", "awslambdaric"]
 CMD ["lambda_function.lambda_handler.lambda_handler"]
