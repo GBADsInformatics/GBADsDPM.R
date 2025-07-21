@@ -28,6 +28,8 @@ Running locally:
 import os
 import subprocess
 import glob
+import random
+import yaml
 import boto3
 
 def lambda_handler(event, context):
@@ -53,16 +55,24 @@ def lambda_handler(event, context):
     s3.download_file(bucket, key, local_path)
     print(f'Downloaded parameters file to {local_path}')
 
-    # Example arguments for DPM_CommandLine.R
-    seed = "456789423"
+    # Read seed value from YAML file, or generate a random 10-digit integer if not present
+    seed = None
+    try:
+        with open(local_path, 'r', encoding='utf-8') as f:
+            params = yaml.safe_load(f)
+            seed = params.get('seed_value')
+    except Exception as e:
+        print(f"Error reading seed_value: {e}")
+    if seed is None:
+        seed = ''.join(random.choices('0123456789', k=9))
     output_format = "cumulative total"
     parallel = "FALSE"
 
     print('Running R script with args:')
-    print(f'  dir="{local_params_dir}"')
-    print(f'  seed="{seed}"')
-    print(f'  output="{output_format}"')
-    print(f'  parallel="{parallel}"')
+    print(f'       dir: "{local_params_dir}"')
+    print(f'      seed: "{seed}"')
+    print(f'    output: "{output_format}"')
+    print(f'  parallel: "{parallel}"')
 
     # Run the R script
     lambda_root = os.environ.get("LAMBDA_TASK_ROOT", "/var/task")

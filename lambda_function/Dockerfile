@@ -32,8 +32,8 @@ RUN apt-get update && \
 RUN Rscript -e "install.packages(c('mc2d', 'truncnorm', 'yaml', 'rstudioapi'), repos='https://cloud.r-project.org')"
 
 # Install Python dependencies
-RUN pip install --no-cache-dir boto3
-RUN pip install --no-cache-dir awslambdaric
+COPY lambda_function/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all code and scripts into Lambda task root
 COPY . $LAMBDA_TASK_ROOT
