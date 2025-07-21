@@ -28,7 +28,7 @@ source("setup.R")
 file_path <- selectDirectory()
 # file_path <- "/Users/jarrettphillips/Desktop/Test 1"
 seed_value <- NULL
-output <- "summary"
+output <- "cumulative total"
 parallel <- FALSE
 
 # ptm <- proc.time()

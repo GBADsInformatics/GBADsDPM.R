@@ -55,7 +55,7 @@ def lambda_handler(event, context):
 
     # Example arguments for DPM_CommandLine.R
     seed = "456789423"
-    output_format = "summary"
+    output_format = "cumulative total"
     parallel = "FALSE"
 
     print('Running R script with args:')
