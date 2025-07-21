@@ -5,18 +5,24 @@ Authors: William Fitzjohn, Matthew Szurkowski
 AWS Lambda function to handle S3 events and execute the R commandline script.
 
 Running locally:
-1. Ensure you have Docker installed.
-2. Build the Docker image with the command:
-   docker build -t dpm-lambda -f lambda_function/Dockerfile .
-3. Run the Docker container with the command:
-   docker run \
-       -e AWS_ACCESS_KEY_ID=s3_user_key \
-       -e AWS_SECRET_ACCESS_KEY=s3_user_secret \
-       -e AWS_REGION=ca-central-1 \
-       -p 9000:8080 dpm-lambda
-4. Test the Lambda function locally with a sample S3 event:
-   curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"Records":[{"s3":{"bucket":{"name":"gbads-modelling-private"},"object":{"key":"params_cattle.yaml"}}}]}'
-
+1.  Ensure you have Docker installed.
+2.  Build the Docker image with the command:
+    docker build -t dpm-lambda -f lambda_function/Dockerfile .
+3.  Download the AWS Lambda Runtime Interface Emulator:
+    curl -Lo aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie
+    chmod +x aws-lambda-rie
+4.  Run the Docker container with the command:
+    docker run \
+        -e AWS_ACCESS_KEY_ID=s3_user_key \
+        -e AWS_SECRET_ACCESS_KEY=s3_user_secret \
+        -e AWS_REGION=ca-central-1 \
+        -e AWS_LAMBDA_RUNTIME_API=127.0.0.1:8080 \
+        -v "$PWD/aws-lambda-rie:/aws-lambda-rie" \
+        --entrypoint /aws-lambda-rie \
+        -p 9000:8080 \
+        dpm-lambda /usr/local/bin/python -m awslambdaric lambda_handler.lambda_handler
+4.  Test the Lambda function locally with a sample S3 event:
+    curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"Records":[{"s3":{"bucket":{"name":"gbads-modelling-private"},"object":{"key":"params_cattle.yaml"}}}]}'
 """
 
 import os

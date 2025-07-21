@@ -33,14 +33,15 @@ RUN Rscript -e "install.packages(c('mc2d', 'truncnorm', 'yaml', 'rstudioapi'), r
 
 # Install Python dependencies
 RUN pip install --no-cache-dir boto3
-RUN pip install --no-cache-dir --target $LAMBDA_TASK_ROOT awslambdaric
+RUN pip install --no-cache-dir awslambdaric
 
 # Copy all code and scripts into Lambda task root
 COPY . $LAMBDA_TASK_ROOT
+RUN mv $LAMBDA_TASK_ROOT/lambda_function/* $LAMBDA_TASK_ROOT
 
 # Set Python path for Lambda
 ENV PYTHONPATH=$PYTHONPATH:$LAMBDA_TASK_ROOT
 
 # Default Lambda entrypoint
 ENTRYPOINT ["/usr/local/bin/python", "-m", "awslambdaric"]
-CMD ["lambda_function.lambda_handler.lambda_handler"]
+CMD ["lambda_handler.lambda_handler"]
