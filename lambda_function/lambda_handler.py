@@ -21,6 +21,7 @@ Running locally:
 
 import os
 import subprocess
+import glob
 import boto3
 
 def lambda_handler(event, context):
@@ -31,8 +32,10 @@ def lambda_handler(event, context):
     :return: A dictionary containing the status code and output of the R script
     """
     # Get S3 bucket and key from event
+    print(f"Received event: {event}")
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
+    print(f'Processing parameters file: s3://{bucket}/{key}')
 
     # Create a local directory for parameters
     local_params_dir = "/tmp/parameters"
@@ -42,37 +45,64 @@ def lambda_handler(event, context):
     # Download file from S3
     s3 = boto3.client('s3')
     s3.download_file(bucket, key, local_path)
+    print(f'Downloaded parameters file to {local_path}')
 
     # Example arguments for DPM_CommandLine.R
     seed = "456789423"
     output_format = "summary"
     parallel = "FALSE"
 
+    print('Running R script with args:')
+    print(f'  dir="{local_params_dir}"')
+    print(f'  seed="{seed}"')
+    print(f'  output="{output_format}"')
+    print(f'  parallel="{parallel}"')
+
     # Run the R script
-    r_script = "/var/task/DPM_CommandLine.R"
+    lambda_root = os.environ.get("LAMBDA_TASK_ROOT", "/var/task")
+    r_script = f"{lambda_root}/DPM_CommandLine.R"
     cmd = ["Rscript", r_script, local_params_dir, seed, output_format, parallel]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, check=False)
+
+    print(f'R script return code: {result.returncode}')
 
     # Check if the command was successful
     if result.returncode != 0:
+        print("R script execution failed")
         return {
             "statusCode": 500,
-            "error": "R script execution failed",
-            "stdout": result.stdout,
-            "stderr": result.stderr
+            "error": "R script execution failed, check lambda logs for details."
         }
 
     # Ensure the output directory exists
     output_bucket = "gbads-modelling-private"
-    output_file = f"{local_params_dir}/{os.path.splitext(os.path.basename(key))[0]}_{output_format}.csv"
-    output_key = f"model_output/{os.path.basename(output_file)}"
+    # local_output_file will be the only .csv file in the local_params_dir
+    csv_files = glob.glob(f"{local_params_dir}/*.csv")
+    if not csv_files:
+        print("No output CSV file found in parameters directory.")
+        return {
+            "statusCode": 500,
+            "error": "No output CSV file found."
+        }
+    local_output_file = csv_files[0]
+    output_key = f"model_output/{os.path.basename(local_output_file)}"
+    print(f'Uploading output file "{local_output_file}" to s3://{output_bucket}/{output_key}')
 
     # Upload the output file to S3
-    s3.upload_file(output_file, output_bucket, output_key)
+    s3.upload_file(local_output_file, output_bucket, output_key)
+
+    # Check if the upload was successful
+    if not s3.head_object(Bucket=output_bucket, Key=output_key):
+        print("Failed to upload output file to S3")
+        return {
+            "statusCode": 500,
+            "error": "Failed to upload output file to S3."
+        }
+
+    print('Upload complete and verified.')
 
     # Return output
     return {
         "statusCode": 200,
-        "stdout": result.stdout,
-        "stderr": result.stderr
+        "body": f"R script executed successfully. Output uploaded to s3://{output_bucket}/{output_key}"
     }
