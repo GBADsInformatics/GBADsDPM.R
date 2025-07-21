@@ -39,11 +39,12 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 COPY . $LAMBDA_TASK_ROOT
 
 # Add AWS Lambda Runtime Interface Emulator for local testing
-ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/bin/aws-lambda-rie
-RUN chmod +x /usr/bin/aws-lambda-rie
+# ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/bin/aws-lambda-rie
+# RUN chmod +x /usr/bin/aws-lambda-rie
 
 # Set Python path for Lambda
 ENV PYTHONPATH=$PYTHONPATH:$LAMBDA_TASK_ROOT
 
 # Default Lambda entrypoint
-CMD ["/usr/bin/aws-lambda-rie", "python3", "-m", "awslambdaric", "lambda_function.lambda_handler.lambda_handler"]
+# CMD ["/usr/bin/aws-lambda-rie", "python3", "-m", "awslambdaric", "lambda_function.lambda_handler.lambda_handler"]
+CMD ["lambda_function.lambda_handler.lambda_handler"]
