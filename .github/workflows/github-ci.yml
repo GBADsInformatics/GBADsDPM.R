@@ -5,16 +5,6 @@ on:
   workflow_dispatch:
   
 jobs:
-  commit-hash:
-    name: Commit SHA
-    runs-on: ubuntu-latest
-    outputs:
-      sha7: ${{ steps.commit-hash.outputs.sha7 }}
-    steps:
-      - name: Get Commit SHA
-        id: commit-hash
-        run: echo "sha7=$(echo ${GITHUB_SHA} | cut -c1-7)" >> "$GITHUB_OUTPUT"
-
   docker:
     uses: GBADsInformatics/DevopsWorkflows/.github/workflows/docker.yml@v2.0
     secrets: inherit
