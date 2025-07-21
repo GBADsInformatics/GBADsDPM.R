@@ -21,7 +21,7 @@ Running locally:
         --entrypoint /aws-lambda-rie \
         -p 9000:8080 \
         dpm-lambda /usr/local/bin/python -m awslambdaric lambda_handler.lambda_handler
-4.  Test the Lambda function locally with a sample S3 event:
+5.  Test the Lambda function locally with a sample S3 event:
     curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"Records":[{"s3":{"bucket":{"name":"gbads-modelling-private"},"object":{"key":"params_cattle.yaml"}}}]}'
 """
 
