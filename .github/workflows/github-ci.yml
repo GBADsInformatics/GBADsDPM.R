@@ -1,0 +1,18 @@
+name: Build Lambda Function Image
+
+on:
+  push:
+    branches: [ "main" , "master", "lambda-function" ]
+
+  workflow_dispatch:
+
+jobs:
+  docker:
+    uses: GBADsInformatics/DevopsWorkflows/.github/workflows/docker.yml@v2.0
+    secrets: inherit
+    with:
+      IMAGE_NAME: dpm_lambda
+      CONTEXT: .
+      DOCKERFILE: ./lambda_function/Dockerfile
+      ECR_REPOSITORY_URI: 068606542379.dkr.ecr.us-east-2.amazonaws.com/dpm-lambda
+      DOCKER_BUILD_PROVENANCE: "1"

@@ -47,3 +47,6 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# AWS Lambda Runtime Interface Emulator for local testing
+aws-lambda-rie
