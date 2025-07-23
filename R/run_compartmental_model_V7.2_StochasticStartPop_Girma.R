@@ -11,7 +11,7 @@
 #' # run_compartmental_model(seed_value = NULL)
 #' 
 
-run_compartmental_model <- function(output = "summary") {
+run_compartmental_model <- function() {
   
   set.seed(seed_value)
   
@@ -3741,7 +3741,7 @@ run_compartmental_model <- function(output = "summary") {
   
   ### output results to a CSV file ###
   
-  if (output == "cumulative total") {
+ # if (output == "cumulative total") {
     ## output from last month (cumulative total) ##
     
     apply_last_column <- function(mat) {
@@ -3751,12 +3751,13 @@ run_compartmental_model <- function(output = "summary") {
     
     mat_list <- lapply(res_mat, apply_last_column)
     
-    df <- as.data.frame(do.call(rbind, mat_list))
+    df_cumulative_total <- as.data.frame(do.call(rbind, mat_list))
     
-    rownames(df) <- names(mat_list)
-    colnames(df) <- paste("Run", 1:ncol(df))
-    df
-  } else {
+    rownames(df_cumulative_total) <- names(mat_list)
+    colnames(df_cumulative_total) <- paste("Run", 1:ncol(df_cumulative_total))
+    df_cumulative_total
+    
+ # } else {
     ## Summary statistics ##
     
     apply_summary_last_column <- function(mat) {
@@ -3767,14 +3768,18 @@ run_compartmental_model <- function(output = "summary") {
     
     summary_list <- lapply(res_mat, apply_summary_last_column)
     
-    df <- as.data.frame(do.call(rbind, summary_list))
+    df_summary <- as.data.frame(do.call(rbind, summary_list))
     
-    df$Variable <- rownames(df)
+    df_summary$Variable <- rownames(df_summary)
     
-    df <- df[, c("Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max.", "SD")]
-    df # summary statistics across all months
+    df_summary <- df_summary[, c("Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max.", "SD")]
+    df_summary # summary statistics across all months
     
-  } 
-  
+  # } 
+    
+    list(
+      cumulative_total = df_cumulative_total,  
+      summary = df_summary      
+    )
   
 } # end function

@@ -19,12 +19,23 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
   set.seed(seed_value)
   
   if (parallel == FALSE) { # sequential
+    
     for (file_name in file_names) {
       params <- read_params(file_path = file_name, file_type = file_type)
-      df <- run_compartmental_model(output = output)
-      base_file_name <- file_path_sans_ext(basename(file_name))
-      output_file <- file.path(file_path, paste0(base_file_name, "_", get("output", envir = .GlobalEnv), ".csv"))
-      write.csv(df, file = output_file, row.names = TRUE)
+      model_output <- run_compartmental_model()
+      
+      if (!is.null(model_output$cumulative)) {
+        base_file_name <- tools::file_path_sans_ext(basename(file_name))
+        out_file_cum <- file.path(file_path, paste0(base_file_name, "_cumulative_total_results.csv"))
+        write.csv(model_output$cumulative, file = out_file_cum, row.names = TRUE)
+      }
+      
+      if (!is.null(model_output$summary)) {
+        base_file_name <- tools::file_path_sans_ext(basename(file_name))
+        out_file_sum <- file.path(file_path, paste0(base_file_name, "_summary_results.csv"))
+        write.csv(model_output$summary, file = out_file_sum, row.names = TRUE)
+      }
+      
     }
   } else {
     
@@ -35,10 +46,20 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
   
     out <- foreach (file_name = 1:length(file_names), .packages = "GBADsDPM", .combine = ) %dopar% {
       params <- read_params(file_path = file_name, file_type = file_type)
-      df <- run_compartmental_model(seed_value = seed_value, output = output)
-      base_file_name <- file_path_sans_ext(basename(file_name))
-      output_file <- file.path(file_path, paste0(base_file_name, "_", get("output", envir = .GlobalEnv), ".csv"))
-      write.csv(df, file = output_file, row.names = TRUE)
+      model_output <- run_compartmental_model()
+      
+      if (!is.null(model_output$cumulative)) {
+        base_file_name <- tools::file_path_sans_ext(basename(file_name))
+        out_file_cum <- file.path(file_path, paste0(base_file_name, "_cumulative_total_results.csv"))
+        write.csv(model_output$cumulative, file = out_file_cum, row.names = TRUE)
+      }
+      
+      if (!is.null(model_output$summary)) {
+        base_file_name <- tools::file_path_sans_ext(basename(file_name))
+        out_file_sum <- file.path(file_path, paste0(base_file_name, "_summary_results.csv"))
+        write.csv(model_output$summary, file = out_file_sum, row.names = TRUE)
+      }
+      
     }
     
   }
