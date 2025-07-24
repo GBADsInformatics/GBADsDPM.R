@@ -21,6 +21,12 @@ read_params <- function(file_path, file_type = "yaml") {
   
   params_data <- read_yaml(file_path)
   
+  excluded_fields <- c("Type_of_scenario", 
+                       "scenario_name", 
+                       "currency_used")
+  
+  params_data <- params_data[!names(params_data) %in% excluded_fields]
+  
   evaluate_r_expressions <- function(data, exclude_eval = character()) {
     if (is.list(data)) {
       for (key in names(data)) {
@@ -37,6 +43,7 @@ read_params <- function(file_path, file_type = "yaml") {
       } else if (grepl("^\\d+\\s*[-+*/]\\s*\\d+$", data)) {
         data <- eval(parse(text = data))
       }
+      
     }
     return(data)
   }
