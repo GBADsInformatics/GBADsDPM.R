@@ -95,6 +95,10 @@ Currently, there are two different ways to run the DPM in R/RStudio, depending o
 
 2. Run the `load.R` script. This will prompt the user to interactively select the created folder in which model output will be saved. Presently, a single CSV file is outputted displaying either (1) simulation results for all runs for each variable of interest (using the argument `output = "cumulative total"`, or (2) summary statistics (minimum, 1st quartile, mean, median, 3rd quartile, maximum, and standard deviation) using the argument `output = "summary"`.
 
+##### NEW! Vwrsion 7.2.1
+
+The `output` argument has been removed. The DPM now outputs both the `cumulative total` and `summary` CSV files.
+
 #### Via the Command Line (Terminal)
 
 Users familiar with the command line (*e.g.*) Mac Terminal can run the DPM using the ```DPM_CommandLine.R``` script.
