@@ -3741,8 +3741,8 @@ run_compartmental_model <- function() {
   
   ### output results to a CSV file ###
   
- # if (output == "cumulative total") {
-    ## output from last month (cumulative total) ##
+
+   ## output from last month (cumulative total) ##
     
     apply_last_column <- function(mat) {
       mat_last_column <- mat[, ncol(mat), drop = TRUE]  
@@ -3757,7 +3757,7 @@ run_compartmental_model <- function() {
     colnames(df_cumulative_total) <- paste("Run", 1:ncol(df_cumulative_total))
     df_cumulative_total
     
- # } else {
+    
     ## Summary statistics ##
     
     apply_summary_last_column <- function(mat) {
@@ -3774,8 +3774,6 @@ run_compartmental_model <- function() {
     
     df_summary <- df_summary[, c("Min.", "1st Qu.", "Median", "Mean", "3rd Qu.", "Max.", "SD")]
     df_summary # summary statistics across all months
-    
-  # } 
     
     list(
       cumulative_total = df_cumulative_total,  
