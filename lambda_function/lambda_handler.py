@@ -45,12 +45,9 @@ def lambda_handler(event, context):
     # Setting up variables
     input_file_bucket = event['Records'][0]['s3']['bucket']['name']
     input_file_key = event['Records'][0]['s3']['object']['key']
-    input_file_prefix = os.path.dirname(input_file_key)
-    _prefix_parts = input_file_prefix.split(os.sep)
-    _trimmed_prefix = os.sep.join(_prefix_parts[1:]) if len(_prefix_parts) > 1 else ''
-    output_bucket = "gbads-modelling-private"
-    output_prefix = "model_output/"
-    output_prefix = f"{output_prefix}{_trimmed_prefix}/" if _trimmed_prefix else output_prefix
+    output_bucket = "gbads-modelling-outputs"
+    output_prefix = os.path.dirname(input_file_key)
+    output_prefix = f"{output_prefix}/" if output_prefix else ""
     local_params_dir = "/tmp/parameters"
     local_params_file = f"{local_params_dir}/{os.path.basename(input_file_key)}"
     model_output_format = "cumulative total"
@@ -58,6 +55,14 @@ def lambda_handler(event, context):
     model_seed = None # Later we read from the YAML file or generate a random seed
     function_dir = os.environ.get("LAMBDA_TASK_ROOT", "/var/task")
     function_script = f"{function_dir}/DPM_CommandLine.R"
+
+    # Prevent infinite loops
+    if output_bucket == input_file_bucket:
+        print("FATAL: Input and output buckets are the same, exiting to prevent infinite loop.")
+        return {
+            "statusCode": 400,
+            "error": "Input and output buckets are the same."
+        }
     print(f'Processing parameters file: s3://{input_file_bucket}/{input_file_key}')
 
     # Create a local directory for parameters
@@ -111,7 +116,7 @@ def lambda_handler(event, context):
         model_output_path = f"{output_prefix}{os.path.basename(csv_file)}"
         print(f'Uploading output file "{csv_file}" to s3://{output_bucket}/{model_output_path}')
         s3.upload_file(csv_file, output_bucket, model_output_path)
-        
+
         # Check if the upload was successful
         if not s3.head_object(Bucket=output_bucket, Key=model_output_path):
             print("Failed to upload output file to S3")

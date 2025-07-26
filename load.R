@@ -1,4 +1,7 @@
-setwd("/Users/jarrettphillips/Desktop/GBADs Postdoc/GBADs DPM R Package/R")
+# Setting the working directory when running in a Lambda function
+if (!is.na(Sys.getenv("LAMBDA_TASK_ROOT", unset=NA))) {
+  setwd("./R")
+}
 
 # install.packages("mc2d") # for 2D Monte Carlo simulations
 # install.packages("truncnorm") # for truncated Normal distribution

@@ -26,12 +26,12 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
       base_file_name <- tools::file_path_sans_ext(basename(file_name))
       
       if (!is.null(model_output$cumulative)) {
-        out_file_cumulative <- file.path(file_path, paste0(base_file_name, "_cumulative_total_results.csv"))
+        out_file_cumulative <- file.path(file_path, paste0(base_file_name, "_full.csv"))
         write.csv(model_output$cumulative, file = out_file_cumulative, row.names = TRUE)
       }
       
       if (!is.null(model_output$summary)) {
-        out_file_summary <- file.path(file_path, paste0(base_file_name, "_summary_results.csv"))
+        out_file_summary <- file.path(file_path, paste0(base_file_name, "_summary.csv"))
         write.csv(model_output$summary, file = out_file_summary, row.names = TRUE)
       }
       
@@ -49,13 +49,13 @@ setup <- function(file_path, seed_value = NULL, parallel = FALSE) {
       
       if (!is.null(model_output$cumulative)) {
         base_file_name <- tools::file_path_sans_ext(basename(file_name))
-        out_file_cum <- file.path(file_path, paste0(base_file_name, "_cumulative_total_results.csv"))
+        out_file_cum <- file.path(file_path, paste0(base_file_name, "_full.csv"))
         write.csv(model_output$cumulative, file = out_file_cum, row.names = TRUE)
       }
       
       if (!is.null(model_output$summary)) {
         base_file_name <- tools::file_path_sans_ext(basename(file_name))
-        out_file_sum <- file.path(file_path, paste0(base_file_name, "_summary_results.csv"))
+        out_file_sum <- file.path(file_path, paste0(base_file_name, "_summary.csv"))
         write.csv(model_output$summary, file = out_file_sum, row.names = TRUE)
       }
       

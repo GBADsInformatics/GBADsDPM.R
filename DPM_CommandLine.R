@@ -1,3 +1,8 @@
+# Setting the working directory when running in a Lambda function
+if (!is.na(Sys.getenv("LAMBDA_TASK_ROOT", unset=NA))) {
+  setwd("./R")
+}
+
 # install.packages("mc2d")
 # install.packages("truncnorm")
 # install.packages("yaml")
