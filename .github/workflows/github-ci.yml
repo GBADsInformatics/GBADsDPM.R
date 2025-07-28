@@ -15,4 +15,5 @@ jobs:
       CONTEXT: .
       DOCKERFILE: ./lambda_function/Dockerfile
       ECR_REPOSITORY_URI: 068606542379.dkr.ecr.ca-central-1.amazonaws.com/dpm-lambda
+      ECR_REGION: ca-central-1
       DOCKER_BUILD_PROVENANCE: "1"
