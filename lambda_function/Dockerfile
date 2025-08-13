@@ -12,9 +12,10 @@ WORKDIR $LAMBDA_TASK_ROOT
 
 # Add R repository for Debian Bookworm
 RUN apt-get update && \
-    apt install -y --no-install-recommends gnupg2
+    apt install -y --no-install-recommends gnupg2 dirmngr
 RUN echo "deb https://cloud.r-project.org/bin/linux/debian bookworm-cran40/" >> /etc/apt/sources.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B8F25A8A73EACF41
+RUN gpg --keyserver keyserver.ubuntu.com --recv-keys B8F25A8A73EACF41 && \
+    gpg --export B8F25A8A73EACF41 > /etc/apt/trusted.gpg.d/cran.gpg
 
 # Install R and dependencies
 RUN apt-get update && \
