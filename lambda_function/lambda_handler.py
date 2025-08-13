@@ -80,7 +80,7 @@ def lambda_handler(event, context):
             model_seed = str(params.get('seed_value'))
     except Exception as e:
         print(f"Error reading seed_value: {e}")
-    if model_seed is None:
+    if model_seed == "None":
         model_seed = ''.join(random.choices('0123456789', k=9))
 
     print('Running R script with args:')
