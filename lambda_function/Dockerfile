@@ -4,7 +4,7 @@
 #
 
 # Use official Python slim image
-FROM python:3.13-slim
+FROM python:3.13-slim-bookworm
 
 # Set Lambda working directory
 ENV LAMBDA_TASK_ROOT=/var/task
@@ -12,7 +12,7 @@ WORKDIR $LAMBDA_TASK_ROOT
 
 # Add R repository for Debian Bookworm
 RUN apt-get update && \
-    apt install -y --no-install-recommends gnupg2 dirmngr
+    apt install -y --no-install-recommends gnupg2 dirmngr libicu-dev
 RUN echo "deb https://cloud.r-project.org/bin/linux/debian bookworm-cran40/" >> /etc/apt/sources.list
 RUN gpg --keyserver keyserver.ubuntu.com --recv-keys B8F25A8A73EACF41 && \
     gpg --export B8F25A8A73EACF41 > /etc/apt/trusted.gpg.d/cran.gpg
