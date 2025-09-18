@@ -17,6 +17,10 @@ Running locally:
         -e AWS_SECRET_ACCESS_KEY=s3_user_secret \
         -e AWS_REGION=ca-central-1 \
         -e AWS_LAMBDA_RUNTIME_API=127.0.0.1:8080 \
+        -e RDS_HOST=... \ # for testing with model tracking
+        -e RDS_DATABASE=... \
+        -e RDS_USER=... \
+        -e RDS_PASSWORD=... \
         -v "$PWD/aws-lambda-rie:/aws-lambda-rie" \
         --entrypoint /aws-lambda-rie \
         -p 9000:8080 \
@@ -25,12 +29,15 @@ Running locally:
     curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"Records":[{"s3":{"bucket":{"name":"gbads-modelling-private"},"object":{"key":"params_cattle.yaml"}}}]}'
 """
 
+from datetime import datetime
 import os
 import subprocess
 import glob
 import random
 import yaml
+import re
 import boto3
+from rds_adapter import RDSAdapter
 
 def lambda_handler(event, context):
     """
@@ -45,6 +52,10 @@ def lambda_handler(event, context):
     # Setting up variables
     input_file_bucket = event['Records'][0]['s3']['bucket']['name']
     input_file_key = event['Records'][0]['s3']['object']['key']
+    input_name_part, _ = os.path.splitext(os.path.basename(input_file_key))
+    input_parts = input_name_part.split("_")
+    input_model_name = "_".join(input_parts[:-1])  # everything except the last part
+    input_model_part = input_parts[-1]
     output_bucket = "gbads-modelling-outputs"
     output_prefix = os.path.dirname(input_file_key)
     output_prefix = f"{output_prefix}/" if output_prefix else ""
@@ -55,6 +66,9 @@ def lambda_handler(event, context):
     model_seed = None # Later we read from the YAML file or generate a random seed
     function_dir = os.environ.get("LAMBDA_TASK_ROOT", "/var/task")
     function_script = f"{function_dir}/DPM_CommandLine.R"
+    user_id = -1
+    if match := re.search(r"/user_(\d+)/", input_file_key):
+        user_id = int(match.group(1))
 
     # Prevent infinite loops
     if output_bucket == input_file_bucket:
@@ -90,13 +104,27 @@ def lambda_handler(event, context):
     print(f'  parallel: "{model_parallel}"')
 
     # Run the R script
+    time_created = datetime.now()
     function_command = ["Rscript", function_script, local_params_dir, model_seed, model_output_format, model_parallel]
     function_result = subprocess.run(function_command, check=False)
+    time_completed = datetime.now()
     print(f'R script return code: {function_result.returncode}')
 
     # Check if the command was successful
     if function_result.returncode != 0:
         print("R script execution failed")
+        with RDSAdapter() as rds_adapter:
+            rds_adapter.insert('user_models', (
+                user_id,
+                input_model_name,
+                'error: R script failed',
+                f's3://{input_file_bucket}/{input_file_key}',
+                None,
+                time_created,
+                time_completed,
+                input_model_part,
+                (time_completed - time_created).total_seconds()
+            ))
         return {
             "statusCode": 500,
             "error": "R script execution failed, check lambda logs for details."
@@ -106,26 +134,66 @@ def lambda_handler(event, context):
     csv_files = glob.glob(f"{local_params_dir}/*.csv")
     if not csv_files:
         print("No output CSV file found in parameters directory.")
+        with RDSAdapter() as rds_adapter:
+            rds_adapter.insert('user_models', (
+                user_id,
+                input_model_name,
+                'error: Model produced no output',
+                f's3://{input_file_bucket}/{input_file_key}',
+                None,
+                time_created,
+                time_completed,
+                input_model_part,
+                (time_completed - time_created).total_seconds()
+            ))
         return {
             "statusCode": 500,
             "error": "No output CSV file found."
         }
 
     # Upload output files to S3
+    output_file_uris = []
     for csv_file in csv_files:
         model_output_path = f"{output_prefix}{os.path.basename(csv_file)}"
         print(f'Uploading output file "{csv_file}" to s3://{output_bucket}/{model_output_path}')
         s3.upload_file(csv_file, output_bucket, model_output_path)
+        output_file_uris.append(f's3://{output_bucket}/{model_output_path}')
 
         # Check if the upload was successful
         if not s3.head_object(Bucket=output_bucket, Key=model_output_path):
             print("Failed to upload output file to S3")
+            with RDSAdapter() as rds_adapter:
+                rds_adapter.insert('user_models', (
+                    user_id,
+                    input_model_name,
+                    'error: Failed to upload output file to S3',
+                    f's3://{input_file_bucket}/{input_file_key}',
+                    None,
+                    time_created,
+                    time_completed,
+                    input_model_part,
+                    (time_completed - time_created).total_seconds()
+                ))
             return {
                 "statusCode": 500,
                 "error": "Failed to upload output file to S3."
             }
 
     print('Upload complete and verified.')
+
+    # Record the model run in the database
+    with RDSAdapter() as rds_adapter:
+        rds_adapter.insert('user_models', (
+            user_id,
+            input_model_name,
+            'success',
+            f's3://{input_file_bucket}/{input_file_key}',
+            ','.join(output_file_uris),
+            time_created,
+            time_completed,
+            input_model_part,
+            (time_completed - time_created).total_seconds()
+        ))
 
     # Return output
     return {

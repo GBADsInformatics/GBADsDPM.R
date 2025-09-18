@@ -26,6 +26,7 @@ RUN apt-get update && \
         libcurl4-openssl-dev \
         libssl-dev \
         libxml2-dev \
+        libpq-dev \
         git && \
     rm -rf /var/lib/apt/lists/*
 

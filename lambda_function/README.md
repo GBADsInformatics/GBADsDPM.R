@@ -44,6 +44,10 @@ docker run \
     -e AWS_SECRET_ACCESS_KEY=s3_user_secret \
     -e AWS_REGION=ca-central-1 \
     -e AWS_LAMBDA_RUNTIME_API=127.0.0.1:8080 \
+    -e RDS_HOST=... \ # for testing with model tracking
+    -e RDS_DATABASE=... \
+    -e RDS_USER=... \
+    -e RDS_PASSWORD=... \
     -v "$PWD/aws-lambda-rie:/aws-lambda-rie" \
     --entrypoint /aws-lambda-rie \
     -p 9000:8080 \
