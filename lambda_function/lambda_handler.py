@@ -17,7 +17,7 @@ Running locally:
         -e AWS_SECRET_ACCESS_KEY=s3_user_secret \
         -e AWS_REGION=ca-central-1 \
         -e AWS_LAMBDA_RUNTIME_API=127.0.0.1:8080 \
-        -e RDS_HOST=... \ # for testing with model tracking
+        -e RDS_HOST=... \
         -e RDS_DATABASE=... \
         -e RDS_USER=... \
         -e RDS_PASSWORD=... \
@@ -26,7 +26,7 @@ Running locally:
         -p 9000:8080 \
         dpm-lambda /usr/local/bin/python -m awslambdaric lambda_handler.lambda_handler
 5.  Test the Lambda function locally with a sample S3 event:
-    curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"Records":[{"s3":{"bucket":{"name":"gbads-modelling-private"},"object":{"key":"params_cattle.yaml"}}}]}'
+    curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"Records":[{"s3":{"bucket":{"name":"gbads-modelling-inputs"},"object":{"key":"dpm/user_21/new_model_test_zeroMortality.yaml"}}}]}'
 """
 
 from datetime import datetime
@@ -38,6 +38,48 @@ import yaml
 import re
 import boto3
 from rds_adapter import RDSAdapter
+
+def track_model_run(user_id, input_model_name, status, input_file_uri, output_file_uri, time_created, time_completed, input_model_part):
+    """
+    Helper function to track the model run in the database.
+    """
+    upsert_sql = """
+        INSERT INTO user_models
+            (user_id, model_name, status, file_input_uri, file_output_uri, date_created, date_completed, model_part, time_elapsed)
+        VALUES
+            (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (user_id, model_name, model_part)
+        DO UPDATE SET
+            status=EXCLUDED.status,
+            file_input_uri=EXCLUDED.file_input_uri,
+            file_output_uri=EXCLUDED.file_output_uri,
+            date_created=EXCLUDED.date_created,
+            date_completed=EXCLUDED.date_completed,
+            model_part=EXCLUDED.model_part,
+            time_elapsed=EXCLUDED.time_elapsed
+    """
+    try:
+        if time_completed and time_created:
+            duration = (time_completed - time_created).total_seconds()
+        else:
+            duration = None
+        with RDSAdapter() as rds_adapter:
+            rds_adapter.execute(
+                upsert_sql,
+                (
+                    user_id,
+                    input_model_name,
+                    status,
+                    input_file_uri,
+                    output_file_uri,
+                    time_created,
+                    time_completed,
+                    input_model_part,
+                    duration
+                )
+            )
+    except Exception as e:
+        print(f"Error tracking model run: {e}")
 
 def lambda_handler(event, context):
     """
@@ -97,6 +139,8 @@ def lambda_handler(event, context):
     if model_seed == "None":
         model_seed = ''.join(random.choices('0123456789', k=9))
 
+    track_model_run(user_id, input_model_name, 'in_progress', f's3://{input_file_bucket}/{input_file_key}', None, datetime.now(), None, input_model_part)
+
     print('Running R script with args:')
     print(f'       dir: "{local_params_dir}"')
     print(f'      seed: "{model_seed}"')
@@ -113,18 +157,7 @@ def lambda_handler(event, context):
     # Check if the command was successful
     if function_result.returncode != 0:
         print("R script execution failed")
-        with RDSAdapter() as rds_adapter:
-            rds_adapter.insert('user_models', (
-                user_id,
-                input_model_name,
-                'error: R script failed',
-                f's3://{input_file_bucket}/{input_file_key}',
-                None,
-                time_created,
-                time_completed,
-                input_model_part,
-                (time_completed - time_created).total_seconds()
-            ))
+        track_model_run(user_id, input_model_name, 'error:R script failed', f's3://{input_file_bucket}/{input_file_key}', None, time_created, time_completed, input_model_part)
         return {
             "statusCode": 500,
             "error": "R script execution failed, check lambda logs for details."
@@ -134,18 +167,7 @@ def lambda_handler(event, context):
     csv_files = glob.glob(f"{local_params_dir}/*.csv")
     if not csv_files:
         print("No output CSV file found in parameters directory.")
-        with RDSAdapter() as rds_adapter:
-            rds_adapter.insert('user_models', (
-                user_id,
-                input_model_name,
-                'error: Model produced no output',
-                f's3://{input_file_bucket}/{input_file_key}',
-                None,
-                time_created,
-                time_completed,
-                input_model_part,
-                (time_completed - time_created).total_seconds()
-            ))
+        track_model_run(user_id, input_model_name, 'error:Model produced no output', f's3://{input_file_bucket}/{input_file_key}', None, time_created, time_completed, input_model_part)
         return {
             "statusCode": 500,
             "error": "No output CSV file found."
@@ -162,18 +184,7 @@ def lambda_handler(event, context):
         # Check if the upload was successful
         if not s3.head_object(Bucket=output_bucket, Key=model_output_path):
             print("Failed to upload output file to S3")
-            with RDSAdapter() as rds_adapter:
-                rds_adapter.insert('user_models', (
-                    user_id,
-                    input_model_name,
-                    'error: Failed to upload output file to S3',
-                    f's3://{input_file_bucket}/{input_file_key}',
-                    None,
-                    time_created,
-                    time_completed,
-                    input_model_part,
-                    (time_completed - time_created).total_seconds()
-                ))
+            track_model_run(user_id, input_model_name, 'error:Failed to upload output file to S3', f's3://{input_file_bucket}/{input_file_key}', None, time_created, time_completed, input_model_part)
             return {
                 "statusCode": 500,
                 "error": "Failed to upload output file to S3."
@@ -182,18 +193,7 @@ def lambda_handler(event, context):
     print('Upload complete and verified.')
 
     # Record the model run in the database
-    with RDSAdapter() as rds_adapter:
-        rds_adapter.insert('user_models', (
-            user_id,
-            input_model_name,
-            'success',
-            f's3://{input_file_bucket}/{input_file_key}',
-            ','.join(output_file_uris),
-            time_created,
-            time_completed,
-            input_model_part,
-            (time_completed - time_created).total_seconds()
-        ))
+    track_model_run(user_id, input_model_name, 'success', f's3://{input_file_bucket}/{input_file_key}', ','.join(output_file_uris), time_created, time_completed, input_model_part)
 
     # Return output
     return {
