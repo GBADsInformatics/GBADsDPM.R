@@ -164,7 +164,7 @@ def lambda_handler(event, context):
         }
 
     # Ensure the output directory exists
-    csv_files = glob.glob(f"{local_params_dir}/*.csv")
+    csv_files = glob.glob(f"{local_params_dir}/*_{input_model_part}_*.csv")
     if not csv_files:
         print("No output CSV file found in parameters directory.")
         track_model_run(user_id, input_model_name, 'error:Model produced no output', f's3://{input_file_bucket}/{input_file_key}', None, time_created, time_completed, input_model_part)
