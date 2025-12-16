@@ -109,7 +109,7 @@ def lambda_handler(event, context):
     function_dir = os.environ.get("LAMBDA_TASK_ROOT", "/var/task")
     function_script = f"{function_dir}/DPM_CommandLine.R"
     user_id = ""
-    if match := re.search(r"/user_(\d+)/", input_file_key):
+    if match := re.search(r"/user_([a-zA-Z0-9-]+)/", input_file_key):
         user_id = str(match.group(1))
 
     # Prevent infinite loops
