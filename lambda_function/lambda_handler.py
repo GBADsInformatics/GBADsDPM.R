@@ -44,7 +44,7 @@ def track_model_run(user_id, input_model_name, status, input_file_uri, output_fi
     Helper function to track the model run in the database.
     """
     upsert_sql = """
-        INSERT INTO user_models
+        INSERT INTO user_models2
             (user_id, model_name, status, file_input_uri, file_output_uri, date_created, date_completed, model_part, time_elapsed)
         VALUES
             (%s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -108,9 +108,9 @@ def lambda_handler(event, context):
     model_seed = None # Later we read from the YAML file or generate a random seed
     function_dir = os.environ.get("LAMBDA_TASK_ROOT", "/var/task")
     function_script = f"{function_dir}/DPM_CommandLine.R"
-    user_id = -1
+    user_id = ""
     if match := re.search(r"/user_(\d+)/", input_file_key):
-        user_id = int(match.group(1))
+        user_id = str(match.group(1))
 
     # Prevent infinite loops
     if output_bucket == input_file_bucket:
