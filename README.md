@@ -1,8 +1,8 @@
-# GBADsDPM.R
+# Global Burden of Animal Diseases (GBADs) Dynamic Population Model (DPM) Model Builder
 
 <img src= "https://github.com/GBADsInformatics/GBADsDPM.R/blob/main/img/GBADs.png" width="150">
 
-Welcome is the GBADsDPM (Global Burden of Animal Diseases Dynamic Population Model) R package repository!
+This repository holds data for the production version of the Dynamic Population Model, build by GBADs modellers. The production version runs the online GBADs Modeller tool.
 
 ## The Dynamic Population Model (DPM)
 
