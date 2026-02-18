@@ -2,8 +2,7 @@
 
 <img src= "https://github.com/GBADsInformatics/GBADsDPM.R/blob/main/img/GBADs.png" width="150">
 
-This repository holds data for the production version of the Dynamic Population Model, build by GBADs modellers. The production version runs the online GBADs Modeller tool.
-
+This repository holds data for the production version of the Dynamic Population Model, build by GBADs modellers. The production version runs the online GBADs Modeller tool. Previous model versions, used for example in national case studies, can be found alongside their input files at https://github.com/GBADsInformatics/GBADs-DPM-dev. 
 ## The Dynamic Population Model (DPM)
 
 ### STATUS 
